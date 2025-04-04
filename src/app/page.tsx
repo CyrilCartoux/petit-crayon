@@ -61,7 +61,6 @@ export default function Home() {
           >
             Notre IA transforme instantanément vos photos en superbes coloriages. 
             <br className="hidden md:block" />
-            Parfait pour les enfants, les artistes en herbe ou simplement pour se détendre !
           </motion.p>
 
           <motion.div
@@ -94,58 +93,91 @@ export default function Home() {
             </motion.div>
           </motion.div>
 
-          {/* Section Tarifs */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.8 }}
-          >
-            <h2 className="text-2xl md:text-3xl font-bold text-center mb-8 md:mb-12">Débloque plus de créations !</h2>
-            <div className="grid grid-cols-1 md:grid-cols-4 gap-6 md:gap-8">
-              <motion.div 
-                whileHover={{ scale: 1.05 }}
-                className="card bg-white shadow-lg"
-              >
-                <h3 className="text-xl md:text-2xl font-bold mb-4">Starter</h3>
-                <p className="text-3xl md:text-4xl font-bold mb-4">2$</p>
-                <p className="text-gray-600 mb-4">5 coloriages</p>
-                <Link href="/paiement?plan=starter" className="btn-primary w-full block text-center">Choisir</Link>
-              </motion.div>
-
-              <motion.div 
-                whileHover={{ scale: 1.05 }}
-                className="card bg-white shadow-lg"
-              >
-                <h3 className="text-xl md:text-2xl font-bold mb-4">Pro</h3>
-                <p className="text-3xl md:text-4xl font-bold mb-4">5$</p>
-                <p className="text-gray-600 mb-4">20 coloriages</p>
-                <Link href="/paiement?plan=pro" className="btn-primary w-full block text-center">Choisir</Link>
-              </motion.div>
-
-              <motion.div 
-                whileHover={{ scale: 1.05 }}
-                className="card bg-white shadow-lg"
-              >
-                <h3 className="text-xl md:text-2xl font-bold mb-4">Premium</h3>
-                <p className="text-3xl md:text-4xl font-bold mb-4">10$</p>
-                <p className="text-gray-600 mb-4">50 coloriages</p>
-                <Link href="/paiement?plan=premium" className="btn-primary w-full block text-center">Choisir</Link>
-              </motion.div>
-
-              <motion.div 
-                whileHover={{ scale: 1.05 }}
-                className="card bg-white shadow-lg border-2 border-primary"
-              >
-                <div className="absolute top-0 right-0 bg-primary text-white px-3 py-1 rounded-bl-lg text-sm font-bold">
-                  POPULAIRE
+          {/* Section Plans */}
+          <section className="py-16">
+            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+              <div className="text-center mb-12">
+                <h2 className="text-3xl font-bold text-gray-900 mb-4">Débloque plus de créations</h2>
+                <p className="text-lg text-gray-600">Choisis le plan qui te correspond</p>
+              </div>
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+                {/* Plan Starter */}
+                <div className="bg-white rounded-2xl shadow-lg p-8 border-2 border-gray-100">
+                  <h3 className="text-xl font-bold text-gray-900 mb-2">Starter</h3>
+                  <p className="text-gray-600 mb-4">Parfait pour commencer</p>
+                  <div className="flex items-baseline mb-6">
+                    <span className="text-4xl font-bold text-gray-900">2$</span>
+                    <span className="text-gray-500 ml-2">/ une fois</span>
+                  </div>
+                  <ul className="space-y-3 mb-8">
+                    <li className="flex items-center text-gray-600">
+                      <svg className="h-5 w-5 text-primary mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7" />
+                      </svg>
+                      5 coloriages
+                    </li>
+                  </ul>
+                  <Link
+                    href="/paiement?plan=starter"
+                    className="block w-full bg-gray-100 text-gray-900 font-bold py-3 px-6 rounded-lg hover:bg-gray-200 transition-colors duration-200"
+                  >
+                    Choisir
+                  </Link>
                 </div>
-                <h3 className="text-xl md:text-2xl font-bold mb-4">Illimité</h3>
-                <p className="text-3xl md:text-4xl font-bold mb-4">19.99$<span className="text-lg">/mois</span></p>
-                <p className="text-gray-600 mb-4">Coloriages illimités</p>
-                <Link href="/paiement?plan=unlimited" className="btn-primary w-full block text-center">Choisir</Link>
-              </motion.div>
+
+                {/* Plan Premium */}
+                <div className="bg-white rounded-2xl shadow-lg p-8 border-2 border-primary relative">
+                  <div className="absolute top-0 right-0 bg-gradient-to-r from-pink-500 to-purple-500 text-white text-xs font-bold px-2 py-1 rounded-tl-lg rounded-br-lg">
+                    POPULAIRE
+                  </div>
+                  <h3 className="text-xl font-bold text-gray-900 mb-2">Premium</h3>
+                  <p className="text-gray-600 mb-4">Pour les passionnés</p>
+                  <div className="flex items-baseline mb-6">
+                    <span className="text-4xl font-bold text-gray-900">10$</span>
+                    <span className="text-gray-500 ml-2">/ une fois</span>
+                  </div>
+                  <ul className="space-y-3 mb-8">
+                    <li className="flex items-center text-gray-600">
+                      <svg className="h-5 w-5 text-primary mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7" />
+                      </svg>
+                      50 coloriages
+                    </li>
+                  </ul>
+                  <Link
+                    href="/paiement?plan=premium"
+                    className="block w-full bg-gradient-to-r from-pink-500 to-purple-500 text-white font-bold py-3 px-6 rounded-lg hover:opacity-90 transition-opacity duration-200"
+                  >
+                    Choisir
+                  </Link>
+                </div>
+
+                {/* Plan Illimité */}
+                <div className="bg-white rounded-2xl shadow-lg p-8 border-2 border-gray-100">
+                  <h3 className="text-xl font-bold text-gray-900 mb-2">Illimité</h3>
+                  <p className="text-gray-600 mb-4">Pour les créateurs passionnés</p>
+                  <div className="flex items-baseline mb-6">
+                    <span className="text-4xl font-bold text-gray-900">19.99$</span>
+                    <span className="text-gray-500 ml-2">/mois</span>
+                  </div>
+                  <ul className="space-y-3 mb-8">
+                    <li className="flex items-center text-gray-600">
+                      <svg className="h-5 w-5 text-primary mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7" />
+                      </svg>
+                      Coloriages illimités
+                    </li>
+                  </ul>
+                  <Link
+                    href="/paiement?plan=unlimited"
+                    className="block w-full bg-gray-100 text-gray-900 font-bold py-3 px-6 rounded-lg hover:bg-gray-200 transition-colors duration-200"
+                  >
+                    Choisir
+                  </Link>
+                </div>
+              </div>
             </div>
-          </motion.div>
+          </section>
         </div>
       </div>
     </div>

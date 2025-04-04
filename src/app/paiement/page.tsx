@@ -1,10 +1,19 @@
 'use client'
 
 import React, { useEffect, useState } from 'react'
-import { useSearchParams } from 'next/navigation'
+import { useSearchParams, useRouter } from 'next/navigation'
 import { motion } from 'framer-motion'
 
-const plans = {
+interface Plan {
+  name: string
+  price: number
+  coloriages: number | 'illimités'
+  description: string
+  type: 'one-time' | 'subscription'
+  popular?: boolean
+}
+
+const plans: Record<string, Plan> = {
   starter: {
     name: 'Starter',
     price: 2,
@@ -12,19 +21,13 @@ const plans = {
     description: 'Parfait pour commencer',
     type: 'one-time'
   },
-  pro: {
-    name: 'Pro',
-    price: 5,
-    coloriages: 20,
-    description: 'Pour les utilisateurs réguliers',
-    type: 'one-time'
-  },
   premium: {
     name: 'Premium',
     price: 10,
     coloriages: 50,
     description: 'Pour les passionnés',
-    type: 'one-time'
+    type: 'one-time',
+    popular: true
   },
   unlimited: {
     name: 'Illimité',
@@ -37,14 +40,19 @@ const plans = {
 
 export default function Paiement() {
   const searchParams = useSearchParams()
+  const router = useRouter()
   const plan = searchParams.get('plan') as keyof typeof plans
-  const [selectedPlan, setSelectedPlan] = useState(plans.starter)
+  const [selectedPlan, setSelectedPlan] = useState<Plan>(plans.starter)
 
   useEffect(() => {
     if (plan && plans[plan]) {
       setSelectedPlan(plans[plan])
     }
   }, [plan])
+
+  const handlePlanChange = (newPlan: keyof typeof plans) => {
+    router.push(`/paiement?plan=${newPlan}`)
+  }
 
   return (
     <div className="min-h-screen bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
@@ -69,6 +77,44 @@ export default function Paiement() {
 
           {/* Contenu */}
           <div className="p-6 md:p-8">
+            {/* Sélecteur de plan */}
+            <div className="mb-8">
+              <h2 className="text-xl font-bold text-gray-900 mb-4">Choisissez votre plan</h2>
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                {Object.entries(plans).map(([key, plan]) => (
+                  <motion.button
+                    key={key}
+                    whileHover={{ scale: 1.02 }}
+                    whileTap={{ scale: 0.98 }}
+                    onClick={() => handlePlanChange(key as keyof typeof plans)}
+                    className={`p-4 rounded-xl border-2 transition-all relative ${
+                      selectedPlan.name === plan.name
+                        ? 'border-primary bg-primary/5'
+                        : 'border-gray-200 hover:border-primary/50'
+                    }`}
+                  >
+                    {plan.popular && (
+                      <div className="absolute top-0 right-0 bg-gradient-to-r from-pink-500 to-purple-500 text-white text-xs font-bold px-2 py-1 rounded-tl-lg rounded-br-lg">
+                        POPULAIRE
+                      </div>
+                    )}
+                    <h3 className="font-bold text-gray-900">{plan.name}</h3>
+                    <p className="text-2xl font-bold text-gray-900 mt-2">
+                      {plan.price}$
+                      <span className="text-sm text-gray-500 ml-1">
+                        {plan.type === 'subscription' ? '/mois' : '/ une fois'}
+                      </span>
+                    </p>
+                    <p className="text-sm text-gray-600 mt-1">
+                      {typeof plan.coloriages === 'number' 
+                        ? `${plan.coloriages} coloriages`
+                        : 'Coloriages illimités'}
+                    </p>
+                  </motion.button>
+                ))}
+              </div>
+            </div>
+
             {/* Récapitulatif du plan */}
             <div className="mb-8 p-6 bg-gray-50 rounded-xl">
               <h2 className="text-2xl font-bold text-gray-900 mb-2">{selectedPlan.name}</h2>
