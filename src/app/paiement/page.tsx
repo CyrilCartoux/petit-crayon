@@ -134,8 +134,11 @@ export default function Paiement() {
                   Numéro de carte
                 </label>
                 <input
-                  type="text"
+                  type="number"
                   id="card-number"
+                  inputMode="numeric"
+                  pattern="[0-9]*"
+                  maxLength={16}
                   className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-primary focus:border-transparent"
                   placeholder="1234 5678 9012 3456"
                 />
@@ -147,10 +150,13 @@ export default function Paiement() {
                     Date d'expiration
                   </label>
                   <input
-                    type="text"
+                    type="number"
                     id="expiry"
+                    inputMode="numeric"
+                    pattern="[0-9]*"
+                    maxLength={4}
                     className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-primary focus:border-transparent"
-                    placeholder="MM/AA"
+                    placeholder="MMAA"
                   />
                 </div>
                 <div>
@@ -158,8 +164,11 @@ export default function Paiement() {
                     CVC
                   </label>
                   <input
-                    type="text"
+                    type="number"
                     id="cvc"
+                    inputMode="numeric"
+                    pattern="[0-9]*"
+                    maxLength={3}
                     className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-primary focus:border-transparent"
                     placeholder="123"
                   />
