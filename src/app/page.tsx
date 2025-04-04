@@ -101,7 +101,7 @@ export default function Home() {
             transition={{ duration: 0.6, delay: 0.8 }}
           >
             <h2 className="text-2xl md:text-3xl font-bold text-center mb-8 md:mb-12">Débloque plus de créations !</h2>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8">
+            <div className="grid grid-cols-1 md:grid-cols-4 gap-6 md:gap-8">
               <motion.div 
                 whileHover={{ scale: 1.05 }}
                 className="card bg-white shadow-lg"
@@ -130,6 +130,19 @@ export default function Home() {
                 <p className="text-3xl md:text-4xl font-bold mb-4">10$</p>
                 <p className="text-gray-600 mb-4">50 coloriages</p>
                 <Link href="/paiement?plan=premium" className="btn-primary w-full block text-center">Choisir</Link>
+              </motion.div>
+
+              <motion.div 
+                whileHover={{ scale: 1.05 }}
+                className="card bg-white shadow-lg border-2 border-primary"
+              >
+                <div className="absolute top-0 right-0 bg-primary text-white px-3 py-1 rounded-bl-lg text-sm font-bold">
+                  POPULAIRE
+                </div>
+                <h3 className="text-xl md:text-2xl font-bold mb-4">Illimité</h3>
+                <p className="text-3xl md:text-4xl font-bold mb-4">19.99$<span className="text-lg">/mois</span></p>
+                <p className="text-gray-600 mb-4">Coloriages illimités</p>
+                <Link href="/paiement?plan=unlimited" className="btn-primary w-full block text-center">Choisir</Link>
               </motion.div>
             </div>
           </motion.div>

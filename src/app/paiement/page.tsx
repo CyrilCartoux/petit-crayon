@@ -9,19 +9,29 @@ const plans = {
     name: 'Starter',
     price: 2,
     coloriages: 5,
-    description: 'Parfait pour commencer'
+    description: 'Parfait pour commencer',
+    type: 'one-time'
   },
   pro: {
     name: 'Pro',
     price: 5,
     coloriages: 20,
-    description: 'Pour les utilisateurs réguliers'
+    description: 'Pour les utilisateurs réguliers',
+    type: 'one-time'
   },
   premium: {
     name: 'Premium',
     price: 10,
     coloriages: 50,
-    description: 'Pour les passionnés'
+    description: 'Pour les passionnés',
+    type: 'one-time'
+  },
+  unlimited: {
+    name: 'Illimité',
+    price: 19.99,
+    coloriages: 'illimités',
+    description: 'Pour les créateurs passionnés',
+    type: 'subscription'
   }
 }
 
@@ -47,8 +57,14 @@ export default function Paiement() {
         >
           {/* En-tête */}
           <div className="bg-gradient-to-r from-pink-500 to-purple-500 px-6 py-8 text-center">
-            <h1 className="text-3xl font-bold text-white mb-2">Finalisez votre abonnement</h1>
-            <p className="text-white/90">Vous êtes sur le point de débloquer {selectedPlan.coloriages} coloriages</p>
+            <h1 className="text-3xl font-bold text-white mb-2">
+              {selectedPlan.type === 'subscription' ? 'Finalisez votre abonnement' : 'Finalisez votre achat'}
+            </h1>
+            <p className="text-white/90">
+              {selectedPlan.type === 'subscription' 
+                ? 'Vous êtes sur le point de débloquer des coloriages illimités'
+                : `Vous êtes sur le point de débloquer ${selectedPlan.coloriages} coloriages`}
+            </p>
           </div>
 
           {/* Contenu */}
@@ -58,8 +74,10 @@ export default function Paiement() {
               <h2 className="text-2xl font-bold text-gray-900 mb-2">{selectedPlan.name}</h2>
               <p className="text-gray-600 mb-4">{selectedPlan.description}</p>
               <div className="flex items-baseline">
-                <span className="text-4xl font-bold text-gray-900">{selectedPlan.price}€</span>
-                <span className="text-gray-500 ml-2">/ une fois</span>
+                <span className="text-4xl font-bold text-gray-900">{selectedPlan.price}$</span>
+                <span className="text-gray-500 ml-2">
+                  {selectedPlan.type === 'subscription' ? '/mois' : '/ une fois'}
+                </span>
               </div>
             </div>
 
@@ -119,7 +137,7 @@ export default function Paiement() {
                 whileTap={{ scale: 0.98 }}
                 className="w-full bg-gradient-to-r from-pink-500 to-purple-500 text-white font-bold py-4 px-6 rounded-lg hover:shadow-lg transition-all duration-200"
               >
-                Payer {selectedPlan.price}€
+                {selectedPlan.type === 'subscription' ? 'S\'abonner' : 'Payer'} {selectedPlan.price}$
               </motion.button>
             </form>
 
