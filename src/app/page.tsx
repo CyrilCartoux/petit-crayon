@@ -46,67 +46,93 @@ export default function Home() {
           <motion.h1 
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5 }}
-            className="text-3xl md:text-5xl font-bold text-gray-900 mb-6"
+            transition={{ duration: 0.6, delay: 0.2 }}
+            className="text-4xl md:text-6xl lg:text-7xl font-bold text-gray-900 mb-6 leading-tight"
           >
-            Transforme n&apos;importe quelle image en coloriage à imprimer !
+            Transformez vos <span className="text-primary">photos</span> en <br className="hidden md:block" />
+            <span className="text-primary">coloriages magiques</span>
           </motion.h1>
           
           <motion.p 
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.2 }}
-            className="text-lg md:text-xl text-gray-600 mb-12 max-w-3xl mx-auto"
+            transition={{ duration: 0.6, delay: 0.4 }}
+            className="text-xl md:text-2xl text-gray-600 mb-12 max-w-3xl mx-auto leading-relaxed"
           >
-            Notre IA magique transforme vos photos, dessins et portraits en superbes coloriages. 
+            Notre IA transforme instantanément vos photos en superbes coloriages. 
+            <br className="hidden md:block" />
             Parfait pour les enfants, les artistes en herbe ou simplement pour se détendre !
           </motion.p>
 
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.4 }}
+            transition={{ duration: 0.6, delay: 0.6 }}
+            className="flex justify-center mb-12"
           >
-            <Link href="/editor" className="btn-primary text-lg md:text-xl">
-              Choisir une image
-            </Link>
+            <motion.div
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+              className="relative group"
+            >
+              <div className="absolute -inset-1 bg-gradient-to-r from-pink-500 to-purple-500 rounded-full blur opacity-75 group-hover:opacity-100 transition duration-1000 group-hover:duration-200"></div>
+              <Link 
+                href="/editor" 
+                className="relative inline-flex items-center justify-center px-8 py-4 text-xl md:text-2xl font-bold text-white bg-gradient-to-r from-pink-500 to-purple-500 rounded-full transition-all duration-200 hover:shadow-lg hover:shadow-pink-500/50"
+              >
+                Essayer gratuitement
+                <svg 
+                  className="w-5 h-5 ml-2 transition-transform group-hover:translate-x-1" 
+                  fill="none" 
+                  stroke="currentColor" 
+                  viewBox="0 0 24 24" 
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
+                </svg>
+              </Link>
+            </motion.div>
           </motion.div>
-        </div>
 
-        {/* Section Tarifs */}
-        <div className="mt-24 md:mt-32">
-          <h2 className="text-2xl md:text-3xl font-bold text-center mb-8 md:mb-12">Débloque plus de créations !</h2>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8">
-            <motion.div 
-              whileHover={{ scale: 1.05 }}
-              className="card bg-white/80 backdrop-blur-sm"
-            >
-              <h3 className="text-xl md:text-2xl font-bold mb-4">Starter</h3>
-              <p className="text-3xl md:text-4xl font-bold mb-4">2$</p>
-              <p className="text-gray-600 mb-4">5 coloriages</p>
-              <button className="btn-primary w-full">Choisir</button>
-            </motion.div>
+          {/* Section Tarifs */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.8 }}
+          >
+            <h2 className="text-2xl md:text-3xl font-bold text-center mb-8 md:mb-12">Débloque plus de créations !</h2>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8">
+              <motion.div 
+                whileHover={{ scale: 1.05 }}
+                className="card bg-white shadow-lg"
+              >
+                <h3 className="text-xl md:text-2xl font-bold mb-4">Starter</h3>
+                <p className="text-3xl md:text-4xl font-bold mb-4">2$</p>
+                <p className="text-gray-600 mb-4">5 coloriages</p>
+                <Link href="/paiement?plan=starter" className="btn-primary w-full block text-center">Choisir</Link>
+              </motion.div>
 
-            <motion.div 
-              whileHover={{ scale: 1.05 }}
-              className="card bg-white/80 backdrop-blur-sm"
-            >
-              <h3 className="text-xl md:text-2xl font-bold mb-4">Pro</h3>
-              <p className="text-3xl md:text-4xl font-bold mb-4">5$</p>
-              <p className="text-gray-600 mb-4">20 coloriages</p>
-              <button className="btn-primary w-full">Choisir</button>
-            </motion.div>
+              <motion.div 
+                whileHover={{ scale: 1.05 }}
+                className="card bg-white shadow-lg"
+              >
+                <h3 className="text-xl md:text-2xl font-bold mb-4">Pro</h3>
+                <p className="text-3xl md:text-4xl font-bold mb-4">5$</p>
+                <p className="text-gray-600 mb-4">20 coloriages</p>
+                <Link href="/paiement?plan=pro" className="btn-primary w-full block text-center">Choisir</Link>
+              </motion.div>
 
-            <motion.div 
-              whileHover={{ scale: 1.05 }}
-              className="card bg-white/80 backdrop-blur-sm"
-            >
-              <h3 className="text-xl md:text-2xl font-bold mb-4">Premium</h3>
-              <p className="text-3xl md:text-4xl font-bold mb-4">10$</p>
-              <p className="text-gray-600 mb-4">50 coloriages</p>
-              <button className="btn-primary w-full">Choisir</button>
-            </motion.div>
-          </div>
+              <motion.div 
+                whileHover={{ scale: 1.05 }}
+                className="card bg-white shadow-lg"
+              >
+                <h3 className="text-xl md:text-2xl font-bold mb-4">Premium</h3>
+                <p className="text-3xl md:text-4xl font-bold mb-4">10$</p>
+                <p className="text-gray-600 mb-4">50 coloriages</p>
+                <Link href="/paiement?plan=premium" className="btn-primary w-full block text-center">Choisir</Link>
+              </motion.div>
+            </div>
+          </motion.div>
         </div>
       </div>
     </div>
