@@ -5,19 +5,26 @@
   "scripts": {
     "dev": "next dev --turbopack",
     "build": "next build",
+    "build:watch": "next build --watch",
     "start": "next start",
     "lint": "next lint"
   },
   "dependencies": {
     "@heroicons/react": "^2.2.0",
     "@stripe/stripe-js": "^7.0.0",
+    "@supabase/auth-helpers-nextjs": "^0.10.0",
+    "@supabase/supabase-js": "^2.49.4",
     "@tailwindcss/postcss": "^4.1.2",
+    "@types/uuid": "^10.0.0",
     "framer-motion": "^12.6.3",
     "next": "15.2.4",
+    "next-auth": "^4.24.11",
+    "openai": "^4.96.0",
     "postcss": "^8.5.3",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
-    "react-dropzone": "^14.3.8"
+    "react-dropzone": "^14.3.8",
+    "uuid": "^11.1.0"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",

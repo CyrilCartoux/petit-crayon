@@ -5,7 +5,6 @@ import { useDropzone } from 'react-dropzone'
 import { motion } from 'framer-motion'
 import { PhotoIcon, ArrowPathIcon } from '@heroicons/react/24/outline'
 import Image from 'next/image'
-import Link from 'next/link'
 
 export default function Editor() {
   const [image, setImage] = useState<string | null>(null)
@@ -53,7 +52,7 @@ export default function Editor() {
       }
 
       const data = await response.json()
-      setResult(data.result[0])
+      setResult(data.result)
     } catch (error) {
       console.error('Erreur lors du traitement:', error)
       setError('Une erreur est survenue lors du traitement de l\'image. Veuillez réessayer.')
@@ -137,29 +136,47 @@ export default function Editor() {
               <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
-                className="card bg-white/80 backdrop-blur-sm"
+                className="card bg-white/80 backdrop-blur-sm p-6"
               >
-                <h2 className="text-xl font-bold mb-4">Votre coloriage est prêt !</h2>
-                <div className="relative aspect-video mb-4">
-                  <Image
-                    src={result}
-                    alt="Coloriage généré"
-                    className="w-full h-full object-contain rounded-lg"
-                    width={500}
-                    height={500}
-                  />
-                </div>
-                <div className="flex gap-4">
-                  <Link
-                    href={result}
-                    download="coloriage.png"
-                    className="btn-primary flex-1 text-center"
+                <h2 className="text-xl font-bold mb-4">Votre coloriage</h2>
+                {isValidImageUrl(result) ? (
+                  <div className="relative aspect-video mb-6">
+                    <Image
+                      src={result}
+                      alt="Coloriage généré"
+                      className="w-full h-full object-contain rounded-lg"
+                      width={500}
+                      height={500}
+                      priority
+                      onError={(e) => {
+                        console.error('Erreur de chargement de l\'image:', e)
+                        setError('Erreur lors du chargement de l\'image générée. Veuillez réessayer.')
+                        setResult(null)
+                      }}
+                    />
+                  </div>
+                ) : (
+                  <div className="text-red-500 mb-6">
+                    Erreur: URL de l'image invalide ou non autorisée
+                  </div>
+                )}
+                <div className="mt-6 flex gap-4">
+                  <button 
+                    onClick={() => {
+                      const link = document.createElement('a')
+                      link.href = result
+                      link.download = 'coloriage.png'
+                      document.body.appendChild(link)
+                      link.click()
+                      document.body.removeChild(link)
+                    }}
+                    className="btn-primary flex-1"
                   >
                     Télécharger
-                  </Link>
+                  </button>
                   <button 
                     onClick={() => window.print()}
-                    className="btn-secondary flex-1"
+                    className="btn-primary flex-1"
                   >
                     Imprimer
                   </button>
@@ -168,7 +185,7 @@ export default function Editor() {
                       setImage(null)
                       setResult(null)
                     }}
-                    className="btn-primary flex-1 bg-gray-500 hover:bg-gray-600"
+                    className="btn-primary flex-1"
                   >
                     Nouvelle image
                   </button>
@@ -180,4 +197,22 @@ export default function Editor() {
       </div>
     </div>
   )
+}
+
+function isValidImageUrl(url: string): boolean {
+  try {
+    // Vérifier si c'est une URL de données
+    if (url.startsWith('data:image/')) {
+      return true
+    }
+
+    // Vérifier si c'est une URL HTTP/HTTPS
+    const parsedUrl = new URL(url)
+    return (
+      (parsedUrl.protocol === 'http:' || parsedUrl.protocol === 'https:') &&
+      parsedUrl.hostname.includes('replicate.delivery')
+    )
+  } catch {
+    return false
+  }
 } 

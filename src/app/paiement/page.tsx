@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, Suspense } from 'react'
 import { useSearchParams, useRouter } from 'next/navigation'
 import { motion } from 'framer-motion'
 
@@ -38,7 +38,7 @@ const plans: Record<string, Plan> = {
   }
 }
 
-export default function Paiement() {
+function PaiementContent() {
   const searchParams = useSearchParams()
   const router = useRouter()
   const plan = searchParams.get('plan') as keyof typeof plans
@@ -147,7 +147,7 @@ export default function Paiement() {
               <div className="grid grid-cols-2 gap-4">
                 <div>
                   <label htmlFor="expiry" className="block text-sm font-medium text-gray-700 mb-2">
-                    Date d'expiration
+                    Date d&apos;expiration
                   </label>
                   <input
                     type="number"
@@ -212,5 +212,13 @@ export default function Paiement() {
         </motion.div>
       </div>
     </div>
+  )
+}
+
+export default function Paiement() {
+  return (
+    <Suspense fallback={<div>Chargement...</div>}>
+      <PaiementContent />
+    </Suspense>
   )
 } 

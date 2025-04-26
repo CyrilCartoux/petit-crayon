@@ -107,7 +107,7 @@ export default function Home() {
                   <p className="text-gray-600 mb-4">Parfait pour commencer</p>
                   <div className="flex items-baseline mb-6">
                     <span className="text-4xl font-bold text-gray-900">2$</span>
-                    <span className="text-gray-500 ml-2">/ une fois</span>
+                    <span className="text-gray-500 ml-2">/ paiement unique</span>
                   </div>
                   <ul className="space-y-3 mb-8">
                     <li className="flex items-center text-gray-600">
@@ -134,7 +134,7 @@ export default function Home() {
                   <p className="text-gray-600 mb-4">Pour les passionnés</p>
                   <div className="flex items-baseline mb-6">
                     <span className="text-4xl font-bold text-gray-900">10$</span>
-                    <span className="text-gray-500 ml-2">/ une fois</span>
+                    <span className="text-gray-500 ml-2">/ paiement unique</span>
                   </div>
                   <ul className="space-y-3 mb-8">
                     <li className="flex items-center text-gray-600">
