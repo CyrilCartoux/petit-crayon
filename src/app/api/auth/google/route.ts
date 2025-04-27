@@ -1,34 +1,30 @@
-import { createRouteHandlerClient } from '@supabase/auth-helpers-nextjs';
-import { cookies } from 'next/headers';
-import { NextResponse } from 'next/server';
+import { createClient } from '@/utils/supabase/server'
+import { NextResponse } from 'next/server'
 
 export async function GET() {
   try {
-    // On récupère directement le store (pas d'await)
-    const cookieStore = cookies();
-
-    // On passe une fonction async qui renvoie notre store
-    const supabase = createRouteHandlerClient({
-      cookies: async () => cookieStore
-    });
+    const supabase = await createClient()
 
     const { data, error } = await supabase.auth.signInWithOAuth({
       provider: 'google',
       options: {
         redirectTo: `${process.env.NEXT_PUBLIC_SITE_URL}/auth/callback`
       }
-    });
+    })
 
     if (error) {
-      return NextResponse.json({ error: error.message }, { status: 401 });
+      return NextResponse.json(
+        { error: error.message },
+        { status: error.status ?? 401 }
+      )
     }
 
-    return NextResponse.json({ url: data.url });
-  } catch (error) {
-    console.error('Google auth error:', error);
+    return NextResponse.json({ url: data.url })
+  } catch (err) {
+    console.error('Google auth error:', err)
     return NextResponse.json(
       { error: 'Une erreur est survenue lors de l\'authentification Google' },
       { status: 500 }
-    );
+    )
   }
 }
