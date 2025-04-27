@@ -66,41 +66,6 @@ export default function Home() {
             Parfait pour les enfants et les parents !
           </motion.p>
 
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.6 }}
-            className="flex justify-center mb-12"
-          >
-            <motion.div
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-              className="relative group"
-            >
-              <div className="absolute -inset-1 bg-gradient-to-r from-pink-500 to-purple-500 rounded-full blur opacity-75 group-hover:opacity-100 transition duration-1000 group-hover:duration-200"></div>
-              <Link
-                href="/editor"
-                className="relative inline-flex items-center justify-center px-8 py-4 text-xl md:text-2xl font-bold text-white bg-gradient-to-r from-pink-500 to-purple-500 rounded-full transition-all duration-200 hover:shadow-lg hover:shadow-pink-500/50"
-              >
-                Essayer gratuitement
-                <svg
-                  className="w-5 h-5 ml-2 transition-transform group-hover:translate-x-1"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M13 7l5 5m0 0l-5 5m5-5H6"
-                  />
-                </svg>
-              </Link>
-            </motion.div>
-          </motion.div>
-
           {/* Section Plans */}
           <section className="py-16">
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
