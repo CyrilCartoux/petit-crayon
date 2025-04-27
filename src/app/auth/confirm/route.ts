@@ -1,7 +1,6 @@
 import { type EmailOtpType } from '@supabase/supabase-js';
 import { type NextRequest } from 'next/server';
-import { createRouteHandlerClient } from '@supabase/auth-helpers-nextjs';
-import { cookies } from 'next/headers';
+import { createClient } from '@/utils/supabase/server';
 import { redirect } from 'next/navigation';
 
 export async function GET(request: NextRequest) {
@@ -11,11 +10,7 @@ export async function GET(request: NextRequest) {
   const next = searchParams.get('next') ?? '/';
 
   if (token_hash && type) {
-    const cookieStore = cookies();
-    const supabase = createRouteHandlerClient({
-      cookies: async () => cookieStore,
-    });
-
+    const supabase = await createClient();
     const { error } = await supabase.auth.verifyOtp({
       type,
       token_hash,

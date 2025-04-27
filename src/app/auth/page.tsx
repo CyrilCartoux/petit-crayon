@@ -37,7 +37,7 @@ export default function AuthPage() {
         throw new Error(data.message || 'Une erreur est survenue')
       }
 
-      router.push('/dashboard')
+      router.push('/')
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Une erreur est survenue')
     }
