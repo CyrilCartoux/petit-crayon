@@ -4,6 +4,7 @@ import "./globals.css";
 import Header from '@/components/Header'
 import Footer from '@/components/Footer'
 import { AuthProvider } from '@/contexts/AuthContext'
+import GalleryPreview from "@/components/GalleryPreview";
 
 const fredoka = Fredoka({ subsets: ["latin"] });
 
@@ -27,6 +28,7 @@ export default function RootLayout({
             {children}
           </main>
 
+          <GalleryPreview />
           <Footer />
         </AuthProvider>
       </body>

@@ -7,34 +7,34 @@ import { motion } from 'framer-motion'
 interface Plan {
   name: string
   price: number
-  coloriages: number | 'illimités'
+  coloriages: number
   description: string
-  type: 'one-time' | 'subscription'
+  type: 'one-time'
   popular?: boolean
 }
 
 const plans: Record<string, Plan> = {
   starter: {
     name: 'Starter',
-    price: 2,
-    coloriages: 5,
-    description: 'Parfait pour commencer',
+    price: 4.99,
+    coloriages: 10,
+    description: '✨ Le début parfait pour découvrir la magie de vos souvenirs à colorier.',
     type: 'one-time'
   },
-  premium: {
-    name: 'Premium',
-    price: 10,
-    coloriages: 50,
-    description: 'Pour les passionnés',
+  explorer: {
+    name: 'Explorer',
+    price: 9.99,
+    coloriages: 25,
+    description: '🎉 Idéal pour donner vie à tous vos meilleurs moments, sans compter !',
     type: 'one-time',
     popular: true
   },
-  unlimited: {
-    name: 'Illimité',
-    price: 19.99,
-    coloriages: 'illimités',
-    description: 'Pour les créateurs passionnés',
-    type: 'subscription'
+  creatif: {
+    name: 'Créatif',
+    price: 17.99,
+    coloriages: 50,
+    description: '🚀 Libérez votre créativité et transformez tous vos souvenirs en chefs-d\'œuvre à colorier !',
+    type: 'one-time'
   }
 }
 
@@ -66,12 +66,10 @@ function PaiementContent() {
           {/* En-tête */}
           <div className="bg-gradient-to-r from-pink-500 to-purple-500 px-6 py-8 text-center">
             <h1 className="text-3xl font-bold text-white mb-2">
-              {selectedPlan.type === 'subscription' ? 'Finalisez votre abonnement' : 'Finalisez votre achat'}
+              Finalisez votre achat
             </h1>
             <p className="text-white/90">
-              {selectedPlan.type === 'subscription' 
-                ? 'Vous êtes sur le point de débloquer des coloriages illimités'
-                : `Vous êtes sur le point de débloquer ${selectedPlan.coloriages} coloriages`}
+              Vous êtes sur le point de débloquer {selectedPlan.coloriages} coloriages
             </p>
           </div>
 
@@ -100,15 +98,13 @@ function PaiementContent() {
                     )}
                     <h3 className="font-bold text-gray-900">{plan.name}</h3>
                     <p className="text-2xl font-bold text-gray-900 mt-2">
-                      {plan.price}$
+                      {plan.price}€
                       <span className="text-sm text-gray-500 ml-1">
-                        {plan.type === 'subscription' ? '/mois' : '/ une fois'}
+                        / une fois
                       </span>
                     </p>
                     <p className="text-sm text-gray-600 mt-1">
-                      {typeof plan.coloriages === 'number' 
-                        ? `${plan.coloriages} coloriages`
-                        : 'Coloriages illimités'}
+                      {plan.coloriages} coloriages
                     </p>
                   </motion.button>
                 ))}
@@ -120,9 +116,9 @@ function PaiementContent() {
               <h2 className="text-2xl font-bold text-gray-900 mb-2">{selectedPlan.name}</h2>
               <p className="text-gray-600 mb-4">{selectedPlan.description}</p>
               <div className="flex items-baseline">
-                <span className="text-4xl font-bold text-gray-900">{selectedPlan.price}$</span>
+                <span className="text-4xl font-bold text-gray-900">{selectedPlan.price}€</span>
                 <span className="text-gray-500 ml-2">
-                  {selectedPlan.type === 'subscription' ? '/mois' : '/ une fois'}
+                  / une fois
                 </span>
               </div>
             </div>
@@ -192,7 +188,7 @@ function PaiementContent() {
                 whileTap={{ scale: 0.98 }}
                 className="w-full bg-gradient-to-r from-pink-500 to-purple-500 text-white font-bold py-4 px-6 rounded-lg hover:shadow-lg transition-all duration-200"
               >
-                {selectedPlan.type === 'subscription' ? 'S\'abonner' : 'Payer'} {selectedPlan.price}$
+                Payer {selectedPlan.price}€
               </motion.button>
             </form>
 

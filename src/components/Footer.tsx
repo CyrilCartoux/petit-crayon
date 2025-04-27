@@ -16,8 +16,12 @@ export default function Footer() {
           <div className="text-center md:text-left">
             <h3 className="text-lg font-semibold text-gray-900 mb-2">À propos</h3>
             <p className="text-gray-600">
-              Transformez vos photos en coloriages magiques avec notre IA.
-              Parfait pour les enfants et les artistes en herbe.
+            Donnez vie à vos souvenirs, amusez vos enfants !
+            </p>
+            <p className="text-gray-600">
+            Transformez facilement vos photos en coloriages uniques. Parfait pour les petits artistes comme pour les grands rêveurs.
+
+
             </p>
           </div>
           <div className="text-center md:text-right">
