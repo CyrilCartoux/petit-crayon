@@ -95,10 +95,10 @@ export default function GalleryPreview() {
 
         <div className="text-center mt-12">
           <Link
-            href="/gallery"
+            href="/editor"
             className="inline-flex items-center px-6 py-3 text-base font-medium text-white bg-[var(--color-primary)] hover:bg-[var(--color-primary-dark)] rounded-md transition-colors"
           >
-            Voir plus d&apos;exemples
+            Créer mon coloriage 
             <svg
               className="ml-2 -mr-1 w-5 h-5"
               fill="none"

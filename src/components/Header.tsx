@@ -30,7 +30,7 @@ export default function Header() {
   };
 
   return (
-    <header className="bg-white shadow-sm">
+    <header className="bg-white shadow-sm fixed w-full top-0 z-50">
       <nav className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between h-16 items-center">
           <div className="flex items-center">
@@ -38,8 +38,8 @@ export default function Header() {
               <Image
                 src="/images/logo.png"
                 alt="Petit Crayon"
-                width={150}
-                height={150}
+                width={120}
+                height={120}
                 className="cursor-pointer hover:opacity-80 transition-opacity"
               />
             </Link>
@@ -49,7 +49,7 @@ export default function Header() {
           <div className="md:hidden">
             <button
               onClick={() => setIsMenuOpen(!isMenuOpen)}
-              className="text-gray-600 hover:text-[var(--color-primary)]"
+              className="text-gray-600 hover:text-[var(--color-primary)] p-2 rounded-md focus:outline-none"
             >
               <svg
                 className="h-6 w-6"
@@ -78,12 +78,14 @@ export default function Header() {
 
           {/* Menu desktop */}
           <div className="hidden md:flex items-center space-x-4">
-            <Link 
-              href="/gallery" 
-              className="px-4 py-2 text-sm font-medium text-white bg-[var(--color-primary)] hover:bg-[var(--color-primary-dark)] rounded-md transition-colors"
-            >
-              Galerie
-            </Link>
+            {user && (
+              <Link 
+                href="/gallery" 
+                className="px-4 py-2 text-sm font-medium text-white bg-[var(--color-primary)] hover:bg-[var(--color-primary-dark)] rounded-md transition-colors"
+              >
+                Galerie
+              </Link>
+            )}
             {user ? (
               <div className="relative">
                 <button
@@ -142,41 +144,48 @@ export default function Header() {
 
         {/* Menu mobile */}
         {isMenuOpen && (
-          <div className="md:hidden py-4 space-y-4">
-            <Link 
-              href="/gallery" 
-              className="block px-4 py-2 text-sm font-medium text-white bg-[var(--color-primary)] hover:bg-[var(--color-primary-dark)] rounded-md transition-colors"
-              onClick={() => setIsMenuOpen(false)}
-            >
-              Galerie
-            </Link>
-            {user ? (
-              <div className="space-y-4">
-                <div className="flex items-center space-x-2">
-                  <div className="w-8 h-8 rounded-full bg-[var(--color-primary)] flex items-center justify-center text-white">
-                    {getUserInitial()}
-                  </div>
-                  <span className="text-gray-600">{getUserDisplayName()}</span>
-                </div>
-                <button
-                  onClick={() => {
-                    signOut();
-                    setIsMenuOpen(false);
-                  }}
-                  className="w-full px-4 py-2 text-sm font-medium text-gray-600 hover:text-[var(--color-primary)] border border-gray-300 rounded-md hover:border-[var(--color-primary)] transition-colors"
+          <div className="md:hidden absolute top-16 left-0 right-0 bg-white shadow-lg border-t border-gray-200">
+            <div className="px-4 py-3 space-y-3">
+              {user && (
+                <Link 
+                  href="/gallery" 
+                  className="block w-full px-4 py-3 text-base font-medium text-white bg-[var(--color-primary)] hover:bg-[var(--color-primary-dark)] rounded-md transition-colors text-center"
+                  onClick={() => setIsMenuOpen(false)}
                 >
-                  Déconnexion
-                </button>
-              </div>
-            ) : (
-              <Link 
-                href="/auth" 
-                className="block w-full px-4 py-2 text-sm font-medium text-white bg-[var(--color-primary)] rounded-md hover:bg-[var(--color-primary-dark)] transition-colors text-center"
-                onClick={() => setIsMenuOpen(false)}
-              >
-                Connexion
-              </Link>
-            )}
+                  Galerie
+                </Link>
+              )}
+              {user ? (
+                <div className="space-y-3">
+                  <div className="flex items-center space-x-3 p-3 bg-gray-50 rounded-md">
+                    <div className="w-10 h-10 rounded-full bg-[var(--color-primary)] flex items-center justify-center text-white text-lg">
+                      {getUserInitial()}
+                    </div>
+                    <div>
+                      <p className="text-sm font-medium text-gray-900">{getUserDisplayName()}</p>
+                      <p className="text-xs text-gray-500">{getUserEmail()}</p>
+                    </div>
+                  </div>
+                  <button
+                    onClick={() => {
+                      signOut();
+                      setIsMenuOpen(false);
+                    }}
+                    className="w-full px-4 py-3 text-base font-medium text-gray-700 hover:text-[var(--color-primary)] border border-gray-300 rounded-md hover:border-[var(--color-primary)] transition-colors"
+                  >
+                    Déconnexion
+                  </button>
+                </div>
+              ) : (
+                <Link 
+                  href="/auth" 
+                  className="block w-full px-4 py-3 text-base font-medium text-white bg-[var(--color-primary)] rounded-md hover:bg-[var(--color-primary-dark)] transition-colors text-center"
+                  onClick={() => setIsMenuOpen(false)}
+                >
+                  Connexion
+                </Link>
+              )}
+            </div>
           </div>
         )}
       </nav>
