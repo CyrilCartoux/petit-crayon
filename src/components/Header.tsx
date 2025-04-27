@@ -3,9 +3,11 @@
 import Link from 'next/link'
 import Image from 'next/image'
 import { useState } from 'react'
+import { useAuth } from '@/contexts/AuthContext'
 
 export default function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
+  const { user, signOut } = useAuth()
 
   return (
     <header className="bg-white shadow-sm">
@@ -59,12 +61,24 @@ export default function Header() {
             <Link href="/gallery" className="text-gray-600 hover:text-[var(--color-primary)]">
               Galerie
             </Link>
-            <Link 
-              href="/auth" 
-              className="btn-primary"
-            >
-              Connexion
-            </Link>
+            {user ? (
+              <div className="flex items-center space-x-4">
+                <span className="text-gray-600">Bonjour, {user.email}</span>
+                <button
+                  onClick={() => signOut()}
+                  className="px-4 py-2 text-sm font-medium text-gray-600 hover:text-[var(--color-primary)] border border-gray-300 rounded-md hover:border-[var(--color-primary)] transition-colors"
+                >
+                  Déconnexion
+                </button>
+              </div>
+            ) : (
+              <Link 
+                href="/auth" 
+                className="px-4 py-2 text-sm font-medium text-white bg-[var(--color-primary)] rounded-md hover:bg-[var(--color-primary-dark)] transition-colors"
+              >
+                Connexion
+              </Link>
+            )}
           </div>
         </div>
 
@@ -78,13 +92,30 @@ export default function Header() {
             >
               Galerie
             </Link>
-            <Link 
-              href="/auth" 
-              className="block btn-primary w-full text-center"
-              onClick={() => setIsMenuOpen(false)}
-            >
-              Connexion
-            </Link>
+            {user ? (
+              <div className="space-y-4">
+                <div className="text-gray-600">
+                  Bonjour, {user.email}
+                </div>
+                <button
+                  onClick={() => {
+                    signOut()
+                    setIsMenuOpen(false)
+                  }}
+                  className="w-full px-4 py-2 text-sm font-medium text-gray-600 hover:text-[var(--color-primary)] border border-gray-300 rounded-md hover:border-[var(--color-primary)] transition-colors"
+                >
+                  Déconnexion
+                </button>
+              </div>
+            ) : (
+              <Link 
+                href="/auth" 
+                className="block w-full px-4 py-2 text-sm font-medium text-white bg-[var(--color-primary)] rounded-md hover:bg-[var(--color-primary-dark)] transition-colors text-center"
+                onClick={() => setIsMenuOpen(false)}
+              >
+                Connexion
+              </Link>
+            )}
           </div>
         )}
       </nav>
