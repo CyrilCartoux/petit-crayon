@@ -7,12 +7,12 @@ export async function GET(request: Request) {
   const code = requestUrl.searchParams.get('code');
 
   if (code) {
-    const supabase = createRouteHandlerClient({ cookies });
-    
     try {
-      console.log('code', code)
+      const cookieStore = cookies();
+      const supabase = createRouteHandlerClient({ cookies: () => cookieStore });
+      
       const { error } = await supabase.auth.exchangeCodeForSession(code);
-      console.log('error', error)
+      
       if (error) {
         console.error('Erreur lors de l\'échange du code:', error);
         return NextResponse.redirect(
