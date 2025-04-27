@@ -1,16 +1,25 @@
 'use client'
 
-import { useState, useCallback } from 'react'
+import { useState, useCallback, useEffect } from 'react'
 import { useDropzone } from 'react-dropzone'
 import { motion } from 'framer-motion'
 import { PhotoIcon, ArrowPathIcon } from '@heroicons/react/24/outline'
 import Image from 'next/image'
+import { useAuth } from '@/contexts/AuthContext'
 
 export default function Editor() {
   const [image, setImage] = useState<string | null>(null)
   const [isProcessing, setIsProcessing] = useState(false)
   const [result, setResult] = useState<string | null>(null)
   const [error, setError] = useState<string | null>(null)
+  const [credits, setCredits] = useState<number>(0)
+  const { user } = useAuth()
+
+  useEffect(() => {
+    // TODO: Récupérer les crédits depuis l'API
+    // Pour l'instant, on utilise des données mockées
+    setCredits(25)
+  }, [])
 
   const onDrop = useCallback((acceptedFiles: File[]) => {
     const file = acceptedFiles[0]
@@ -33,7 +42,7 @@ export default function Editor() {
   })
 
   const handleProcess = async () => {
-    if (!image) return
+    if (!image || credits <= 0) return
     
     setIsProcessing(true)
     setError(null)
@@ -53,6 +62,7 @@ export default function Editor() {
 
       const data = await response.json()
       setResult(data.result)
+      setCredits(prev => prev - 1) // Décrémenter les crédits
     } catch (error) {
       console.error('Erreur lors du traitement:', error)
       setError('Une erreur est survenue lors du traitement de l\'image. Veuillez réessayer.')
@@ -64,7 +74,15 @@ export default function Editor() {
   return (
     <div className="min-h-screen bg-gradient-to-b from-white to-[var(--color-primary)]/10 py-12">
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-        <h1 className="text-3xl font-bold text-center mb-8">Transformez votre image</h1>
+        <div className="flex justify-between items-center mb-8">
+          <h1 className="text-3xl font-bold">Transformez votre image</h1>
+          {user && (
+            <div className="flex items-center space-x-2 px-3 py-1.5 bg-gray-50 rounded-full">
+              <span className="text-sm font-medium text-gray-700">Coloriages restants</span>
+              <span className="text-sm font-bold text-[var(--color-primary)]">{credits}</span>
+            </div>
+          )}
+        </div>
         
         {error && (
           <motion.div
@@ -75,8 +93,28 @@ export default function Editor() {
             {error}
           </motion.div>
         )}
+
+        {!user && (
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="card bg-white/80 backdrop-blur-sm p-6 mb-6"
+          >
+            <p className="text-center text-gray-600">
+              Vous devez être connecté pour transformer vos images en coloriages.
+            </p>
+            <div className="mt-4 flex justify-center">
+              <a
+                href="/auth"
+                className="btn-primary"
+              >
+                Se connecter
+              </a>
+            </div>
+          </motion.div>
+        )}
         
-        {!image ? (
+        {user && !image ? (
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -99,7 +137,7 @@ export default function Editor() {
               </p>
             </div>
           </motion.div>
-        ) : (
+        ) : user && (
           <div className="space-y-8">
             <div className="card bg-white/80 backdrop-blur-sm">
               <div className="relative aspect-video">
@@ -118,14 +156,16 @@ export default function Editor() {
                 whileHover={{ scale: 1.02 }}
                 whileTap={{ scale: 0.98 }}
                 onClick={handleProcess}
-                disabled={isProcessing}
-                className="btn-primary w-full text-xl"
+                disabled={isProcessing || credits <= 0}
+                className={`btn-primary w-full text-xl ${credits <= 0 ? 'opacity-50 cursor-not-allowed' : ''}`}
               >
                 {isProcessing ? (
                   <div className="flex items-center justify-center">
                     <ArrowPathIcon className="h-6 w-6 animate-spin mr-2" />
                     Traitement en cours...
                   </div>
+                ) : credits <= 0 ? (
+                  'Plus de coloriages disponibles'
                 ) : (
                   'Transformer en coloriage'
                 )}

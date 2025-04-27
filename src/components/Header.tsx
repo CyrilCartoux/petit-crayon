@@ -10,6 +10,9 @@ export default function Header() {
   const [isUserMenuOpen, setIsUserMenuOpen] = useState(false)
   const { user, signOut } = useAuth()
 
+  // Mock data pour les crédits
+  const credits = 25
+
   const getUserDisplayName = () => {
     if (user?.user_metadata?.full_name) {
       return user.user_metadata.full_name;
@@ -79,12 +82,21 @@ export default function Header() {
           {/* Menu desktop */}
           <div className="hidden md:flex items-center space-x-4">
             {user && (
-              <Link 
-                href="/gallery" 
-                className="px-4 py-2 text-sm font-medium text-white bg-[var(--color-primary)] hover:bg-[var(--color-primary-dark)] rounded-md transition-colors"
-              >
-                Galerie
-              </Link>
+              <>
+                <Link 
+                  href="/gallery" 
+                  className="px-4 py-2 text-sm font-medium text-white bg-[var(--color-primary)] hover:bg-[var(--color-primary-dark)] rounded-md transition-colors"
+                >
+                  Galerie
+                </Link>
+                <Link 
+                  href="/paiement"
+                  className="flex items-center space-x-2 px-3 py-1.5 bg-gray-50 rounded-full hover:bg-gray-100 transition-colors"
+                >
+                  <span className="text-sm font-medium text-gray-700">Coloriages</span>
+                  <span className="text-sm font-bold text-[var(--color-primary)]">{credits}</span>
+                </Link>
+              </>
             )}
             {user ? (
               <div className="relative">
@@ -118,6 +130,12 @@ export default function Header() {
                         Connecté en tant que<br />
                         <span className="font-medium">{getUserEmail()}</span>
                       </div>
+                      <Link 
+                        href="/paiement"
+                        className="block px-4 py-2 text-sm text-gray-700 border-b hover:bg-gray-100"
+                      >
+                        Coloriages restants : <span className="font-medium text-[var(--color-primary)]">{credits}</span>
+                      </Link>
                       <button
                         onClick={() => {
                           signOut();
@@ -147,13 +165,23 @@ export default function Header() {
           <div className="md:hidden absolute top-16 left-0 right-0 bg-white shadow-lg border-t border-gray-200">
             <div className="px-4 py-3 space-y-3">
               {user && (
-                <Link 
-                  href="/gallery" 
-                  className="block w-full px-4 py-3 text-base font-medium text-white bg-[var(--color-primary)] hover:bg-[var(--color-primary-dark)] rounded-md transition-colors text-center"
-                  onClick={() => setIsMenuOpen(false)}
-                >
-                  Galerie
-                </Link>
+                <>
+                  <Link 
+                    href="/gallery" 
+                    className="block w-full px-4 py-3 text-base font-medium text-white bg-[var(--color-primary)] hover:bg-[var(--color-primary-dark)] rounded-md transition-colors text-center"
+                    onClick={() => setIsMenuOpen(false)}
+                  >
+                    Galerie
+                  </Link>
+                  <Link 
+                    href="/paiement"
+                    className="flex items-center justify-center space-x-2 px-4 py-2 bg-gray-50 rounded-full hover:bg-gray-100 transition-colors"
+                    onClick={() => setIsMenuOpen(false)}
+                  >
+                    <span className="text-sm font-medium text-gray-700">Coloriages</span>
+                    <span className="text-sm font-bold text-[var(--color-primary)]">{credits}</span>
+                  </Link>
+                </>
               )}
               {user ? (
                 <div className="space-y-3">
