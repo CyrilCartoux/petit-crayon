@@ -7,10 +7,27 @@ export async function GET(request: Request) {
   const code = requestUrl.searchParams.get('code');
 
   if (code) {
-    const supabase = createRouteHandlerClient({ cookies });
-    await supabase.auth.exchangeCodeForSession(code);
+    try {
+      const cookieStore = cookies();
+      const supabase = createRouteHandlerClient({ cookies: () => cookieStore });
+      
+      const { error } = await supabase.auth.exchangeCodeForSession(code);
+      
+      if (error) {
+        console.error('Erreur lors de l\'échange du code:', error);
+        return NextResponse.redirect(
+          `${requestUrl.origin}/auth?error=exchange_error`
+        );
+      }
+    } catch (error) {
+      console.error('Erreur inattendue:', error);
+      return NextResponse.redirect(
+        `${requestUrl.origin}/auth?error=unexpected_error`
+      );
+    }
   }
 
-  // URL to redirect to after sign in process completes
-  return NextResponse.redirect(new URL('/', requestUrl.origin));
+  console.log('requestUrl', requestUrl)
+  // Redirection vers la page d'accueil après connexion réussie
+  return NextResponse.redirect(requestUrl.origin);
 } 
