@@ -67,6 +67,21 @@ export async function POST(request: Request) {
     console.log('Error:', error);
     if (error) throw error;
 
+    // Enregistrer la transaction
+    const { error: transactionError } = await supabase
+      .from('credit_transactions')
+      .insert({
+        user_id: user.id,
+        amount: -amount, // Montant négatif car c'est une utilisation
+        type: 'use',
+        metadata: {
+          operation: 'image_conversion',
+          timestamp: new Date().toISOString()
+        }
+      });
+
+    if (transactionError) throw transactionError;
+
     return NextResponse.json({ 
       success: true,
       credits: data.credits,
