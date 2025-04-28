@@ -38,13 +38,26 @@ export default function Header() {
         <div className="flex justify-between h-16">
           <div className="flex">
             <div className="flex-shrink-0 flex items-center">
-              <Link href="/">
-                <Image
-                  src="/images/logo.png"
-                  alt="Petit Crayon"
-                  width={120}
-                  height={120}
-                  className="cursor-pointer hover:opacity-80 transition-opacity"                />
+              <Link href="/" className="flex items-center">
+              <div className="relative w-[120px] h-[60px] overflow-hidden">
+  {/* Logo coloré - à gauche */}
+  <Image
+    src="/images/logo.png"
+    alt="Petit Crayon"
+    fill
+    className="object-cover absolute left-0 top-0 w-1/2 h-full"
+    style={{ clipPath: 'inset(0 55% 0 0)' }}
+  />
+  {/* Logo à colorier - à droite */}
+  <Image
+    src="/images/logo-coloring.png"
+    alt="Petit Crayon à colorier"
+    fill
+    className="object-cover absolute right-0 top-0 w-1/2 h-full"
+    style={{ clipPath: 'inset(0 0 0 45%)' }}
+  />
+</div>
+
               </Link>
             </div>
           </div>
@@ -54,7 +67,7 @@ export default function Header() {
               <div className="flex items-center space-x-4">
                 <button
                   onClick={() => router.push('/paiement')}
-                  className="flex items-center space-x-2 bg-gray-50 px-4 py-2 rounded-full hover:bg-gray-100 transition-colors"
+                  className="cursor-pointer flex items-center space-x-2 bg-gray-50 px-4 py-2 rounded-full hover:bg-gray-100 transition-colors"
                 >
                   <span className="text-sm font-medium text-gray-900">Crédits :</span>
                   {loading ? (
@@ -65,7 +78,7 @@ export default function Header() {
                 </button>
                 <button
                   onClick={() => setIsUserMenuOpen(!isUserMenuOpen)}
-                  className="flex items-center space-x-2 focus:outline-none"
+                  className="cursor-pointer flex items-center space-x-2 focus:outline-none"
                 >
                   <div className="w-10 h-10 rounded-full bg-[var(--color-primary)] flex items-center justify-center text-white text-lg">
                     {getUserInitial()}

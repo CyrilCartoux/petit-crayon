@@ -162,44 +162,63 @@ export default function Editor() {
             <div className="card bg-white/80 backdrop-blur-sm">
               <div className="relative aspect-video">
                 {image && (
-                  <Image
-                    src={image}
-                    alt="Image à traiter"
-                    className="w-full h-full object-contain rounded-lg"
-                    width={500}
-                    height={500}
-                  />
+                  <>
+                    <Image
+                      src={image}
+                      alt="Image à traiter"
+                      className="w-full h-full object-contain rounded-lg"
+                      width={500}
+                      height={500}
+                    />
+                    <button
+                      onClick={() => {
+                        setImage(null)
+                        setResult(null)
+                      }}
+                      className="absolute top-2 right-2 p-2 bg-white/80 hover:bg-white rounded-full shadow-sm"
+                    >
+                      <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-gray-600" viewBox="0 0 20 20" fill="currentColor">
+                        <path fillRule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clipRule="evenodd" />
+                      </svg>
+                    </button>
+                  </>
                 )}
               </div>
             </div>
 
             {!result && (
-              <motion.button
-                whileHover={{ scale: 1.02 }}
-                whileTap={{ scale: 0.98 }}
-                onClick={() => {
-                  if (credits <= 0) {
-                    router.push('/paiement')
-                  } else {
-                    handleProcess()
-                  }
-                }}
-                disabled={isProcessing || creditsLoading}
-                className={`btn-primary w-full text-xl ${(creditsLoading) ? 'opacity-50 cursor-not-allowed' : ''}`}
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                className="flex gap-4"
               >
-                {isProcessing ? (
-                  <div className="flex items-center justify-center">
-                    <ArrowPathIcon className="h-6 w-6 animate-spin mr-2" />
-                    Traitement en cours...
-                  </div>
-                ) : creditsLoading ? (
-                  'Chargement des crédits...'
-                ) : credits <= 0 ? (
-                  'Acheter des crédits'
-                ) : (
-                  'Transformer en coloriage (1 crédit)'
-                )}
-              </motion.button>
+                <motion.button
+                  whileHover={{ scale: 1.02 }}
+                  whileTap={{ scale: 0.98 }}
+                  onClick={() => {
+                    if (credits <= 0) {
+                      router.push('/paiement')
+                    } else {
+                      handleProcess()
+                    }
+                  }}
+                  disabled={isProcessing || creditsLoading}
+                  className={`btn-primary flex-1 text-xl ${(creditsLoading) ? 'opacity-50 cursor-not-allowed' : ''}`}
+                >
+                  {isProcessing ? (
+                    <div className="flex items-center justify-center">
+                      <ArrowPathIcon className="h-6 w-6 animate-spin mr-2" />
+                      Traitement en cours...
+                    </div>
+                  ) : creditsLoading ? (
+                    'Chargement des crédits...'
+                  ) : credits <= 0 ? (
+                    'Acheter des crédits'
+                  ) : (
+                    'Transformer en coloriage (1 crédit)'
+                  )}
+                </motion.button>
+              </motion.div>
             )}
 
             {result && (
@@ -243,12 +262,6 @@ export default function Editor() {
                     className="btn-primary flex-1"
                   >
                     Télécharger
-                  </button>
-                  <button 
-                    onClick={() => window.print()}
-                    className="btn-primary flex-1"
-                  >
-                    Imprimer
                   </button>
                   <button 
                     onClick={() => {
