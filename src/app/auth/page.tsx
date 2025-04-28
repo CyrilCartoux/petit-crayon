@@ -11,11 +11,13 @@ export default function AuthPage() {
   const [password, setPassword] = useState('')
   const [name, setName] = useState('')
   const [error, setError] = useState('')
+  const [registrationSuccess, setRegistrationSuccess] = useState(false)
   const router = useRouter()
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     setError('')
+    setRegistrationSuccess(false)
 
     try {
       const endpoint = isLogin ? '/api/auth/login' : '/api/auth/register'
@@ -34,10 +36,20 @@ export default function AuthPage() {
       const data = await response.json()
 
       if (!response.ok) {
+        if (data.error === 'Email not confirmed') {
+          throw new Error('Veuillez confirmer votre email avant de vous connecter. Vérifiez votre boîte de réception.')
+        }
         throw new Error(data.message || 'Une erreur est survenue')
       }
 
-      router.push('/')
+      if (!isLogin) {
+        setRegistrationSuccess(true)
+        setEmail('')
+        setPassword('')
+        setName('')
+      } else {
+        router.push('/')
+      }
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Une erreur est survenue')
     }
@@ -90,6 +102,13 @@ export default function AuthPage() {
           {error && (
             <div className="mb-4 bg-red-50 border border-red-200 text-red-600 px-4 py-3 rounded">
               {error}
+            </div>
+          )}
+
+          {registrationSuccess && (
+            <div className="mb-4 bg-green-50 border border-green-200 text-green-600 px-4 py-3 rounded">
+              <p className="font-medium">Inscription réussie !</p>
+              <p className="mt-1">Veuillez vérifier votre boîte de réception pour confirmer votre email.</p>
             </div>
           )}
 

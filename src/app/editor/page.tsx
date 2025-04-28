@@ -9,6 +9,7 @@ import { useAuth } from '@/contexts/AuthContext'
 import { useCredits } from '@/contexts/CreditsContext'
 import LoadingModal from '@/components/LoadingModal'
 import confetti from 'canvas-confetti'
+import { useRouter } from 'next/navigation'
 
 export default function Editor() {
   const [image, setImage] = useState<string | null>(null)
@@ -17,6 +18,7 @@ export default function Editor() {
   const [error, setError] = useState<string | null>(null)
   const { user } = useAuth()
   const { credits, loading: creditsLoading, useCredits: checkCredits } = useCredits()
+  const router = useRouter()
 
   useEffect(() => {
     if (result) {
@@ -175,9 +177,15 @@ export default function Editor() {
               <motion.button
                 whileHover={{ scale: 1.02 }}
                 whileTap={{ scale: 0.98 }}
-                onClick={handleProcess}
-                disabled={isProcessing || creditsLoading || credits <= 0}
-                className={`btn-primary w-full text-xl ${(creditsLoading || credits <= 0) ? 'opacity-50 cursor-not-allowed' : ''}`}
+                onClick={() => {
+                  if (credits <= 0) {
+                    router.push('/paiement')
+                  } else {
+                    handleProcess()
+                  }
+                }}
+                disabled={isProcessing || creditsLoading}
+                className={`btn-primary w-full text-xl ${(creditsLoading) ? 'opacity-50 cursor-not-allowed' : ''}`}
               >
                 {isProcessing ? (
                   <div className="flex items-center justify-center">
@@ -187,7 +195,7 @@ export default function Editor() {
                 ) : creditsLoading ? (
                   'Chargement des crédits...'
                 ) : credits <= 0 ? (
-                  'Plus de crédits disponibles'
+                  'Acheter des crédits'
                 ) : (
                   'Transformer en coloriage (1 crédit)'
                 )}

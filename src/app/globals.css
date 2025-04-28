@@ -5,7 +5,11 @@
 @tailwind utilities;
 
 :root {
-  --color-primary: #FFB6C1; /* Rose pastel */
+  --color-primary: #ff6b6b;
+  --color-primary-dark: #ff5252;
+  --color-primary-light: #ff8787;
+  --color-primary-lighter: #ffa8a8;
+  --color-primary-lightest: #ffc9c9;
   --color-secondary: #FFD700; /* Jaune pastel */
   --color-accent: #40E0D0; /* Turquoise */
   --color-accent-2: #DDA0DD; /* Violet pastel */

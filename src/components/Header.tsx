@@ -5,12 +5,13 @@ import Image from 'next/image'
 import { useState } from 'react'
 import { useAuth } from '@/contexts/AuthContext'
 import { useCredits } from '@/contexts/CreditsContext'
+import { useRouter } from 'next/navigation'
 
 export default function Header() {
-  const [isMenuOpen, setIsMenuOpen] = useState(false)
   const [isUserMenuOpen, setIsUserMenuOpen] = useState(false)
   const { user, signOut } = useAuth()
   const { credits, loading } = useCredits()
+  const router = useRouter()
 
   const getUserDisplayName = () => {
     if (user?.user_metadata?.full_name) {
@@ -51,14 +52,17 @@ export default function Header() {
           <div className="flex items-center">
             {user && (
               <div className="flex items-center space-x-4">
-                <div className="flex items-center space-x-2 bg-gray-50 px-4 py-2 rounded-full">
+                <button
+                  onClick={() => router.push('/paiement')}
+                  className="flex items-center space-x-2 bg-gray-50 px-4 py-2 rounded-full hover:bg-gray-100 transition-colors"
+                >
                   <span className="text-sm font-medium text-gray-900">Crédits :</span>
                   {loading ? (
                     <div className="w-8 h-4 bg-gray-200 rounded animate-pulse" />
                   ) : (
                     <span className="text-sm font-bold text-[var(--color-primary)]">{credits}</span>
                   )}
-                </div>
+                </button>
                 <button
                   onClick={() => setIsUserMenuOpen(!isUserMenuOpen)}
                   className="flex items-center space-x-2 focus:outline-none"
