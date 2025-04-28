@@ -8,6 +8,12 @@ const PRICE_IDS = {
   créatif: 'price_1RIsc9PudOzsr0MVR42XazZC',
 };
 
+const CREDITS_BY_PLAN = {
+  starter: 10,
+  explorer: 25,
+  créatif: 50,
+};
+
 export async function POST(request: Request) {
   try {
     const supabase = await createClient();
@@ -23,8 +29,9 @@ export async function POST(request: Request) {
 
     const { plan } = await request.json();
     const priceId = PRICE_IDS[plan as keyof typeof PRICE_IDS];
+    const creditsAmount = CREDITS_BY_PLAN[plan as keyof typeof CREDITS_BY_PLAN];
 
-    if (!priceId) {
+    if (!priceId || !creditsAmount) {
       return NextResponse.json(
         { error: 'Plan invalide' },
         { status: 400 }
@@ -46,6 +53,7 @@ export async function POST(request: Request) {
       metadata: {
         userId: user.id,
         plan: plan,
+        creditsAmount: creditsAmount.toString(),
       },
     });
 
