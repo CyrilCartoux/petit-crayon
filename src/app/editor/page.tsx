@@ -1,25 +1,53 @@
 'use client'
 
-import { useState, useCallback, useEffect } from 'react'
+import { useState, useCallback } from 'react'
 import { useDropzone } from 'react-dropzone'
 import { motion } from 'framer-motion'
 import { PhotoIcon, ArrowPathIcon } from '@heroicons/react/24/outline'
 import Image from 'next/image'
 import { useAuth } from '@/contexts/AuthContext'
+import { useCredits } from '@/contexts/CreditsContext'
 
 export default function Editor() {
   const [image, setImage] = useState<string | null>(null)
   const [isProcessing, setIsProcessing] = useState(false)
   const [result, setResult] = useState<string | null>(null)
   const [error, setError] = useState<string | null>(null)
-  const [credits, setCredits] = useState<number>(0)
   const { user } = useAuth()
+  const { credits, loading: creditsLoading, useCredits: checkCredits } = useCredits()
 
-  useEffect(() => {
-    // TODO: Récupérer les crédits depuis l'API
-    // Pour l'instant, on utilise des données mockées
-    setCredits(25)
-  }, [])
+  const processImage = async (imageData: string) => {
+    setIsProcessing(true)
+    setError(null)
+    
+    try {
+      const hasEnoughCredits = await checkCredits(1)
+      if (!hasEnoughCredits) {
+        setError('Vous n\'avez pas assez de crédits pour effectuer cette opération.')
+        return
+      }
+
+      const response = await fetch('/api/convert', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ image: imageData }),
+      })
+
+      if (!response.ok) {
+        throw new Error('Erreur lors du traitement de l&apos;image')
+      }
+
+      const data = await response.json()
+      setResult(data.result)
+    } catch (error) {
+      console.error('Erreur lors du traitement:', error)
+      setError('Une erreur est survenue lors du traitement de l&apos;image. Veuillez réessayer.')
+    } finally {
+      setIsProcessing(false)
+    }
+  }
 
   const onDrop = useCallback((acceptedFiles: File[]) => {
     const file = acceptedFiles[0]
@@ -27,7 +55,6 @@ export default function Editor() {
       const reader = new FileReader()
       reader.onload = () => {
         setImage(reader.result as string)
-        setError(null)
       }
       reader.readAsDataURL(file)
     }
@@ -42,33 +69,8 @@ export default function Editor() {
   })
 
   const handleProcess = async () => {
-    if (!image || credits <= 0) return
-    
-    setIsProcessing(true)
-    setError(null)
-    
-    try {
-      const response = await fetch('/api/convert', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ image }),
-      })
-
-      if (!response.ok) {
-        throw new Error('Erreur lors du traitement de l\'image')
-      }
-
-      const data = await response.json()
-      setResult(data.result)
-      setCredits(prev => prev - 1) // Décrémenter les crédits
-    } catch (error) {
-      console.error('Erreur lors du traitement:', error)
-      setError('Une erreur est survenue lors du traitement de l\'image. Veuillez réessayer.')
-    } finally {
-      setIsProcessing(false)
-    }
+    if (!image) return
+    await processImage(image)
   }
 
   return (
@@ -78,8 +80,12 @@ export default function Editor() {
           <h1 className="text-3xl font-bold">Transformez votre image</h1>
           {user && (
             <div className="flex items-center space-x-2 px-3 py-1.5 bg-gray-50 rounded-full">
-              <span className="text-sm font-medium text-gray-700">Coloriages restants</span>
-              <span className="text-sm font-bold text-[var(--color-primary)]">{credits}</span>
+              <span className="text-sm font-medium text-gray-700">Crédits restants</span>
+              {creditsLoading ? (
+                <div className="w-8 h-4 bg-gray-200 rounded animate-pulse" />
+              ) : (
+                <span className="text-sm font-bold text-[var(--color-primary)]">{credits}</span>
+              )}
             </div>
           )}
         </div>
@@ -129,25 +135,27 @@ export default function Editor() {
               <PhotoIcon className="mx-auto h-12 w-12 text-gray-400" />
               <p className="mt-4 text-lg text-gray-600">
                 {isDragActive
-                  ? "Déposez l'image ici..."
-                  : "Glissez-déposez une image ou cliquez pour sélectionner"}
+                  ? 'Déposez l&apos;image ici...'
+                  : 'Glissez-déposez une image ou cliquez pour sélectionner'}
               </p>
               <p className="mt-2 text-sm text-gray-500">
                 Formats acceptés: PNG, JPG, JPEG
               </p>
             </div>
           </motion.div>
-        ) : user && (
+        ) : (
           <div className="space-y-8">
             <div className="card bg-white/80 backdrop-blur-sm">
               <div className="relative aspect-video">
-                <Image
-                  src={image}
-                  alt="Image à traiter"
-                  className="w-full h-full object-contain rounded-lg"
-                  width={500}
-                  height={500}
-                />
+                {image && (
+                  <Image
+                    src={image}
+                    alt="Image à traiter"
+                    className="w-full h-full object-contain rounded-lg"
+                    width={500}
+                    height={500}
+                  />
+                )}
               </div>
             </div>
 
@@ -156,18 +164,20 @@ export default function Editor() {
                 whileHover={{ scale: 1.02 }}
                 whileTap={{ scale: 0.98 }}
                 onClick={handleProcess}
-                disabled={isProcessing || credits <= 0}
-                className={`btn-primary w-full text-xl ${credits <= 0 ? 'opacity-50 cursor-not-allowed' : ''}`}
+                disabled={isProcessing || creditsLoading || credits <= 0}
+                className={`btn-primary w-full text-xl ${(creditsLoading || credits <= 0) ? 'opacity-50 cursor-not-allowed' : ''}`}
               >
                 {isProcessing ? (
                   <div className="flex items-center justify-center">
                     <ArrowPathIcon className="h-6 w-6 animate-spin mr-2" />
                     Traitement en cours...
                   </div>
+                ) : creditsLoading ? (
+                  'Chargement des crédits...'
                 ) : credits <= 0 ? (
-                  'Plus de coloriages disponibles'
+                  'Plus de crédits disponibles'
                 ) : (
-                  'Transformer en coloriage'
+                  'Transformer en coloriage (1 crédit)'
                 )}
               </motion.button>
             )}
@@ -189,15 +199,15 @@ export default function Editor() {
                       height={500}
                       priority
                       onError={(e) => {
-                        console.error('Erreur de chargement de l\'image:', e)
-                        setError('Erreur lors du chargement de l\'image générée. Veuillez réessayer.')
+                        console.error('Erreur de chargement de l&apos;image:', e)
+                        setError('Erreur lors du chargement de l&apos;image générée. Veuillez réessayer.')
                         setResult(null)
                       }}
                     />
                   </div>
                 ) : (
                   <div className="text-red-500 mb-6">
-                    Erreur: URL de l'image invalide ou non autorisée
+                    Erreur: URL de l&apos;image invalide ou non autorisée
                   </div>
                 )}
                 <div className="mt-6 flex gap-4">
@@ -241,12 +251,12 @@ export default function Editor() {
 
 function isValidImageUrl(url: string): boolean {
   try {
-    // Vérifier si c'est une URL de données
+    // Vérifier si c&apos;est une URL de données
     if (url.startsWith('data:image/')) {
       return true
     }
 
-    // Vérifier si c'est une URL HTTP/HTTPS
+    // Vérifier si c&apos;est une URL HTTP/HTTPS
     const parsedUrl = new URL(url)
     return (
       (parsedUrl.protocol === 'http:' || parsedUrl.protocol === 'https:') &&
