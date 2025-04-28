@@ -9,6 +9,12 @@ export async function GET(request: NextRequest) {
   const type = searchParams.get('type') as EmailOtpType | null;
   const next = searchParams.get('next') ?? '/';
 
+  console.log('Confirmation attempt:', {
+    token_hash,
+    type,
+    next
+  });
+
   if (token_hash && type) {
     const supabase = await createClient();
     const { error } = await supabase.auth.verifyOtp({
@@ -16,9 +22,11 @@ export async function GET(request: NextRequest) {
       token_hash,
     });
 
+    console.log('Verification result:', { error });
+
     if (!error) {
-      // Redirection vers la page spécifiée ou la page d'accueil
-      redirect(next);
+      // Redirection vers la page d'accueil après confirmation réussie
+      redirect('/');
     }
   }
 
