@@ -1,12 +1,14 @@
 'use client'
 
-import { useState, useCallback } from 'react'
+import { useState, useCallback, useEffect } from 'react'
 import { useDropzone } from 'react-dropzone'
 import { motion } from 'framer-motion'
 import { PhotoIcon, ArrowPathIcon } from '@heroicons/react/24/outline'
 import Image from 'next/image'
 import { useAuth } from '@/contexts/AuthContext'
 import { useCredits } from '@/contexts/CreditsContext'
+import LoadingModal from '@/components/LoadingModal'
+import confetti from 'canvas-confetti'
 
 export default function Editor() {
   const [image, setImage] = useState<string | null>(null)
@@ -15,6 +17,16 @@ export default function Editor() {
   const [error, setError] = useState<string | null>(null)
   const { user } = useAuth()
   const { credits, loading: creditsLoading, useCredits: checkCredits } = useCredits()
+
+  useEffect(() => {
+    if (result) {
+      confetti({
+        particleCount: 100,
+        spread: 70,
+        origin: { y: 0.6 }
+      });
+    }
+  }, [result]);
 
   const processImage = async (imageData: string) => {
     setIsProcessing(true)
@@ -245,6 +257,11 @@ export default function Editor() {
           </div>
         )}
       </div>
+
+      <LoadingModal 
+        isOpen={isProcessing} 
+        message="Génération de votre coloriage en cours..."
+      />
     </div>
   )
 }

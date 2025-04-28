@@ -1,4 +1,3 @@
-import { createClient } from '@/utils/supabase/server';
 import { NextResponse } from 'next/server';
 import Stripe from 'stripe';
 import { headers } from 'next/headers';
@@ -102,7 +101,6 @@ export async function POST(request: Request) {
       }
 
       console.log('transaction inserted', creditsAmount);
-
       return NextResponse.json({ success: true });
     }
 

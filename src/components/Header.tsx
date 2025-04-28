@@ -41,10 +41,9 @@ export default function Header() {
                 <Image
                   src="/images/logo.png"
                   alt="Petit Crayon"
-                  width={40}
-                  height={40}
-                  className="h-8 w-auto"
-                />
+                  width={120}
+                  height={120}
+                  className="cursor-pointer hover:opacity-80 transition-opacity"                />
               </Link>
             </div>
           </div>
