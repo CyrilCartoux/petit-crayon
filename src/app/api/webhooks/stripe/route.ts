@@ -96,10 +96,8 @@ export async function POST(request: Request) {
       // Mettre à jour les crédits
       const { error: updateError } = await supabaseService
         .from('user_credits')
-        .upsert({ 
-          user_id: userId,
-          credits: newCredits
-        });
+        .update({ credits: newCredits })
+        .eq('user_id', userId);
 
       if (updateError) {
         console.error('❌ Erreur lors de la mise à jour des crédits:', updateError);
