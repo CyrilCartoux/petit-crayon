@@ -50,14 +50,14 @@ export default function Editor() {
       })
 
       if (!response.ok) {
-        throw new Error('Erreur lors du traitement de l&apos;image')
+        throw new Error('Erreur lors du traitement de l\'image')
       }
 
       const data = await response.json()
       setResult(data.result)
     } catch (error) {
       console.error('Erreur lors du traitement:', error)
-      setError('Une erreur est survenue lors du traitement de l&apos;image. Veuillez réessayer.')
+      setError('Une erreur est survenue lors du traitement de l\'image. Veuillez réessayer.')
     } finally {
       setIsProcessing(false)
     }
@@ -270,7 +270,7 @@ export default function Editor() {
                     onClick={() => {
                       const link = document.createElement('a')
                       link.href = result
-                      link.download = 'coloriage.png'
+                      link.download = `coloriage-${Math.random().toString(36).substring(2, 8)}.png`
                       document.body.appendChild(link)
                       link.click()
                       document.body.removeChild(link)

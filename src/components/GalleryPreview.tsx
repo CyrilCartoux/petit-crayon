@@ -7,24 +7,24 @@ import { motion } from 'framer-motion';
 const examples = [
   {
     id: 1,
-    original: '/images/examples/sable-original.jpg',
-    coloring: '/images/examples/sable-coloring.png',
-    title: 'Châteaux de sable à la plage',
+    original: '/images/examples/plage-original.jpg',
+    coloring: '/images/examples/plage-coloring.png',
+    title: 'Jeux en famille à la plage',
     description: '➔ De la photo au coloriage magique'
   },
   {
     id: 2,
-    original: '/images/examples/animaux-original.jpg',
-    coloring: '/images/examples/animaux-coloring.png',
-    title: 'Jeux complices avec les animaux',
-    description: '➔ Capturez ces moments tendres'
+    original: '/images/examples/elephant-original.jpg',
+    coloring: '/images/examples/elephant-coloring.png',
+    title: 'Session photo au zoo',
+    description: '➔ ➔ Vos explorations deviennent créatives'
   },
   {
     id: 3,
-    original: '/images/examples/zoo-original.jpg',
-    coloring: '/images/examples/zoo-coloring.png',
-    title: 'Journée inoubliable au zoo',
-    description: '➔ ➔ Vos explorations deviennent créatives'
+    original: '/images/examples/anniversaire-original.jpg',
+    coloring: '/images/examples/anniversaire-coloring.png',
+    title: 'Anniversaire entre amis',
+    description: '➔ Capturez ces moments tendres'
   }
 ];
 
