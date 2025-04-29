@@ -3,9 +3,9 @@ import stripe from '@/utils/stripe';
 import { NextResponse } from 'next/server';
 
 const PRICE_IDS = {
-  starter: 'price_1RIsaOPudOzsr0MVosGbSN56',
-  explorer: 'price_1RIsbQPudOzsr0MVudEQgZFv',
-  créatif: 'price_1RIsc9PudOzsr0MVR42XazZC',
+  starter: 'price_1RJFAlLhIVDGgy4ta8ZwNuOX',
+  explorer: 'price_1RJFBCLhIVDGgy4tFSokGYWL',
+  créatif: 'price_1RJFBoLhIVDGgy4t5CdoqBj2',
 };
 
 const CREDITS_BY_PLAN = {

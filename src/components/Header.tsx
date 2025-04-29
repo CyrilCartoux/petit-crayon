@@ -63,13 +63,15 @@ export default function Header() {
                     <span className="text-sm font-bold text-[var(--color-primary)]">{credits}</span>
                   )}
                 </button>
-                <button
-                  onClick={() => setIsUserMenuOpen(!isUserMenuOpen)}
-                  className="cursor-pointer flex items-center space-x-2 focus:outline-none relative"
-                >
-                  <div className="w-10 h-10 rounded-full bg-[var(--color-primary)] flex items-center justify-center text-white text-lg">
-                    {getUserInitial()}
-                  </div>
+                <div className="relative">
+                  <button
+                    onClick={() => setIsUserMenuOpen(!isUserMenuOpen)}
+                    className="cursor-pointer flex items-center space-x-2 focus:outline-none"
+                  >
+                    <div className="w-10 h-10 rounded-full bg-[var(--color-primary)] flex items-center justify-center text-white text-lg">
+                      {getUserInitial()}
+                    </div>
+                  </button>
                   {/* Menu utilisateur */}
                   {isUserMenuOpen && (
                     <div className="absolute top-full right-0 mt-2 w-48 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5">
@@ -92,7 +94,7 @@ export default function Header() {
                       </div>
                     </div>
                   )}
-                </button>
+                </div>
               </div>
             )}
             {!user && (
