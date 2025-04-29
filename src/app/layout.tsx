@@ -46,6 +46,9 @@ export const metadata: Metadata = {
       'max-snippet': -1,
     },
   },
+  verification: {
+    google: 'fNdqzYOgjPe-7HErF6FRcjQqkMSCl81ca2Q82jPMNzc',
+  },
 };
 
 export default function RootLayout({
@@ -55,6 +58,9 @@ export default function RootLayout({
 }) {
   return (
     <html lang="fr">
+      <head>
+        <meta name="google-site-verification" content="fNdqzYOgjPe-7HErF6FRcjQqkMSCl81ca2Q82jPMNzc" />
+      </head>
       <body className={fredoka.className}>
         <AuthProvider>
           <CreditsProvider>
