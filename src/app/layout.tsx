@@ -47,7 +47,7 @@ export const metadata: Metadata = {
     },
   },
   verification: {
-    google: 'fNdqzYOgjPe-7HErF6FRcjQqkMSCl81ca2Q82jPMNzc',
+    google: '8nkfalni4Pck7vaZW1CsRW98l9OJIKnfGuGLh5Lt0d8',
   },
 };
 
@@ -59,7 +59,7 @@ export default function RootLayout({
   return (
     <html lang="fr">
       <head>
-        <meta name="google-site-verification" content="fNdqzYOgjPe-7HErF6FRcjQqkMSCl81ca2Q82jPMNzc" />
+        <meta name="google-site-verification" content="8nkfalni4Pck7vaZW1CsRW98l9OJIKnfGuGLh5Lt0d8" />
       </head>
       <body className={fredoka.className}>
         <AuthProvider>
