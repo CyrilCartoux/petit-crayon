@@ -18,18 +18,18 @@ export default function TermsOfUse() {
           animate={{ opacity: 1, y: 0 }}
           className="bg-white rounded-xl shadow-sm p-8"
         >
-          <h1 className="text-3xl font-bold text-gray-900 mb-8">Conditions Générales d'Utilisation</h1>
+          <h1 className="text-3xl font-bold text-gray-900 mb-8">Conditions Générales d&apos;Utilisation</h1>
           <p className="text-gray-500 mb-8">Dernière mise à jour : {currentDate}</p>
 
           <div className="prose prose-lg max-w-none">
             <h2>1. Acceptation des Conditions</h2>
             <p>
-              En accédant et en utilisant le site web Petit Crayon (ci-après dénommé "le Site"), vous acceptez d'être lié par les présentes Conditions Générales d'Utilisation. Si vous n'acceptez pas ces conditions, veuillez ne pas utiliser le Site.
+              En accédant et en utilisant le site web Petit Crayon (ci-après dénommé &quot;le Site&quot;), vous acceptez d&apos;être lié par les présentes Conditions Générales d&apos;Utilisation. Si vous n&apos;acceptez pas ces conditions, veuillez ne pas utiliser le Site.
             </p>
 
             <h2>2. Description du Service</h2>
             <p>
-              Petit Crayon propose un service de transformation de photographies en dessins à colorier. Les utilisateurs peuvent télécharger des photos, qui sont ensuite converties en dessins à colorier via une technologie d'intelligence artificielle.
+              Petit Crayon propose un service de transformation de photographies en dessins à colorier. Les utilisateurs peuvent télécharger des photos, qui sont ensuite converties en dessins à colorier via une technologie d&apos;intelligence artificielle.
             </p>
 
             <h2>3. Utilisation du Service</h2>
@@ -37,10 +37,10 @@ export default function TermsOfUse() {
               Vous acceptez de ne pas utiliser le Site pour :
             </p>
             <ul>
-              <li>Violer les droits de propriété intellectuelle d'autrui</li>
+              <li>Violer les droits de propriété intellectuelle d&apos;autrui</li>
               <li>Transmettre du contenu illégal, diffamatoire ou offensant</li>
               <li>Interférer avec le fonctionnement normal du Site</li>
-              <li>Tenter d'accéder à des zones du Site non autorisées</li>
+              <li>Tenter d&apos;accéder à des zones du Site non autorisées</li>
             </ul>
 
             <h2>4. Propriété Intellectuelle</h2>
@@ -50,7 +50,7 @@ export default function TermsOfUse() {
 
             <h2>5. Limitation de Responsabilité</h2>
             <p>
-              Petit Crayon ne peut être tenu responsable des dommages directs ou indirects résultant de l'utilisation du Site ou de l'impossibilité d'y accéder.
+              Petit Crayon ne peut être tenu responsable des dommages directs ou indirects résultant de l&apos;utilisation du Site ou de l&apos;impossibilité d&apos;y accéder.
             </p>
 
             <h2>6. Modification des Conditions</h2>
@@ -60,7 +60,7 @@ export default function TermsOfUse() {
 
             <h2>7. Contact</h2>
             <p>
-              Pour toute question concernant ces conditions, veuillez nous contacter à l'adresse suivante :{' '}
+              Pour toute question concernant ces conditions, veuillez nous contacter à l&apos;adresse suivante :{' '}
               <a href="mailto:petitcrayon.fr@gmail.com" className="text-blue-600 hover:text-blue-800">
                 petitcrayon.fr@gmail.com
               </a>

@@ -36,7 +36,7 @@ export default function Footer() {
                 Politique de confidentialité
               </Link>
               <Link href="/terms-of-use" className="text-gray-500 hover:text-gray-700">
-                Conditions d'utilisation
+                Conditions d&apos;utilisation
               </Link>
             </div>
           </div>
