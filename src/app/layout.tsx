@@ -6,6 +6,8 @@ import Footer from '@/components/Footer'
 import { AuthProvider } from '@/contexts/AuthContext'
 import { CreditsProvider } from '@/contexts/CreditsContext'
 import GalleryPreview from "@/components/GalleryPreview";
+import { SpeedInsights } from "@vercel/speed-insights/next"
+
 
 const fredoka = Fredoka({ subsets: ["latin"] });
 
@@ -32,6 +34,7 @@ export default function RootLayout({
 
             <GalleryPreview />
             <Footer />
+            <SpeedInsights />
           </CreditsProvider>
         </AuthProvider>
       </body>
