@@ -38,26 +38,13 @@ export default function Header() {
         <div className="flex justify-between h-16">
           <div className="flex">
             <div className="flex-shrink-0 flex items-center">
-              <Link href="/" className="flex items-center">
-              <div className="relative w-[120px] h-[60px] overflow-hidden">
-  {/* Logo coloré - à gauche */}
-  <Image
-    src="/images/logo.png"
-    alt="Petit Crayon"
-    fill
-    className="object-cover absolute left-0 top-0 w-1/2 h-full"
-    style={{ clipPath: 'inset(0 55% 0 0)' }}
-  />
-  {/* Logo à colorier - à droite */}
-  <Image
-    src="/images/logo-coloring.png"
-    alt="Petit Crayon à colorier"
-    fill
-    className="object-cover absolute right-0 top-0 w-1/2 h-full"
-    style={{ clipPath: 'inset(0 0 0 45%)' }}
-  />
-</div>
-
+            <Link href="/">
+                <Image
+                  src="/images/logo.png"
+                  alt="Petit Crayon"
+                  width={120}
+                  height={120}
+                  className="cursor-pointer hover:opacity-80 transition-opacity"                />
               </Link>
             </div>
           </div>
@@ -78,11 +65,33 @@ export default function Header() {
                 </button>
                 <button
                   onClick={() => setIsUserMenuOpen(!isUserMenuOpen)}
-                  className="cursor-pointer flex items-center space-x-2 focus:outline-none"
+                  className="cursor-pointer flex items-center space-x-2 focus:outline-none relative"
                 >
                   <div className="w-10 h-10 rounded-full bg-[var(--color-primary)] flex items-center justify-center text-white text-lg">
                     {getUserInitial()}
                   </div>
+                  {/* Menu utilisateur */}
+                  {isUserMenuOpen && (
+                    <div className="absolute top-full right-0 mt-2 w-48 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5">
+                      <div className="py-1" role="menu" aria-orientation="vertical">
+                        <div className="px-4 py-2 text-sm text-gray-700">
+                          <p className="font-medium">{getUserDisplayName()}</p>
+                          <p className="text-gray-500">{getUserEmail()}</p>
+                        </div>
+                        <div className="border-t border-gray-100"></div>
+                        <button
+                          onClick={() => {
+                            signOut();
+                            setIsUserMenuOpen(false);
+                          }}
+                          className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                          role="menuitem"
+                        >
+                          Déconnexion
+                        </button>
+                      </div>
+                    </div>
+                  )}
                 </button>
               </div>
             )}
@@ -97,29 +106,6 @@ export default function Header() {
           </div>
         </div>
       </nav>
-
-      {/* Menu utilisateur */}
-      {isUserMenuOpen && (
-        <div className="absolute right-0 mt-2 w-48 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5">
-          <div className="py-1" role="menu" aria-orientation="vertical">
-            <div className="px-4 py-2 text-sm text-gray-700">
-              <p className="font-medium">{getUserDisplayName()}</p>
-              <p className="text-gray-500">{getUserEmail()}</p>
-            </div>
-            <div className="border-t border-gray-100"></div>
-            <button
-              onClick={() => {
-                signOut();
-                setIsUserMenuOpen(false);
-              }}
-              className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-              role="menuitem"
-            >
-              Déconnexion
-            </button>
-          </div>
-        </div>
-      )}
     </header>
   );
 } 
