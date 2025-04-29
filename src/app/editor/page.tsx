@@ -91,7 +91,7 @@ export default function Editor() {
     <div className="min-h-screen bg-gradient-to-b from-white to-[var(--color-primary)]/10 py-12">
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center mb-8">
-          <h1 className="text-3xl font-bold">Transformez votre image</h1>
+          <h1 className="text-3xl font-bold">🖍️ Prêt(e) pour une aventure colorée ?</h1>
           {user && (
             <div className="flex items-center space-x-2 px-3 py-1.5 bg-gray-50 rounded-full">
               <span className="text-sm font-medium text-gray-700">Crédits restants</span>
@@ -118,18 +118,32 @@ export default function Editor() {
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            className="card bg-white/80 backdrop-blur-sm p-6 mb-6"
+            className="card bg-white/80 backdrop-blur-sm p-8 mb-8 text-center"
           >
-            <p className="text-center text-gray-600">
-              Vous devez être connecté pour transformer vos images en coloriages.
+            <div className="mb-6">
+              <Image
+                src="/images/logo-coloring.png"
+                alt="Livre de coloriage"
+                width={500}
+                height={500}
+                className="mx-auto mb-4"
+              />
+            </div>
+            <p className="text-gray-600 mb-6">
+              Transforme tes photos préférées en super coloriages
+              <br />
+              Rejoins-nous pour commencer l&apos;aventure !
             </p>
-            <div className="mt-4 flex justify-center">
-              <a
-                href="/auth"
-                className="btn-primary"
+            <div className="space-y-4">
+              <button
+                onClick={() => router.push('/auth')}
+                className="btn-primary w-full max-w-xs mx-auto"
               >
-                Se connecter
-              </a>
+                C&apos;est parti ! 🚀
+              </button>
+              <p className="text-sm text-gray-500">
+                Pas encore de compte ? <span className="text-[var(--color-primary)] cursor-pointer" onClick={() => router.push('/auth')}>Rejoins la fête ! 🎉</span>
+              </p>
             </div>
           </motion.div>
         )}
@@ -149,19 +163,19 @@ export default function Editor() {
               <PhotoIcon className="mx-auto h-12 w-12 text-gray-400" />
               <p className="mt-4 text-lg text-gray-600">
                 {isDragActive
-                  ? 'Déposez l&apos;image ici...'
-                  : 'Glissez-déposez une image ou cliquez pour sélectionner'}
+                  ? '🎨 Super ! Lâche ta photo ici !'
+                  : 'Glisse-dépose ta photo ou clique pour commencer l\'aventure !'}
               </p>
               <p className="mt-2 text-sm text-gray-500">
-                Formats acceptés: PNG, JPG, JPEG
+                Formats acceptés: PNG, JPG, JPEG ✨
               </p>
             </div>
           </motion.div>
         ) : (
           <div className="space-y-8">
+                {image && (
             <div className="card bg-white/80 backdrop-blur-sm">
               <div className="relative aspect-video">
-                {image && (
                   <>
                     <Image
                       src={image}
@@ -182,11 +196,11 @@ export default function Editor() {
                       </svg>
                     </button>
                   </>
-                )}
               </div>
             </div>
+                )}
 
-            {!result && (
+            {!result && user && (
               <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
@@ -196,7 +210,9 @@ export default function Editor() {
                   whileHover={{ scale: 1.02 }}
                   whileTap={{ scale: 0.98 }}
                   onClick={() => {
-                    if (credits <= 0) {
+                    if (!user) {
+                      router.push('/auth')
+                    } else if (credits <= 0) {
                       router.push('/paiement')
                     } else {
                       handleProcess()
@@ -208,14 +224,14 @@ export default function Editor() {
                   {isProcessing ? (
                     <div className="flex items-center justify-center">
                       <ArrowPathIcon className="h-6 w-6 animate-spin mr-2" />
-                      Traitement en cours...
+                      Patience... La magie opère ! ✨
                     </div>
                   ) : creditsLoading ? (
                     'Chargement des crédits...'
                   ) : credits <= 0 ? (
-                    'Acheter des crédits'
+                    'Besoin de plus de crédits ? 🎨'
                   ) : (
-                    'Transformer en coloriage (1 crédit)'
+                    'Transforme ta photo en coloriage (1 crédit) 🎨'
                   )}
                 </motion.button>
               </motion.div>
@@ -227,7 +243,7 @@ export default function Editor() {
                 animate={{ opacity: 1, y: 0 }}
                 className="card bg-white/80 backdrop-blur-sm p-6"
               >
-                <h2 className="text-xl font-bold mb-4">Votre coloriage</h2>
+                <h2 className="text-xl font-bold mb-4">🎨 Ta création est prête !</h2>
                 {isValidImageUrl(result) ? (
                   <div className="relative aspect-video mb-6">
                     <Image
@@ -246,7 +262,7 @@ export default function Editor() {
                   </div>
                 ) : (
                   <div className="text-red-500 mb-6">
-                    Erreur: URL de l&apos;image invalide ou non autorisée
+                    Oups ! Une erreur est survenue avec l&apos;image 😅
                   </div>
                 )}
                 <div className="mt-6 flex gap-4">
@@ -261,7 +277,7 @@ export default function Editor() {
                     }}
                     className="btn-primary flex-1"
                   >
-                    Télécharger
+                    Télécharger ✨
                   </button>
                   <button 
                     onClick={() => {
@@ -270,7 +286,7 @@ export default function Editor() {
                     }}
                     className="btn-primary flex-1"
                   >
-                    Nouvelle image
+                    Nouvelle création 🎨
                   </button>
                 </div>
               </motion.div>

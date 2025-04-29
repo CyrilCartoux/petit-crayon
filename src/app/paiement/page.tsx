@@ -3,6 +3,7 @@
 import React, { useEffect, useState, Suspense } from 'react'
 import { useSearchParams, useRouter } from 'next/navigation'
 import { motion } from 'framer-motion'
+import Image from 'next/image'
 import getStripe from '@/utils/stripe-client'
 import { useAuth } from '@/contexts/AuthContext'
 
@@ -181,16 +182,19 @@ function PaiementContent() {
             </motion.button>
 
             {/* Sécurité */}
-            <div className="mt-8 text-center text-sm text-gray-500">
-              <p>Paiement sécurisé par Stripe</p>
-              <div className="mt-2 flex justify-center space-x-4">
-                <svg className="h-8 w-8" fill="currentColor" viewBox="0 0 24 24">
-                  <path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm-1.5 16.5h3v-9h-3v9zm6-9h-3v9h3v-9z" />
+            <div className="mt-8 text-center">
+              <div className="flex items-center justify-center space-x-2 mb-2">
+                <svg className="h-5 w-5 text-green-500" fill="currentColor" viewBox="0 0 20 20">
+                  <path fillRule="evenodd" d="M2.166 4.999A11.954 11.954 0 0010 1.944 11.954 11.954 0 0017.834 5c.11.65.166 1.32.166 2.001 0 5.225-3.34 9.67-8 11.317C5.34 16.67 2 12.225 2 7c0-.682.057-1.35.166-2.001zm11.541 3.708a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
                 </svg>
-                <svg className="h-8 w-8" fill="currentColor" viewBox="0 0 24 24">
-                  <path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm-1.5 16.5h3v-9h-3v9zm6-9h-3v9h3v-9z" />
-                </svg>
+                <span className="text-sm font-medium text-gray-700">Paiement 100% sécurisé</span>
               </div>
+              <div className="flex items-center justify-center space-x-4">
+                <Image src="/images/stripe.png" alt="Stripe" width={100} height={100} />
+              </div>
+              <p className="mt-2 text-xs text-gray-500">
+                Vos données sont protégées par le cryptage SSL et Stripe
+              </p>
             </div>
           </div>
         </motion.div>
