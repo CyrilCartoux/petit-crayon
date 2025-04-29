@@ -122,7 +122,7 @@ export default function Editor() {
           >
             <div className="mb-6">
               <Image
-                src="/images/logo-coloring.png"
+                src="/images/logo.png"
                 alt="Livre de coloriage"
                 width={500}
                 height={500}
