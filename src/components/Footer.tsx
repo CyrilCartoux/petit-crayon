@@ -25,7 +25,6 @@ export default function Footer() {
             <h3 className="text-lg font-semibold text-gray-900 mb-2">Contact</h3>
             <p className="text-gray-600">
               petitcrayon.fr@gmail.com<br />
-              +33 6 12 45 71 14
             </p>
           </div>
         </div>
