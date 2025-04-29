@@ -1,7 +1,6 @@
 'use client'
 
 import { useState } from 'react'
-import { useRouter } from 'next/navigation'
 import Image from 'next/image'
 import { motion } from 'framer-motion'
 
@@ -13,7 +12,6 @@ export default function AuthPage() {
   const [error, setError] = useState('')
   const [registrationSuccess, setRegistrationSuccess] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
-  const router = useRouter()
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -50,7 +48,7 @@ export default function AuthPage() {
         setPassword('')
         setName('')
       } else {
-        router.push('/')
+        window.location.href = '/'
       }
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Une erreur est survenue')
