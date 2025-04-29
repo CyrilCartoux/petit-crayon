@@ -60,9 +60,9 @@ export default function Home() {
             transition={{ duration: 0.6, delay: 0.4 }}
             className="text-xl md:text-2xl text-gray-600 mb-12 max-w-3xl mx-auto leading-relaxed"
           >
-            Transformez vos souvenirs en aventures à colorier{" "}
+            Découvrez la magie de transformer vos plus beaux souvenirs en coloriages uniques. 
             <br className="hidden md:block" />
-            Parfait pour les enfants et les parents !
+            Une expérience créative inoubliable pour toute la famille !
           </motion.p>
 
           <div className="text-center mt-12">
@@ -74,7 +74,7 @@ export default function Home() {
                 href="/editor"
                 className="inline-flex items-center px-8 py-4 text-xl font-bold text-white bg-gradient-to-r from-[var(--color-primary)] to-[var(--color-primary-dark)] rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1"
               >
-                Créer mon coloriage
+                Créer mon coloriage gratuitement
                 <svg
                   className="ml-3 -mr-1 w-6 h-6"
                   fill="none"
@@ -97,10 +97,10 @@ export default function Home() {
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
               <div className="text-center mb-12">
                 <h2 className="text-3xl font-bold text-gray-900 mb-4">
-                  Offrez des heures de coloriage magique à vos enfants
+                  Offrez des heures de créativité et de joie à vos enfants
                 </h2>
                 <p className="text-lg text-gray-600">
-                  Choisis le plan qui te correspond
+                  Choisissez le forfait qui correspond à vos besoins et commencez à créer des souvenirs inoubliables
                 </p>
               </div>
               <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
