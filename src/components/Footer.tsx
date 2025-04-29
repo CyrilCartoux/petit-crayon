@@ -1,3 +1,5 @@
+import Link from 'next/link'
+
 export default function Footer() {
   return (
     <footer className="bg-gray-50">
@@ -13,12 +15,10 @@ export default function Footer() {
           <div className="text-center md:text-left">
             <h3 className="text-lg font-semibold text-gray-900 mb-2">À propos</h3>
             <p className="text-gray-600">
-            Donnez vie à vos souvenirs, amusez vos enfants !
+              Donnez vie à vos souvenirs, amusez vos enfants !
             </p>
             <p className="text-gray-600">
-            Transformez facilement vos photos en coloriages uniques. Parfait pour les petits artistes comme pour les grands rêveurs.
-
-
+              Transformez facilement vos photos en coloriages uniques. Parfait pour les petits artistes comme pour les grands rêveurs.
             </p>
           </div>
           <div className="text-center md:text-right">
@@ -28,8 +28,18 @@ export default function Footer() {
             </p>
           </div>
         </div>
-        <div className="mt-8 pt-8 border-t border-gray-200 text-center text-gray-500">
-          <p>© 2025 Petit Crayon. Tous droits réservés.</p>
+        <div className="mt-8 pt-8 border-t border-gray-200">
+          <div className="flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0">
+            <p className="text-gray-500">© 2025 Petit Crayon. Tous droits réservés.</p>
+            <div className="flex space-x-6">
+              <Link href="/privacy-policy" className="text-gray-500 hover:text-gray-700">
+                Politique de confidentialité
+              </Link>
+              <Link href="/terms-of-use" className="text-gray-500 hover:text-gray-700">
+                Conditions d'utilisation
+              </Link>
+            </div>
+          </div>
         </div>
       </div>
     </footer>
