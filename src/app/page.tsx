@@ -4,7 +4,6 @@ import React from "react";
 import Link from "next/link";
 import { motion } from "framer-motion";
 import Image from "next/image";
-import GalleryPreview from "@/components/GalleryPreview";
 
 export default function Home() {
   return (
@@ -229,9 +228,6 @@ export default function Home() {
               </div>
             </div>
           </section>
-
-          {/* Gallery Preview section */}
-          <section className="w-full">{/* <GalleryPreview /> */}</section>
         </div>
       </div>
     </div>

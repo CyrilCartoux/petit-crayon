@@ -21,13 +21,11 @@ export async function GET() {
       .eq('user_id', user.id)
       .single();
 
-    console.log('User credits:', data);
-    console.log('Error:', error);
 
     if (error) {
       if (error.code === 'PGRST116') {
         // L'utilisateur n'a pas encore de crédits, on initialise à 0
-        const { data: newData, error: insertError } = await supabase
+        const { error: insertError } = await supabase
           .from('user_credits')
           .insert({ user_id: user.id, credits: 0 })
           .select()
@@ -80,14 +78,9 @@ export async function POST(request: Request) {
     if (fetchError && fetchError.code !== 'PGRST116') {
       throw fetchError;
     }
-    console.log('Current data:', currentData);
-    console.log('Fetch error:', fetchError);
 
     const currentCredits = currentData?.credits || 0;
     const newCredits = currentCredits + amount;
-
-    console.log('Current credits:', currentCredits);
-    console.log('New credits:', newCredits);
 
     // Mettre à jour les crédits
     const { data, error } = await supabase
@@ -100,8 +93,6 @@ export async function POST(request: Request) {
       .single();
 
     if (error) throw error;
-
-    console.log('credits after update:', data);
 
     return NextResponse.json({ credits: data.credits });
   } catch (error) {
