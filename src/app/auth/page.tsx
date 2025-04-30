@@ -101,7 +101,7 @@ export default function AuthPage() {
             <p className="text-gray-600 mt-2">
               {isLogin 
                 ? 'Connectez-vous pour accéder à vos coloriages'
-                : 'Rejoignez-nous pour créer et sauvegarder vos coloriages'}
+                : <span>Rejoignez-nous pour créer et sauvegarder vos coloriages<br /><span className="font-semibold text-[var(--color-primary)]">+ 1 crédit gratuit offert ! 🎁</span></span>}
             </p>
           </div>
 

@@ -24,22 +24,40 @@ export async function GET() {
 
     if (error) {
       if (error.code === 'PGRST116') {
-        // L'utilisateur n'a pas encore de crédits, on initialise à 0
+        // L'utilisateur n'a pas encore de crédits, on initialise à 1
         const { error: insertError } = await supabase
           .from('user_credits')
-          .insert({ user_id: user.id, credits: 0 })
+          .insert({ user_id: user.id, credits: 1 })
           .select()
           .single();
 
         if (insertError) throw insertError;
-        return NextResponse.json({ credits: 0 });
+
+        // Ajouter une transaction pour les crédits gratuits
+        const { error: transactionError } = await supabase
+          .from('credit_transactions')
+          .insert({
+            user_id: user.id,
+            amount: 1,
+            type: 'bonus',
+            metadata: {
+              "operation": "initial_credits",
+              "timestamp": new Date().toISOString()
+            }
+          });
+
+        if (transactionError) throw transactionError;
+
+        console.log('Crédits initialisés à 1 pour l\'utilisateur:', user.id);
+        
+        return NextResponse.json({ credits: 1 });
       }
       throw error;
     }
 
-    return NextResponse.json({ credits: data?.credits || 0 });
+    return NextResponse.json({ credits: data?.credits || 1 });
   } catch (error) {
-    console.error('Error fetching credits:', error);
+    console.error('Error credits:', error);
     return NextResponse.json(
       { error: 'Erreur lors de la récupération des crédits' },
       { status: 500 }
