@@ -12,6 +12,7 @@ export default function AuthPage() {
   const [error, setError] = useState('')
   const [registrationSuccess, setRegistrationSuccess] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
+  const [isGoogleLoading, setIsGoogleLoading] = useState(false)
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -59,6 +60,7 @@ export default function AuthPage() {
 
   const handleGoogleLogin = async () => {
     try {
+      setIsGoogleLoading(true)
       const response = await fetch('/api/auth/google', {
         method: 'GET',
       })
@@ -72,6 +74,8 @@ export default function AuthPage() {
       window.location.assign(data.url)
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Une erreur est survenue')
+    } finally {
+      setIsGoogleLoading(false)
     }
   }
 
@@ -117,16 +121,29 @@ export default function AuthPage() {
           <div className="mb-6">
             <button
               onClick={handleGoogleLogin}
-              className="w-full flex items-center justify-center gap-3 bg-white border border-gray-300 rounded-lg px-4 py-3 text-gray-700 hover:bg-gray-50 transition-colors shadow-sm hover:shadow-md active:shadow-sm"
+              className="w-full flex items-center justify-center gap-3 bg-white border border-gray-300 rounded-lg px-4 py-3 text-gray-700 hover:bg-gray-50 transition-colors shadow-sm hover:shadow-md active:shadow-sm disabled:opacity-50 disabled:cursor-not-allowed"
+              disabled={isGoogleLoading}
             >
-              <Image
-                src="/images/google-logo.png"
-                alt="Google"
-                width={20}
-                height={20}
-                className="w-5 h-5"
-              />
-              <span className="font-medium">Continuer avec Google</span>
+              {isGoogleLoading ? (
+                <div className="flex items-center justify-center">
+                  <svg className="animate-spin -ml-1 mr-3 h-5 w-5 text-gray-700" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                    <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                    <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                  </svg>
+                  <span className="font-medium">Chargement...</span>
+                </div>
+              ) : (
+                <>
+                  <Image
+                    src="/images/google-logo.png"
+                    alt="Google"
+                    width={20}
+                    height={20}
+                    className="w-5 h-5"
+                  />
+                  <span className="font-medium">Continuer avec Google</span>
+                </>
+              )}
             </button>
           </div>
 
