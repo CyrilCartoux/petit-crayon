@@ -55,7 +55,7 @@ export async function GET() {
       throw error;
     }
 
-    return NextResponse.json({ credits: data?.credits || 1 });
+    return NextResponse.json({ credits: data?.credits || 0 });
   } catch (error) {
     console.error('Error credits:', error);
     return NextResponse.json(
