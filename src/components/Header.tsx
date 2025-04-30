@@ -74,11 +74,11 @@ export default function Header() {
                   </button>
                   {/* Menu utilisateur */}
                   {isUserMenuOpen && (
-                    <div className="absolute top-full right-0 mt-2 w-48 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5">
+                    <div className="absolute top-full right-0 mt-2 w-56 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5">
                       <div className="py-1" role="menu" aria-orientation="vertical">
-                        <div className="px-4 py-2 text-sm text-gray-700">
-                          <p className="font-medium">{getUserDisplayName()}</p>
-                          <p className="text-gray-500">{getUserEmail()}</p>
+                        <div className="px-4 py-2">
+                          <p className="font-medium text-gray-900 truncate">{getUserDisplayName()}</p>
+                          <p className="text-sm text-gray-500 truncate" title={getUserEmail()}>{getUserEmail()}</p>
                         </div>
                         <div className="border-t border-gray-100"></div>
                         <button
