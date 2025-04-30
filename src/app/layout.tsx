@@ -14,13 +14,25 @@ const fredoka = Fredoka({ subsets: ["latin"] });
 export const metadata: Metadata = {
   title: "Petit Crayon - Transformez vos photos en coloriages magiques",
   description: "Transformez vos souvenirs en coloriages uniques grâce à l'IA ! Créez des moments magiques avec vos enfants en coloriant vos photos préférées. Simple, rapide et amusant.",
-  keywords: "coloriage, photos en coloriage, IA, souvenirs, famille, enfants, créativité, dessin, transformation photo",
+  keywords: [
+    "coloriage personnalisé",
+    "photos en coloriage",
+    "coloriage IA",
+    "coloriage enfant",
+    "dessin à imprimer",
+    "famille créative",
+    "activité ludique IA",
+    "coloriage photo",
+    "souvenirs à colorier"
+  ],  
   openGraph: {
     title: "Petit Crayon - Transformez vos photos en coloriages magiques",
     description: "Donnez vie à vos souvenirs en les transformant en coloriages uniques. Parfait pour les moments en famille et l'éveil créatif des enfants.",
+    url: process.env.NEXT_PUBLIC_SITE_URL,
+    siteName: "Petit Crayon",
     images: [
       {
-        url: '/images/logo.png',
+        url: `${process.env.NEXT_PUBLIC_SITE_URL}/images/logo.png`,
         width: 1200,
         height: 630,
         alt: 'Petit Crayon - Transformez vos photos en coloriages'
@@ -33,7 +45,7 @@ export const metadata: Metadata = {
     card: 'summary_large_image',
     title: "Petit Crayon - Transformez vos photos en coloriages magiques",
     description: "Donnez vie à vos souvenirs en les transformant en coloriages uniques. Parfait pour les moments en famille et l'éveil créatif des enfants.",
-    images: ['/images/og-image.jpg'],
+    images: [`${process.env.NEXT_PUBLIC_SITE_URL}/images/logo.png`],
   },
   robots: {
     index: true,
