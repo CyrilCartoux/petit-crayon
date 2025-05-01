@@ -1,5 +1,6 @@
 import { createClient } from '@/utils/supabase/server'
 import { NextResponse } from 'next/server'
+import { logApiError, logApiSuccess } from '@/utils/logger'
 
 export async function POST(request: Request) {
   try {
@@ -12,14 +13,17 @@ export async function POST(request: Request) {
     })
 
     if (error) {
+      logApiError(error, 'login', request)
       return NextResponse.json(
         { error: error.message },
         { status: error.status ?? 400 }
       )
     }
 
+    logApiSuccess(data, 'login')
     return NextResponse.json({ data })
-  } catch {
+  } catch (error) {
+    logApiError(error, 'login', request)
     return NextResponse.json(
       { error: 'Une erreur est survenue lors de la connexion' },
       { status: 500 }

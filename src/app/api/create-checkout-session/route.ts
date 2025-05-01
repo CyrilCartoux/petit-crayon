@@ -1,6 +1,7 @@
 import { createClient } from '@/utils/supabase/server';
 import stripe from '@/utils/stripe';
 import { NextResponse } from 'next/server';
+import { logApiError, logApiSuccess } from '@/utils/logger';
 
 const PRICE_IDS = {
   starter: 'price_1RJFAlLhIVDGgy4ta8ZwNuOX',
@@ -21,6 +22,7 @@ export async function POST(request: Request) {
     // Vérifier l'authentification
     const { data: { user }, error: authError } = await supabase.auth.getUser();
     if (authError || !user) {
+      logApiError(authError || new Error('User not authenticated'), 'create-checkout-session', request);
       return NextResponse.json(
         { error: 'Non autorisé' },
         { status: 401 }
@@ -32,6 +34,7 @@ export async function POST(request: Request) {
     const creditsAmount = CREDITS_BY_PLAN[plan as keyof typeof CREDITS_BY_PLAN];
 
     if (!priceId || !creditsAmount) {
+      logApiError(new Error(`Invalid plan: ${plan}`), 'create-checkout-session', request);
       return NextResponse.json(
         { error: 'Plan invalide' },
         { status: 400 }
@@ -57,9 +60,10 @@ export async function POST(request: Request) {
       },
     });
 
+    logApiSuccess({ sessionId: session.id, plan, creditsAmount }, 'create-checkout-session');
     return NextResponse.json({ sessionId: session.id });
   } catch (error) {
-    console.error('Error creating checkout session:', error);
+    logApiError(error, 'create-checkout-session', request);
     return NextResponse.json(
       { error: 'Erreur lors de la création de la session de paiement' },
       { status: 500 }

@@ -1,13 +1,15 @@
 import { createClient } from '@/utils/supabase/server';
 import { NextResponse } from 'next/server';
+import { logApiError, logApiSuccess } from '@/utils/logger';
 
-export async function GET() {
+export async function GET(request: Request) {
   try {
     const supabase = await createClient();
     
     // Vérifier l'authentification
     const { data: { user }, error: authError } = await supabase.auth.getUser();
     if (authError || !user) {
+      logApiError(authError || new Error('User not authenticated'), 'credits', request);
       return NextResponse.json(
         { error: 'Non autorisé' },
         { status: 401 }
@@ -21,7 +23,6 @@ export async function GET() {
       .eq('user_id', user.id)
       .single();
 
-
     if (error) {
       if (error.code === 'PGRST116') {
         // L'utilisateur n'a pas encore de crédits, on initialise à 1
@@ -31,7 +32,10 @@ export async function GET() {
           .select()
           .single();
 
-        if (insertError) throw insertError;
+        if (insertError) {
+          logApiError(insertError, 'credits-initialization', request);
+          throw insertError;
+        }
 
         // Ajouter une transaction pour les crédits gratuits
         const { error: transactionError } = await supabase
@@ -46,18 +50,22 @@ export async function GET() {
             }
           });
 
-        if (transactionError) throw transactionError;
+        if (transactionError) {
+          logApiError(transactionError, 'credits-transaction', request);
+          throw transactionError;
+        }
 
-        console.log('Crédits initialisés à 1 pour l\'utilisateur:', user.id);
-        
+        logApiSuccess({ userId: user.id, credits: 1 }, 'credits-initialization');
         return NextResponse.json({ credits: 1 });
       }
+      logApiError(error, 'credits', request);
       throw error;
     }
 
+    logApiSuccess({ userId: user.id, credits: data?.credits || 0 }, 'credits');
     return NextResponse.json({ credits: data?.credits || 0 });
   } catch (error) {
-    console.error('Error credits:', error);
+    logApiError(error, 'credits', request);
     return NextResponse.json(
       { error: 'Erreur lors de la récupération des crédits' },
       { status: 500 }

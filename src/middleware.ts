@@ -1,7 +1,13 @@
 import { type NextRequest } from 'next/server'
 import { updateSession } from '@/utils/supabase/middleware'
+import { apiLogger } from './middleware/api-logger'
 
 export async function middleware(request: NextRequest) {
+  // Appliquer le logger sur les routes API
+  if (request.nextUrl.pathname.startsWith('/api/')) {
+    return apiLogger(request);
+  }
+
   return await updateSession(request)
 }
 
