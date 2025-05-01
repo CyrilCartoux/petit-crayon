@@ -9,6 +9,7 @@ import GalleryPreview from "@/components/GalleryPreview";
 import { SpeedInsights } from "@vercel/speed-insights/next"
 import CustomerReviews from "@/components/CustomerReviews";
 import Script from 'next/script';
+import { Analytics } from "@vercel/analytics/react"
 
 const fredoka = Fredoka({ subsets: ["latin"] });
 
@@ -106,6 +107,7 @@ export default function RootLayout({
             <CustomerReviews />
             <Footer />
             <SpeedInsights />
+            <Analytics />
           </CreditsProvider>
         </AuthProvider>
       </body>
