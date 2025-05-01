@@ -7,7 +7,8 @@ import { AuthProvider } from '@/contexts/AuthContext'
 import { CreditsProvider } from '@/contexts/CreditsContext'
 import GalleryPreview from "@/components/GalleryPreview";
 import { SpeedInsights } from "@vercel/speed-insights/next"
-import CustomerReviews from "@/components/CustomerReviews"; 
+import CustomerReviews from "@/components/CustomerReviews";
+import Script from 'next/script';
 
 const fredoka = Fredoka({ subsets: ["latin"] });
 
@@ -72,8 +73,27 @@ export default function RootLayout({
     <html lang="fr">
       <head>
         <meta name="google-site-verification" content="8nkfalni4Pck7vaZW1CsRW98l9OJIKnfGuGLh5Lt0d8" />
+        <Script id="google-tag-manager" strategy="afterInteractive">
+          {`
+            (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+            new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+            j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+            'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+            })(window,document,'script','dataLayer','GTM-57225RT7');
+          `}
+        </Script>
       </head>
       <body className={fredoka.className}>
+        {/* Google Tag Manager (noscript) */}
+        <noscript>
+          <iframe 
+            src="https://www.googletagmanager.com/ns.html?id=GTM-57225RT7"
+            height="0" 
+            width="0" 
+            style={{ display: 'none', visibility: 'hidden' }}
+          />
+        </noscript>
+        {/* End Google Tag Manager (noscript) */}
         <AuthProvider>
           <CreditsProvider>
             <Header />
