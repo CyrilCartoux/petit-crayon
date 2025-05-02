@@ -15,7 +15,7 @@ export default function Editor() {
   const [image, setImage] = useState<string | null>(null)
   const [isProcessing, setIsProcessing] = useState(false)
   const [result, setResult] = useState<string | null>(null)
-  const [error, setError] = useState<string | null>(null)
+  const [error, setError] = useState<{ message: string; details?: string } | null>(null)
   const { user } = useAuth()
   const { credits, loading: creditsLoading, useCredits: checkCredits } = useCredits()
   const router = useRouter()
@@ -37,7 +37,10 @@ export default function Editor() {
     try {
       const hasEnoughCredits = await checkCredits(1)
       if (!hasEnoughCredits) {
-        setError('Vous n\'avez pas assez de crédits pour effectuer cette opération.')
+        setError({ 
+          message: 'Vous n\'avez pas assez de crédits pour effectuer cette opération.',
+          details: 'Veuillez acheter des crédits supplémentaires pour continuer.'
+        })
         return
       }
 
@@ -49,15 +52,23 @@ export default function Editor() {
         body: JSON.stringify({ image: imageData }),
       })
 
+      const data = await response.json()
+
       if (!response.ok) {
-        throw new Error('Erreur lors du traitement de l\'image')
+        setError({ 
+          message: data.error || 'Une erreur est survenue lors du traitement de l\'image.',
+          details: data.details
+        })
+        return
       }
 
-      const data = await response.json()
       setResult(data.result)
     } catch (error) {
       console.error('Erreur lors du traitement:', error)
-      setError('Une erreur est survenue lors du traitement de l\'image. Veuillez réessayer.')
+      setError({ 
+        message: 'Une erreur est survenue lors du traitement de l\'image.',
+        details: 'Veuillez réessayer plus tard ou contacter le support si le problème persiste.'
+      })
     } finally {
       setIsProcessing(false)
     }
@@ -108,9 +119,25 @@ export default function Editor() {
           <motion.div
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
-            className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative mb-4"
+            className="bg-red-50 border border-red-200 rounded-lg p-4 mb-4"
           >
-            {error}
+            <div className="flex items-start">
+              <div className="flex-shrink-0">
+                <svg className="h-5 w-5 text-red-400" viewBox="0 0 20 20" fill="currentColor">
+                  <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clipRule="evenodd" />
+                </svg>
+              </div>
+              <div className="ml-3">
+                <h3 className="text-sm font-medium text-red-800">
+                  {error.message}
+                </h3>
+                {error.details && (
+                  <div className="mt-2 text-sm text-red-700">
+                    {error.details}
+                  </div>
+                )}
+              </div>
+            </div>
           </motion.div>
         )}
 
@@ -255,7 +282,10 @@ export default function Editor() {
                       priority
                       onError={(e) => {
                         console.error('Erreur de chargement de l&apos;image:', e)
-                        setError('Erreur lors du chargement de l&apos;image générée. Veuillez réessayer.')
+                        setError({ 
+                          message: 'Erreur lors du chargement de l&apos;image générée.',
+                          details: 'Veuillez réessayer plus tard ou contacter le support si le problème persiste.'
+                        })
                         setResult(null)
                       }}
                     />

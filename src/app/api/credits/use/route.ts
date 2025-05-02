@@ -68,6 +68,24 @@ export async function POST(request: Request) {
       throw error;
     }
 
+    // Enregistrer la transaction
+    const { error: transactionError } = await supabase
+      .from('credit_transactions')
+      .insert({
+        user_id: user.id,
+        amount: -amount, // Montant négatif car c'est une utilisation
+        type: 'use',
+        metadata: {
+          operation: 'image_conversion',
+          timestamp: new Date().toISOString()
+        }
+      });
+
+    if (transactionError) {
+      logApiError(transactionError, 'credits-use', request);
+      throw transactionError;
+    }
+
     logApiSuccess({ userId: user.id, newCredits: data.credits, amountUsed: amount }, 'credits-use');
     return NextResponse.json({ credits: data.credits });
   } catch (error) {

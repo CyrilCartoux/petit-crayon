@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server'
 import OpenAI, { toFile } from 'openai'
 import { logApiError, logApiSuccess } from '@/utils/logger'
+import { createClient } from '@/utils/supabase/server'
 
 const openai = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY,
@@ -8,6 +9,18 @@ const openai = new OpenAI({
 
 export async function POST(request: Request) {
   try {
+    const supabase = await createClient();
+    
+    // Vérifier l'authentification
+    const { data: { user }, error: authError } = await supabase.auth.getUser();
+    if (authError || !user) {
+      logApiError(authError || new Error('User not authenticated'), 'convert', request);
+      return NextResponse.json(
+        { error: 'Non autorisé' },
+        { status: 401 }
+      );
+    }
+
     const { image } = await request.json()
 
     if (!image) {
@@ -69,13 +82,57 @@ export async function POST(request: Request) {
       throw error
     }
 
-    logApiSuccess({ step: 'success', resultLength: imageUrl.length }, 'convert')
+    // Stocker l'image dans Supabase
+    const { data: storedImage, error: storageError } = await supabase
+      .from('generated_images')
+      .insert({
+        user_id: user.id,
+        original_image: image,
+        generated_image: imageUrl,
+        created_at: new Date().toISOString()
+      })
+      .select()
+      .single();
 
-    return NextResponse.json({ result: imageUrl })
-  } catch (error) {
+    if (storageError) {
+      logApiError(storageError, 'convert', request);
+      throw storageError;
+    }
+
+    logApiSuccess({ step: 'success', imageId: storedImage.id }, 'convert')
+
+    return NextResponse.json({ 
+      result: imageUrl,
+      imageId: storedImage.id 
+    })
+  } catch (error: unknown) {
+    // Gérer spécifiquement l'erreur de sécurité d'OpenAI
+    const openaiError = error as Error;
+    console.log('OpenAI Error:', openaiError);
+    
+    // Vérifier si c'est une erreur de sécurité
+    const isSafetyError = 
+      openaiError.message.includes('safety system') ||
+      openaiError.message.includes('Your request was rejected');
+
+    if (isSafetyError) {
+      logApiError(openaiError, 'convert', request);
+      return NextResponse.json(
+        { 
+          error: 'L\'image n\'a pas pu être traitée pour des raisons de sécurité.',
+          details: 'L\'image peut contenir du contenu protégé par des droits d\'auteur ou être considérée comme inappropriée. Veuillez essayer avec une autre image.'
+        },
+        { status: 400 }
+      );
+    }
+
+    // Pour toutes les autres erreurs
     logApiError(error instanceof Error ? error : new Error('Unknown error'), 'convert', request)
     return NextResponse.json(
-      { error: error instanceof Error ? error.message : 'Failed to process image' },
+      { 
+        error: 'Une erreur est survenue lors du traitement de l\'image.',
+        details: 'Veuillez réessayer avec une autre image ou contacter le support si le problème persiste.'
+      },
       { status: 500 }
     )
   }
