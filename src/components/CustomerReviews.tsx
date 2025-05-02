@@ -1,4 +1,11 @@
+'use client';
+
 import Image from 'next/image';
+import { Swiper, SwiperSlide } from 'swiper/react';
+import { Pagination, Navigation } from 'swiper/modules';
+import 'swiper/css';
+import 'swiper/css/pagination';
+import 'swiper/css/navigation';
 
 const reviews = [
   {
@@ -25,6 +32,29 @@ function getInitial(name: string) {
   return name.charAt(0).toUpperCase();
 }
 
+function ReviewCard({ review }: { review: typeof reviews[0] }) {
+  return (
+    <div className="flex flex-col items-center text-center bg-gray-50 rounded-xl p-4 shadow-sm h-full">
+      {/* Avatar cercle avec initiale */}
+      <div className={`w-14 h-14 mb-2 rounded-full flex items-center justify-center text-white text-2xl font-bold shadow ${review.profileColor}`}>
+        {getInitial(review.name)}
+      </div>
+      <p className="text-gray-700 text-sm mb-2">&quot;{review.text}&quot;</p>
+      <span className="text-xs text-gray-500 font-medium mb-2">{review.name}</span>
+      {/* Image d'exemple */}
+      <div className="w-full h-28 relative mt-2 rounded-lg overflow-hidden border border-gray-200 bg-white">
+        <Image
+          src={review.example}
+          alt={`Exemple de coloriage de ${review.name}`}
+          fill
+          className="object-contain"
+          sizes="100vw"
+        />
+      </div>
+    </div>
+  );
+}
+
 export default function CustomerReviews() {
   return (
     <section className="max-w-4xl mx-auto my-12 bg-white rounded-2xl shadow-md px-6 py-8">
@@ -39,28 +69,68 @@ export default function CustomerReviews() {
         </div>
         <span className="text-gray-500 text-sm">(123 avis)</span>
       </div>
-      <div className="grid gap-6 md:grid-cols-3">
+
+      {/* Carousel pour mobile */}
+      <div className="md:hidden relative">
+        <Swiper
+          modules={[Pagination, Navigation]}
+          pagination={{
+            clickable: true,
+            el: '.swiper-pagination',
+            bulletClass: 'swiper-pagination-bullet',
+            bulletActiveClass: 'swiper-pagination-bullet-active',
+            renderBullet: function (index, className) {
+              return `<span class="${className}"></span>`;
+            },
+          }}
+          navigation={{
+            nextEl: '.swiper-button-next',
+            prevEl: '.swiper-button-prev',
+          }}
+          spaceBetween={20}
+          slidesPerView={1}
+          className="pb-12"
+        >
+          {reviews.map((review, idx) => (
+            <SwiperSlide key={idx}>
+              <ReviewCard review={review} />
+            </SwiperSlide>
+          ))}
+        </Swiper>
+        
+        {/* Flèches de navigation */}
+        <div className="swiper-button-prev !left-2 !w-8 !h-8 !bg-white !rounded-full !shadow-md after:!text-primary after:!text-sm" />
+        <div className="swiper-button-next !right-2 !w-8 !h-8 !bg-white !rounded-full !shadow-md after:!text-primary after:!text-sm" />
+        
+        {/* Indicateurs de pagination */}
+        <div className="swiper-pagination !bottom-0 !relative !mt-4" />
+      </div>
+
+      {/* Grille pour desktop */}
+      <div className="hidden md:grid gap-6 md:grid-cols-3">
         {reviews.map((review, idx) => (
-          <div key={idx} className="flex flex-col items-center text-center bg-gray-50 rounded-xl p-4 shadow-sm">
-            {/* Avatar cercle avec initiale */}
-            <div className={`w-14 h-14 mb-2 rounded-full flex items-center justify-center text-white text-2xl font-bold shadow ${review.profileColor}`}>
-              {getInitial(review.name)}
-            </div>
-            <p className="text-gray-700 text-sm mb-2">&quot;{review.text}&quot;</p>
-            <span className="text-xs text-gray-500 font-medium mb-2">{review.name}</span>
-            {/* Image d'exemple */}
-            <div className="w-full h-28 relative mt-2 rounded-lg overflow-hidden border border-gray-200 bg-white">
-              <Image
-                src={review.example}
-                alt={`Exemple de coloriage de ${review.name}`}
-                fill
-                className="object-contain"
-                sizes="100vw"
-              />
-            </div>
-          </div>
+          <ReviewCard key={idx} review={review} />
         ))}
       </div>
+
+      <style jsx global>{`
+        .swiper-pagination-bullet {
+          width: 10px;
+          height: 10px;
+          background-color: #CBD5E1;
+          opacity: 1;
+          margin: 0 6px;
+        }
+        .swiper-pagination-bullet-active {
+          background-color: var(--color-primary);
+          transform: scale(1.2);
+        }
+        .swiper-button-prev:after,
+        .swiper-button-next:after {
+          font-size: 16px !important;
+          font-weight: bold;
+        }
+      `}</style>
     </section>
   );
 } 
