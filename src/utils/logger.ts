@@ -1,4 +1,9 @@
-export function logError(error: any, context: string) {
+export interface ErrorWithMessage extends Error {
+  message: string;
+  stack?: string;
+}
+
+export function logError(error: ErrorWithMessage, context: string) {
   console.error(`
 🚨 API Error in ${context}:
   Error: ${error.message}
@@ -7,7 +12,7 @@ export function logError(error: any, context: string) {
 `);
 }
 
-export function logApiError(error: any, context: string, request?: Request) {
+export function logApiError(error: ErrorWithMessage, context: string, request?: Request) {
   const requestInfo = request ? {
     method: request.method,
     url: request.url,
@@ -23,7 +28,7 @@ export function logApiError(error: any, context: string, request?: Request) {
 `);
 }
 
-export function logApiSuccess(data: any, context: string) {
+export function logApiSuccess<T>(data: T, context: string) {
   console.log(`
 ✅ API Success in ${context}:
   Data: ${JSON.stringify(data, null, 2)}

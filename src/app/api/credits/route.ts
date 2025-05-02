@@ -1,6 +1,6 @@
 import { createClient } from '@/utils/supabase/server';
 import { NextResponse } from 'next/server';
-import { logApiError, logApiSuccess } from '@/utils/logger';
+import { logApiError, logApiSuccess, ErrorWithMessage } from '@/utils/logger';
 
 export async function GET(request: Request) {
   try {
@@ -65,7 +65,7 @@ export async function GET(request: Request) {
     logApiSuccess({ userId: user.id, credits: data?.credits || 0 }, 'credits');
     return NextResponse.json({ credits: data?.credits || 0 });
   } catch (error) {
-    logApiError(error, 'credits', request);
+    logApiError(error as ErrorWithMessage, 'credits', request);
     return NextResponse.json(
       { error: 'Erreur lors de la récupération des crédits' },
       { status: 500 }

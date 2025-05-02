@@ -3,7 +3,7 @@ import Stripe from 'stripe';
 import { headers } from 'next/headers';
 import stripe from '@/utils/stripe';
 import { createClient as createServiceClient } from '@supabase/supabase-js';
-import { logApiError, logApiSuccess } from '@/utils/logger';
+import { logApiError, logApiSuccess, ErrorWithMessage } from '@/utils/logger';
 
 const webhookSecret = process.env.STRIPE_WEBHOOK_SECRET!;
 
@@ -32,7 +32,7 @@ export async function POST(request: Request) {
       event = stripe.webhooks.constructEvent(body, signature, webhookSecret);
       logApiSuccess({ eventType: event.type }, 'stripe-webhook-verification');
     } catch (err) {
-      logApiError(err, 'stripe-webhook-verification', request);
+      logApiError(err as ErrorWithMessage, 'stripe-webhook-verification', request);
       return NextResponse.json(
         { error: 'Signature invalide' },
         { status: 400 }
@@ -115,7 +115,7 @@ export async function POST(request: Request) {
 
     return NextResponse.json({ received: true });
   } catch (error) {
-    logApiError(error, 'stripe-webhook', request);
+    logApiError(error as ErrorWithMessage, 'stripe-webhook', request);
     return NextResponse.json(
       { error: 'Erreur lors du traitement du webhook' },
       { status: 500 }
