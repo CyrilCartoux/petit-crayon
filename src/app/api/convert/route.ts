@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server'
 import OpenAI, { toFile } from 'openai'
+import { logApiError, logApiSuccess } from '@/utils/logger'
 
 const openai = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY,
@@ -10,16 +11,18 @@ export async function POST(request: Request) {
     const { image } = await request.json()
 
     if (!image) {
+      logApiError(new Error('Image is required'), 'convert', request)
       return NextResponse.json(
         { error: 'Image is required' },
         { status: 400 }
       )
     }
 
-    console.log('Starting image processing with OpenAI...')
+    logApiSuccess({ step: 'start', imageLength: image.length }, 'convert')
 
     // Vérifier que l'image est en base64
     if (!image.startsWith('data:image/')) {
+      logApiError(new Error('Invalid image format'), 'convert', request)
       return NextResponse.json(
         { error: 'Invalid image format. Please provide a base64 encoded image.' },
         { status: 400 }
@@ -33,22 +36,24 @@ export async function POST(request: Request) {
       type: 'image/png'
     })
 
+    logApiSuccess({ step: 'file_created', size: buffer.length }, 'convert')
+
     // Créer la requête à l'API OpenAI
     const result = await openai.images.edit({
       model: "gpt-image-1",
       image: imageFile,
-      // prompt: "Create a perfect line art tracing of the input image with the following characteristics: 1) Maintain exact proportions and details with surgical precision 2) Use pure black lines on white background, absolutely no colors or shading 3) Create clean, crisp lines with consistent stroke weight throughout 4) Optimize for coloring book style with clear boundaries 5) Remove any unnecessary noise or artifacts 6) Enhance contrast for maximum clarity 7) Make sure all lines are connected and complete 8) Preserve facial features and expressions 9) Ensure the final result is suitable for both digital and physical coloring",
       prompt: "Create a perfect black-and-white line art tracing of the input image with the following requirements: Preserve exact proportions, shapes, and fine details with high precision. Use pure black lines on a pure white background. No colors, no shading, no grayscale. Draw clean, sharp, and smooth lines with consistent stroke thickness across the entire image. Optimize the composition for a coloring book style: clear separations, bold outlines, no background clutter. Eliminate all noise, artifacts, and unnecessary small details. Maximize contrast and clarity to make the image easy to color. Ensure all contours are closed, lines are fully connected, with no gaps. Accurately preserve facial features, key expressions, and important anatomical elements. Make the final line art simple, friendly, and perfectly suited for both digital and printable coloring pages.",
       size: "auto" as never,
       quality: "medium"
     })
 
-    console.log('OpenAI response received')
+    logApiSuccess({ step: 'openai_response', hasData: !!result?.data?.[0]?.b64_json }, 'convert')
 
     // Vérifier que la réponse contient bien des données
     if (!result?.data?.[0]?.b64_json) {
-      console.error('Invalid response from OpenAI:', result)
-      throw new Error('Invalid response from OpenAI')
+      const error = new Error('Invalid response from OpenAI')
+      logApiError(error, 'convert', request)
+      throw error
     }
 
     // Récupérer l'image en base64 depuis la réponse
@@ -59,14 +64,16 @@ export async function POST(request: Request) {
 
     // Vérifier que l'URL est valide
     if (!imageUrl.startsWith('data:image/png;base64,')) {
-      throw new Error('Invalid image data format')
+      const error = new Error('Invalid image data format')
+      logApiError(error, 'convert', request)
+      throw error
     }
 
-    console.log('Image successfully generated and formatted')
+    logApiSuccess({ step: 'success', resultLength: imageUrl.length }, 'convert')
 
     return NextResponse.json({ result: imageUrl })
   } catch (error) {
-    console.error('Error processing image:', error)
+    logApiError(error instanceof Error ? error : new Error('Unknown error'), 'convert', request)
     return NextResponse.json(
       { error: error instanceof Error ? error.message : 'Failed to process image' },
       { status: 500 }
