@@ -7,6 +7,9 @@ const openai = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY,
 })
 
+// Taille maximale de l'image en bytes (5MB)
+const MAX_IMAGE_SIZE = 5 * 1024 * 1024
+
 export async function POST(request: Request) {
   try {
     const supabase = await createClient();
@@ -31,7 +34,22 @@ export async function POST(request: Request) {
       )
     }
 
-    logApiSuccess({ step: 'start', imageLength: image.length }, 'convert')
+    // Vérifier la taille de l'image
+    const base64Data = image.split(',')[1]
+    const imageSize = Buffer.byteLength(base64Data, 'base64')
+    
+    if (imageSize > MAX_IMAGE_SIZE) {
+      logApiError(new Error(`Image too large: ${imageSize} bytes`), 'convert', request)
+      return NextResponse.json(
+        { 
+          error: 'L\'image est trop volumineuse',
+          details: 'Veuillez utiliser une image de moins de 5MB'
+        },
+        { status: 413 }
+      )
+    }
+
+    logApiSuccess({ step: 'start', imageLength: image.length, imageSize }, 'convert')
 
     // Vérifier que l'image est en base64
     if (!image.startsWith('data:image/')) {
@@ -43,7 +61,6 @@ export async function POST(request: Request) {
     }
 
     // Convertir l'image base64 en fichier
-    const base64Data = image.split(',')[1]
     const buffer = Buffer.from(base64Data, 'base64')
     const imageFile = await toFile(buffer, null, {
       type: 'image/png'
