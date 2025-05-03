@@ -63,20 +63,27 @@ export async function POST(request: Request) {
         .eq('user_id', userId)
         .single();
 
-      if (fetchError) {
-        if (fetchError.code !== 'PGRST116') {
-          logApiError(fetchError, 'stripe-webhook-credits-fetch', request);
-          throw fetchError;
-        }
+      if (fetchError && fetchError.code !== 'PGRST116') {
+        logApiError(fetchError, 'stripe-webhook-credits-fetch', request);
+        throw fetchError;
       }
 
       const currentCredits = currentData?.credits || 0;
       const newCredits = currentCredits + creditsAmount;
 
-      // Mettre à jour les crédits
+      // Mettre à jour ou insérer les crédits
       const { error: updateError } = await supabaseService
         .from('user_credits')
-        .upsert({ user_id: userId, credits: newCredits });
+        .upsert(
+          { 
+            user_id: userId, 
+            credits: newCredits 
+          },
+          {
+            onConflict: 'user_id',
+            ignoreDuplicates: false
+          }
+        );
 
       if (updateError) {
         logApiError(updateError, 'stripe-webhook-credits-update', request);
