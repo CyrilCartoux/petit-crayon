@@ -122,7 +122,7 @@ export default function Home() {
                   <PlanCard
                     title="Mini"
                     description="🖍️ Parfait pour tester en douceur."
-                    price="1,99€"
+                    price="1,49€"
                     features={["2 coloriages"]}
                     href="/paiement?plan=mini"
                     isPopular={false}
@@ -156,7 +156,7 @@ export default function Home() {
               <PlanCard
                 title="Mini"
                 description="🖍️ Parfait pour tester en douceur."
-                price="1,99€"
+                price="1,49€"
                 features={["2 coloriages"]}
                 href="/paiement?plan=mini"
                 isPopular={false}

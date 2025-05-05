@@ -19,7 +19,7 @@ interface Plan {
 const plans: Record<string, Plan> = {
   mini: {
     name: 'Mini',
-    price: 1.99,
+    price: 1.49,
     coloriages: 2,
     description: '🖍️ Parfait pour tester en douceur.',
     type: 'one-time'
