@@ -132,7 +132,7 @@ export default function Home() {
                   <PlanCard
                     title="Starter"
                     description="✨ Le début parfait pour découvrir la magie"
-                    price="3,99€"
+                    price="3,49€"
                     features={["5 coloriages"]}
                     href="/paiement?plan=starter"
                     isPopular={true}
@@ -164,7 +164,7 @@ export default function Home() {
               <PlanCard
                 title="Starter"
                 description="✨ Le début parfait pour découvrir la magie"
-                price="3,99€"
+                price="3,49€"
                 features={["5 coloriages"]}
                 href="/paiement?plan=starter"
                 isPopular={true}

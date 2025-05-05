@@ -26,7 +26,7 @@ const plans: Record<string, Plan> = {
   },
   starter: {
     name: 'Starter',
-    price: 3.99,
+    price: 3.49,
     coloriages: 5,
     description: '✨ Le pack idéal pour transformer vos plus belles photos.',
     type: 'one-time',
