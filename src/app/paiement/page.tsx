@@ -17,29 +17,30 @@ interface Plan {
 }
 
 const plans: Record<string, Plan> = {
-  starter: {
-    name: 'Starter',
-    price: 4.99,
-    coloriages: 10,
-    description: '✨ Le début parfait pour découvrir la magie de vos souvenirs à colorier.',
+  mini: {
+    name: 'Mini',
+    price: 1.99,
+    coloriages: 2,
+    description: '🖍️ Parfait pour tester en douceur.',
     type: 'one-time'
   },
-  explorer: {
-    name: 'Explorer',
-    price: 9.99,
-    coloriages: 25,
-    description: '🎉 Idéal pour donner vie à tous vos meilleurs moments, sans compter !',
+  starter: {
+    name: 'Starter',
+    price: 3.99,
+    coloriages: 5,
+    description: '✨ Le pack idéal pour transformer vos plus belles photos.',
     type: 'one-time',
     popular: true
   },
-  creatif: {
-    name: 'Créatif',
-    price: 17.99,
-    coloriages: 50,
-    description: '🚀 Libérez votre créativité et transformez tous vos souvenirs en chefs-d\'œuvre à colorier !',
+  famille: {
+    name: 'Famille',
+    price: 7.99,
+    coloriages: 12,
+    description: '👨‍👩‍👧‍👦 Pour revivre vos plus beaux souvenirs en famille.',
     type: 'one-time'
   }
 }
+
 
 function PaiementContent() {
   const searchParams = useSearchParams()

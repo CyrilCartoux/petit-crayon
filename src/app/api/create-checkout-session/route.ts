@@ -4,15 +4,15 @@ import { NextResponse } from 'next/server';
 import { logApiError, logApiSuccess, ErrorWithMessage } from '@/utils/logger';
 
 const PRICE_IDS = {
-  starter: 'price_1RJFAlLhIVDGgy4ta8ZwNuOX',
-  explorer: 'price_1RJFBCLhIVDGgy4tFSokGYWL',
-  créatif: 'price_1RJFBoLhIVDGgy4t5CdoqBj2',
+  mini: 'price_1RLMRiLhIVDGgy4tFPMiGnmO',
+  starter: 'price_1RLMSpLhIVDGgy4tGcOIE7dF',
+  famille: 'price_1RLMTWLhIVDGgy4txlLuVZ1h',
 };
 
 const CREDITS_BY_PLAN = {
-  starter: 10,
-  explorer: 25,
-  créatif: 50,
+  mini: 2,
+  starter: 5,
+  famille: 12,
 };
 
 export async function POST(request: Request) {

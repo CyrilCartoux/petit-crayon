@@ -120,31 +120,31 @@ export default function Home() {
               >
                 <SwiperSlide>
                   <PlanCard
-                    title="Starter"
-                    description="✨ Le début parfait pour découvrir la magie"
-                    price="4,99€"
-                    features={["10 coloriages"]}
-                    href="/paiement?plan=starter"
+                    title="Mini"
+                    description="🖍️ Parfait pour tester en douceur."
+                    price="1,99€"
+                    features={["2 coloriages"]}
+                    href="/paiement?plan=mini"
                     isPopular={false}
                   />
                 </SwiperSlide>
                 <SwiperSlide>
                   <PlanCard
-                    title="Explorer"
-                    description="🎉 Idéal pour donner vie à tous vos meilleurs moments"
-                    price="9,99€"
-                    features={["25 coloriages"]}
-                    href="/paiement?plan=explorer"
+                    title="Starter"
+                    description="✨ Le début parfait pour découvrir la magie"
+                    price="3,99€"
+                    features={["5 coloriages"]}
+                    href="/paiement?plan=starter"
                     isPopular={true}
                   />
                 </SwiperSlide>
                 <SwiperSlide>
                   <PlanCard
-                    title="Créatif"
-                    description="🚀 Libérez votre créativité sans limites"
-                    price="17,99€"
-                    features={["50 coloriages"]}
-                    href="/paiement?plan=creatif"
+                    title="Famille"
+                    description="👨‍👩‍👧‍👦 Pour revivre vos plus beaux souvenirs en famille."
+                    price="7,99€"
+                    features={["12 coloriages"]}
+                    href="/paiement?plan=famille"
                     isPopular={false}
                   />
                 </SwiperSlide>
@@ -154,27 +154,27 @@ export default function Home() {
             {/* Grille pour desktop */}
             <div className="hidden md:grid grid-cols-3 gap-6">
               <PlanCard
-                title="Starter"
-                description="✨ Le début parfait pour découvrir la magie"
-                price="4,99€"
-                features={["10 coloriages"]}
-                href="/paiement?plan=starter"
+                title="Mini"
+                description="🖍️ Parfait pour tester en douceur."
+                price="1,99€"
+                features={["2 coloriages"]}
+                href="/paiement?plan=mini"
                 isPopular={false}
               />
               <PlanCard
-                title="Explorer"
-                description="🎉 Idéal pour donner vie à tous vos meilleurs moments"
-                price="9,99€"
-                features={["25 coloriages"]}
-                href="/paiement?plan=explorer"
+                title="Starter"
+                description="✨ Le début parfait pour découvrir la magie"
+                price="3,99€"
+                features={["5 coloriages"]}
+                href="/paiement?plan=starter"
                 isPopular={true}
               />
               <PlanCard
-                title="Créatif"
-                description="🚀 Libérez votre créativité sans limites"
-                price="17,99€"
-                features={["50 coloriages"]}
-                href="/paiement?plan=creatif"
+                title="Famille"
+                description="👨‍👩‍👧‍👦 Pour revivre vos plus beaux souvenirs en famille."
+                price="7,99€"
+                features={["12 coloriages"]}
+                href="/paiement?plan=famille"
                 isPopular={false}
               />
             </div>
