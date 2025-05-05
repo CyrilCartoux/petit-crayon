@@ -159,7 +159,7 @@ export default function Editor() {
             <p className="text-gray-600 mb-6">
               Transforme tes photos préférées en super coloriages
               <br />
-              <span className="font-semibold text-[var(--color-primary)]">Première fois ? Crée ton compte et bénéficie d&apos;un crédit gratuit ! 🎁</span>
+              <span className="font-semibold text-[var(--color-primary)]">Première fois ? Crée ton compte ! </span>
             </p>
             <div className="space-y-4">
               <button

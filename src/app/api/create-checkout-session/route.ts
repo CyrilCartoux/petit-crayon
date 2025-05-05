@@ -4,12 +4,14 @@ import { NextResponse } from 'next/server';
 import { logApiError, logApiSuccess, ErrorWithMessage } from '@/utils/logger';
 
 const PRICE_IDS = {
+  essai: 'price_1RLNEILhIVDGgy4tqLGWANQc',
   mini: 'price_1RLMRiLhIVDGgy4tFPMiGnmO',
   starter: 'price_1RLMSpLhIVDGgy4tGcOIE7dF',
   famille: 'price_1RLMTWLhIVDGgy4txlLuVZ1h',
 };
 
 const CREDITS_BY_PLAN = {
+  essai: 1,
   mini: 2,
   starter: 5,
   famille: 12,

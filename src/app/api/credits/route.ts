@@ -37,25 +37,6 @@ export async function GET(request: Request) {
           throw insertError;
         }
 
-        // Ajouter une transaction pour les crédits gratuits
-        const { error: transactionError } = await supabase
-          .from('credit_transactions')
-          .insert({
-            user_id: user.id,
-            amount: 1,
-            type: 'bonus',
-            metadata: {
-              "operation": "initial_credits",
-              "timestamp": new Date().toISOString()
-            }
-          });
-
-        if (transactionError) {
-          logApiError(transactionError, 'credits-transaction', request);
-          throw transactionError;
-        }
-
-        logApiSuccess({ userId: user.id, credits: 1 }, 'credits-initialization');
         return NextResponse.json({ credits: 1 });
       }
       logApiError(error, 'credits', request);
