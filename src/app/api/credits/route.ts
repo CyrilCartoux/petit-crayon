@@ -28,7 +28,7 @@ export async function GET(request: Request) {
         // L'utilisateur n'a pas encore de crédits, on initialise à 1
         const { error: insertError } = await supabase
           .from('user_credits')
-          .insert({ user_id: user.id, credits: 1 })
+          .insert({ user_id: user.id, credits: 0 })
           .select()
           .single();
 
@@ -37,7 +37,7 @@ export async function GET(request: Request) {
           throw insertError;
         }
 
-        return NextResponse.json({ credits: 1 });
+        return NextResponse.json({ credits: 0 });
       }
       logApiError(error, 'credits', request);
       throw error;
