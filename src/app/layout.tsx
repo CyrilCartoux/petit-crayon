@@ -10,12 +10,8 @@ import { SpeedInsights } from "@vercel/speed-insights/next"
 import CustomerReviews from "@/components/CustomerReviews";
 import Script from 'next/script';
 import { Analytics } from "@vercel/analytics/react"
-import LogRocket from 'logrocket';
-
-// Initialize LogRocket
-if (typeof window !== 'undefined') {
-  LogRocket.init('dciibm/petit-crayon');
-}
+import { useEffect } from 'react';
+import { initLogRocket } from '@/utils/logrocket';
 
 const fredoka = Fredoka({ subsets: ["latin"] });
 
@@ -76,6 +72,10 @@ export default function RootLayout({
 }: {
   children: React.ReactNode
 }) {
+  useEffect(() => {
+    initLogRocket();
+  }, []);
+
   return (
     <html lang="fr">
       <head>
