@@ -10,6 +10,12 @@ import { SpeedInsights } from "@vercel/speed-insights/next"
 import CustomerReviews from "@/components/CustomerReviews";
 import Script from 'next/script';
 import { Analytics } from "@vercel/analytics/react"
+import LogRocket from 'logrocket';
+
+// Initialize LogRocket
+if (typeof window !== 'undefined') {
+  LogRocket.init('dciibm/petit-crayon');
+}
 
 const fredoka = Fredoka({ subsets: ["latin"] });
 
