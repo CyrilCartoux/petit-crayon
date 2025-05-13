@@ -10,8 +10,7 @@ import { SpeedInsights } from "@vercel/speed-insights/next"
 import CustomerReviews from "@/components/CustomerReviews";
 import Script from 'next/script';
 import { Analytics } from "@vercel/analytics/react"
-import { useEffect } from 'react';
-import { initLogRocket } from '@/utils/logrocket';
+import LogRocketProvider from '@/components/LogRocketProvider';
 
 const fredoka = Fredoka({ subsets: ["latin"] });
 
@@ -72,10 +71,6 @@ export default function RootLayout({
 }: {
   children: React.ReactNode
 }) {
-  useEffect(() => {
-    initLogRocket();
-  }, []);
-
   return (
     <html lang="fr">
       <head>
@@ -103,6 +98,7 @@ export default function RootLayout({
         {/* End Google Tag Manager (noscript) */}
         <AuthProvider>
           <CreditsProvider>
+            <LogRocketProvider />
             <Header />
             
             <main className="min-h-screen pt-16">
