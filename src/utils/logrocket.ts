@@ -9,6 +9,7 @@ export function initLogRocket() {
 export function identifyUser(userId: string, userData: {
   name?: string;
   email?: string;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   [key: string]: any;
 }) {
   if (typeof window !== "undefined") {
