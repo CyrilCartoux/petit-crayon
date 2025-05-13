@@ -1,16 +1,19 @@
 import { createClient } from '@/utils/supabase/server'
 import { NextResponse } from 'next/server'
+import { getCurrentDomain, getDomainUrl } from '@/utils/domain'
 
 export async function POST(request: Request) {
   try {
     const { email, password } = await request.json()
     const supabase = await createClient()
+    const domain = getCurrentDomain(request)
+    const redirectUrl = getDomainUrl(domain)
 
     const { data, error } = await supabase.auth.signUp({
       email,
       password,
       options: {
-        emailRedirectTo: `${process.env.NEXT_PUBLIC_SITE_URL}/auth/confirm`,
+        emailRedirectTo: `${redirectUrl}/auth/confirm`,
       },
     })
 

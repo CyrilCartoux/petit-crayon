@@ -49,7 +49,7 @@ export default function AuthPage() {
         setPassword('')
         setName('')
       } else {
-        window.location.href = '/'
+        window.location.href = data.redirectUrl || '/'
       }
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Une erreur est survenue')
