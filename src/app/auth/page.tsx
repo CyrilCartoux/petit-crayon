@@ -1,18 +1,27 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect, Suspense } from 'react'
 import Image from 'next/image'
 import { motion } from 'framer-motion'
+import { useSearchParams } from 'next/navigation'
 
-export default function AuthPage() {
+function AuthForm() {
+  const searchParams = useSearchParams()
   const [isLogin, setIsLogin] = useState(true)
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
-  const [name, setName] = useState('')
   const [error, setError] = useState('')
   const [registrationSuccess, setRegistrationSuccess] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
   const [isGoogleLoading, setIsGoogleLoading] = useState(false)
+
+  useEffect(() => {
+    // Si l'utilisateur vient de /editor, on affiche directement le mode inscription
+    const fromEditor = searchParams.get('from') === 'editor'
+    if (fromEditor) {
+      setIsLogin(false)
+    }
+  }, [searchParams])
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -30,7 +39,6 @@ export default function AuthPage() {
         body: JSON.stringify({
           email,
           password,
-          name: isLogin ? undefined : name,
         }),
       })
 
@@ -47,7 +55,6 @@ export default function AuthPage() {
         setRegistrationSuccess(true)
         setEmail('')
         setPassword('')
-        setName('')
       } else {
         window.location.href = data.redirectUrl || '/'
       }
@@ -80,154 +87,197 @@ export default function AuthPage() {
   }
 
   return (
+    <motion.div
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      className={`card bg-white/80 backdrop-blur-sm p-8 ${isLogin ? 'border-t-4 border-[var(--color-primary)]' : 'border-t-4 border-[var(--color-primary-dark)]'}`}
+    >
+      <div className="text-center mb-8">
+        <Image
+          src="/images/logo.png"
+          alt="Petit Crayon"
+          width={150}
+          height={150}
+          className="mx-auto mb-4"
+        />
+        <div className="mb-6">
+          <div className="inline-flex rounded-lg bg-gray-100 p-1">
+            <button
+              onClick={() => setIsLogin(true)}
+              className={`px-4 py-2 rounded-md text-sm font-medium transition-all duration-200 ${
+                isLogin 
+                  ? 'bg-white text-[var(--color-primary)] shadow-sm' 
+                  : 'text-gray-600 hover:text-gray-900'
+              }`}
+            >
+              Connexion
+            </button>
+            <button
+              onClick={() => setIsLogin(false)}
+              className={`px-4 py-2 rounded-md text-sm font-medium transition-all duration-200 ${
+                !isLogin 
+                  ? 'bg-white text-[var(--color-primary)] shadow-sm' 
+                  : 'text-gray-600 hover:text-gray-900'
+              }`}
+            >
+              Inscription
+            </button>
+          </div>
+        </div>
+        <h1 className="text-3xl font-bold text-gray-900">
+          {isLogin ? 'Bienvenue !' : 'Créer un compte'}
+        </h1>
+        <p className="text-gray-600 mt-2">
+          {isLogin 
+            ? 'Connectez-vous pour accéder à vos coloriages'
+            : 'Rejoignez-nous pour créer vos coloriages'
+          }
+        </p>
+      </div>
+
+      {error && (
+        <div className="mb-4 bg-red-50 border border-red-200 text-red-600 px-4 py-3 rounded">
+          {error}
+        </div>
+      )}
+
+      {registrationSuccess && (
+        <div className="mb-4 bg-green-50 border border-green-200 text-green-600 px-4 py-3 rounded">
+          <p className="font-medium">Inscription réussie !</p>
+          <p className="mt-1">Un email de confirmation vous a été envoyé. Vérifiez votre boîte de réception (et les spams) pour finaliser votre inscription.</p>
+        </div>
+      )}
+
+      <div className="mb-6">
+        <button
+          onClick={handleGoogleLogin}
+          className="w-full flex items-center justify-center gap-3 bg-white border border-gray-300 rounded-lg px-4 py-3 text-gray-700 hover:bg-gray-50 transition-colors shadow-sm hover:shadow-md active:shadow-sm disabled:opacity-50 disabled:cursor-not-allowed"
+          disabled={isGoogleLoading}
+        >
+          {isGoogleLoading ? (
+            <div className="flex items-center justify-center">
+              <svg className="animate-spin -ml-1 mr-3 h-5 w-5 text-gray-700" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+              </svg>
+              <span className="font-medium">Chargement...</span>
+            </div>
+          ) : (
+            <>
+              <Image
+                src="/images/google-logo.png"
+                alt="Google"
+                width={20}
+                height={20}
+                className="w-5 h-5"
+              />
+              <span className="font-medium">Continuer avec Google</span>
+            </>
+          )}
+        </button>
+      </div>
+
+      <div className="relative mb-6">
+        <div className="absolute inset-0 flex items-center">
+          <div className="w-full border-t border-gray-300" />
+        </div>
+        <div className="relative flex justify-center text-sm">
+          <span className="px-2 bg-white text-gray-500">Ou</span>
+        </div>
+      </div>
+
+      <form className="space-y-6" onSubmit={handleSubmit}>
+        <div>
+          <label htmlFor="email" className="block text-sm font-medium text-gray-700">
+            Email
+          </label>
+          <input
+            type="email"
+            id="email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-[var(--color-primary)] focus:ring-[var(--color-primary)]"
+            required
+          />
+        </div>
+
+        <div>
+          <label htmlFor="password" className="block text-sm font-medium text-gray-700">
+            Mot de passe
+          </label>
+          <input
+            type="password"
+            id="password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-[var(--color-primary)] focus:ring-[var(--color-primary)]"
+            required
+          />
+        </div>
+
+        <button
+          type="submit"
+          className={`w-full relative py-3 px-4 rounded-lg font-medium text-white transition-all duration-200 ${
+            isLogin 
+              ? 'bg-[var(--color-primary)] hover:bg-[var(--color-primary-dark)]' 
+              : 'bg-[var(--color-primary-dark)] hover:bg-[var(--color-primary)]'
+          }`}
+          disabled={isLoading}
+        >
+          {isLoading ? (
+            <div className="flex items-center justify-center">
+              <svg className="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+              </svg>
+              {isLogin ? 'Connexion en cours...' : 'Création en cours...'}
+            </div>
+          ) : (
+            isLogin ? 'Se connecter' : 'Créer un compte'
+          )}
+        </button>
+      </form>
+
+      <div className="mt-6 text-center text-sm text-gray-600">
+        {isLogin ? (
+          <p>
+            Pas encore de compte ?{' '}
+            <button
+              onClick={() => setIsLogin(false)}
+              className="text-[var(--color-primary)] hover:text-[var(--color-primary-dark)] font-medium"
+            >
+              Créer un compte
+            </button>
+          </p>
+        ) : (
+          <p>
+            Déjà un compte ?{' '}
+            <button
+              onClick={() => setIsLogin(true)}
+              className="text-[var(--color-primary)] hover:text-[var(--color-primary-dark)] font-medium"
+            >
+              Se connecter
+            </button>
+          </p>
+        )}
+      </div>
+    </motion.div>
+  )
+}
+
+export default function AuthPage() {
+  return (
     <div className="min-h-screen bg-gradient-to-b from-white to-[var(--color-primary)]/10 py-12">
       <div className="max-w-md mx-auto px-4 sm:px-6 lg:px-8">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          className="card bg-white/80 backdrop-blur-sm p-8"
-        >
-          <div className="text-center mb-8">
-            <Image
-              src="/images/logo.png"
-              alt="Petit Crayon"
-              width={150}
-              height={150}
-              className="mx-auto mb-4"
-            />
-            <h1 className="text-3xl font-bold text-gray-900">
-              {isLogin ? 'Bienvenue !' : 'Créer un compte'}
-            </h1>
-            <p className="text-gray-600 mt-2">
-              {isLogin 
-                ? 'Connectez-vous pour accéder à vos coloriages'
-                : 'Rejoignez-nous pour créer vos coloriages'
-                }
-            </p>
+        <Suspense fallback={
+          <div className="card bg-white/80 backdrop-blur-sm p-8 animate-pulse">
+            <div className="h-32 w-32 bg-gray-200 rounded-full mx-auto mb-4" />
+            <div className="h-4 bg-gray-200 rounded w-3/4 mx-auto mb-2" />
+            <div className="h-4 bg-gray-200 rounded w-1/2 mx-auto" />
           </div>
-
-          {error && (
-            <div className="mb-4 bg-red-50 border border-red-200 text-red-600 px-4 py-3 rounded">
-              {error}
-            </div>
-          )}
-
-          {registrationSuccess && (
-            <div className="mb-4 bg-green-50 border border-green-200 text-green-600 px-4 py-3 rounded">
-              <p className="font-medium">Inscription réussie !</p>
-              <p className="mt-1">Un email de confirmation vous a été envoyé. Vérifiez votre boîte de réception (et les spams) pour finaliser votre inscription.</p>
-            </div>
-          )}
-
-          <div className="mb-6">
-            <button
-              onClick={handleGoogleLogin}
-              className="w-full flex items-center justify-center gap-3 bg-white border border-gray-300 rounded-lg px-4 py-3 text-gray-700 hover:bg-gray-50 transition-colors shadow-sm hover:shadow-md active:shadow-sm disabled:opacity-50 disabled:cursor-not-allowed"
-              disabled={isGoogleLoading}
-            >
-              {isGoogleLoading ? (
-                <div className="flex items-center justify-center">
-                  <svg className="animate-spin -ml-1 mr-3 h-5 w-5 text-gray-700" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                    <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                    <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-                  </svg>
-                  <span className="font-medium">Chargement...</span>
-                </div>
-              ) : (
-                <>
-                  <Image
-                    src="/images/google-logo.png"
-                    alt="Google"
-                    width={20}
-                    height={20}
-                    className="w-5 h-5"
-                  />
-                  <span className="font-medium">Continuer avec Google</span>
-                </>
-              )}
-            </button>
-          </div>
-
-          <div className="relative mb-6">
-            <div className="absolute inset-0 flex items-center">
-              <div className="w-full border-t border-gray-300" />
-            </div>
-            <div className="relative flex justify-center text-sm">
-              <span className="px-2 bg-white text-gray-500">Ou</span>
-            </div>
-          </div>
-
-          <form className="space-y-6" onSubmit={handleSubmit}>
-            {!isLogin && (
-              <div>
-                <label htmlFor="name" className="block text-sm font-medium text-gray-700">
-                  Nom
-                </label>
-                <input
-                  type="text"
-                  id="name"
-                  value={name}
-                  onChange={(e) => setName(e.target.value)}
-                  className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-[var(--color-primary)] focus:ring-[var(--color-primary)]"
-                />
-              </div>
-            )}
-            <div>
-              <label htmlFor="email" className="block text-sm font-medium text-gray-700">
-                Email
-              </label>
-              <input
-                type="email"
-                id="email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-[var(--color-primary)] focus:ring-[var(--color-primary)]"
-              />
-            </div>
-
-            <div>
-              <label htmlFor="password" className="block text-sm font-medium text-gray-700">
-                Mot de passe
-              </label>
-              <input
-                type="password"
-                id="password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-[var(--color-primary)] focus:ring-[var(--color-primary)]"
-              />
-            </div>
-
-            <button
-              type="submit"
-              className="w-full btn-primary relative"
-              disabled={isLoading}
-            >
-              {isLoading ? (
-                <div className="flex items-center justify-center">
-                  <svg className="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                    <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                    <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-                  </svg>
-                  {isLogin ? 'Connexion en cours...' : 'Création en cours...'}
-                </div>
-              ) : (
-                isLogin ? 'Se connecter' : 'Créer un compte'
-              )}
-            </button>
-          </form>
-
-          <div className="mt-6 text-center">
-            <button
-              onClick={() => setIsLogin(!isLogin)}
-              className="text-[var(--color-primary)] hover:text-[var(--color-primary-dark)]"
-            >
-              {isLogin 
-                ? 'Pas encore de compte ? Créer un compte'
-                : 'Déjà un compte ? Se connecter'}
-            </button>
-          </div>
-        </motion.div>
+        }>
+          <AuthForm />
+        </Suspense>
       </div>
     </div>
   )

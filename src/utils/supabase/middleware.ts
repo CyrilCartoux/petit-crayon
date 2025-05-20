@@ -49,6 +49,12 @@ export async function updateSession(request: NextRequest) {
     // Rediriger vers la page d'authentification
     const url = request.nextUrl.clone()
     url.pathname = '/auth'
+    
+    // Si l'utilisateur tente d'accéder à la page de l'éditeur, on ajoute le paramètre from=editor
+    if (request.nextUrl.pathname === '/editor') {
+      url.searchParams.set('from', 'editor')
+    }
+    
     return NextResponse.redirect(url)
   }
 

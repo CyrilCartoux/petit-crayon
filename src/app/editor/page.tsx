@@ -163,13 +163,13 @@ export default function Editor() {
             </p>
             <div className="space-y-4">
               <button
-                onClick={() => router.push('/auth')}
+                onClick={() => router.push('/auth?from=editor')}
                 className="btn-primary w-full max-w-xs mx-auto"
               >
                 C&apos;est parti ! 🚀
               </button>
               <p className="text-sm text-gray-500">
-                Pas encore de compte ? <span className="text-[var(--color-primary)] cursor-pointer" onClick={() => router.push('/auth')}>Rejoins la fête ! 🎉</span>
+                Pas encore de compte ? <span className="text-[var(--color-primary)] cursor-pointer" onClick={() => router.push('/auth?from=editor')}>Rejoins la fête ! 🎉</span>
               </p>
             </div>
           </motion.div>
