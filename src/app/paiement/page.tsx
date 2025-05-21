@@ -63,6 +63,7 @@ function PaiementContent() {
   const [promoCode, setPromoCode] = useState('')
   const [promoError, setPromoError] = useState<string | null>(null)
   const [appliedPromo, setAppliedPromo] = useState<PromoCode | null>(null)
+  const [isApplyingPromo, setIsApplyingPromo] = useState(false)
 
   useEffect(() => {
     if (plan && plans[plan]) {
@@ -80,6 +81,7 @@ function PaiementContent() {
   const handlePromoCodeSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     setPromoError(null)
+    setIsApplyingPromo(true)
 
     try {
       const response = await fetch('/api/promotions/validate', {
@@ -99,6 +101,8 @@ function PaiementContent() {
       setAppliedPromo(data)
     } catch (err) {
       setPromoError(err instanceof Error ? err.message : 'Une erreur est survenue')
+    } finally {
+      setIsApplyingPromo(false)
     }
   }
 
@@ -211,19 +215,31 @@ function PaiementContent() {
 
             {/* Code promo */}
             <div className="mb-8">
+              <h2 className="text-xl font-bold text-gray-900 mb-4">Code de réduction</h2>
               <form onSubmit={handlePromoCodeSubmit} className="flex gap-2">
                 <input
                   type="text"
                   value={promoCode}
                   onChange={(e) => setPromoCode(e.target.value.toUpperCase())}
                   placeholder="Entrez votre code promo"
-                  className="flex-1 rounded-md border-gray-300 shadow-sm focus:border-[var(--color-primary)] focus:ring-[var(--color-primary)]"
+                  className="flex-1 rounded-md border-2 border-gray-300 shadow-sm focus:border-[var(--color-primary)] focus:ring-[var(--color-primary)] px-4 py-3 text-lg font-medium placeholder:text-gray-400"
                 />
                 <button
                   type="submit"
-                  className="px-4 py-2 bg-[var(--color-primary)] text-white rounded-md hover:bg-[var(--color-primary-dark)] transition-colors"
+                  disabled={isApplyingPromo}
+                  className="px-6 py-3 bg-[var(--color-primary)] text-white rounded-md hover:bg-[var(--color-primary-dark)] transition-colors font-medium text-lg disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
                 >
-                  Appliquer
+                  {isApplyingPromo ? (
+                    <>
+                      <svg className="animate-spin h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                        <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                        <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                      </svg>
+                      Application...
+                    </>
+                  ) : (
+                    'Appliquer'
+                  )}
                 </button>
               </form>
               {promoError && (
@@ -249,7 +265,7 @@ function PaiementContent() {
             </div>
 
             {/* Récapitulatif du plan */}
-            <div className="mb-8 p-6 bg-gray-50 rounded-xl">
+            {/* <div className="mb-8 p-6 bg-gray-50 rounded-xl">
               <h2 className="text-2xl font-bold text-gray-900 mb-2">{selectedPlan.name}</h2>
               <p className="text-gray-600 mb-4">{selectedPlan.description}</p>
               <div className="flex items-baseline">
@@ -263,7 +279,7 @@ function PaiementContent() {
                   / une fois
                 </span>
               </div>
-            </div>
+            </div> */}
 
             {/* Bouton de paiement */}
             <motion.button
