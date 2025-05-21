@@ -3,66 +3,56 @@
 import Image from 'next/image';
 import Link from 'next/link';
 import { motion } from 'framer-motion';
+import { useLanguage } from '@/contexts/LanguageContext';
 
 const examples = [
   {
-    id: 1,
+    id: 'beach',
     original: '/images/examples/plage-original.jpg',
     coloring: '/images/examples/plage-coloring.png',
-    title: 'Jeux en famille à la plage',
-    description: '➔ De la photo au coloriage magique'
   },
   {
-    id: 2,
+    id: 'zoo',
     original: '/images/examples/elephant-original.jpg',
     coloring: '/images/examples/elephant-coloring.png',
-    title: 'Session photo au zoo',
-    description: '➔ Vos explorations deviennent créatives'
   },
   {
-    id: 3,
+    id: 'birthday',
     original: '/images/examples/anniversaire-original.jpg',
     coloring: '/images/examples/anniversaire-coloring.png',
-    title: 'Anniversaire entre amis',
-    description: '➔ Capturez ces moments tendres'
   }
 ];
 
 const showcaseExamples = [
   {
-    id: 1,
+    id: 'cars',
     image: '/images/showcase/ferrari.jpeg',
-    title: 'Voitures de sport',
-    description: 'Des coloriages détaillés pour les passionnés d\'automobiles',
     icon: '🚗'
   },
   {
-    id: 2,
+    id: 'food',
     image: '/images/showcase/burger.png',
-    title: 'Gastronomie',
-    description: 'Donnez vie à vos plats préférés avec des coloriages gourmands',
     icon: '🍽️'
   },
   {
-    id: 3,
+    id: 'nature',
     image: '/images/showcase/chien.jpeg',
-    title: 'Faune & Flore',
-    description: 'Explorez la nature à travers des coloriages animaliers',
     icon: '🦁'
   }
 ];
 
 export default function GalleryPreview() {
+  const { t } = useLanguage();
+
   return (
     <section className="py-16 bg-gradient-to-b from-white to-[var(--color-primary)]/5">
       <div className="mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-12">
           <h2 className="text-3xl font-bold text-gray-900 mb-4">
-            Transformez vos souvenirs en aventures à colorier.
+            {t('gallery.title')}
           </h2>
           <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-            Transformez vos photos en coloriages uniques et personnalisés. 
-            Voici quelques exemples de ce que vous pouvez créer.
+            {t('gallery.description')}
           </p>
         </div>
 
@@ -82,7 +72,7 @@ export default function GalleryPreview() {
                   <div className="relative">
                     <Image
                       src={example.original}
-                      alt={`${example.title} - Original`}
+                      alt={`${t(`gallery.examples.${example.id}.title`)} - Original`}
                       fill
                       className="object-cover transition-transform duration-300 group-hover:scale-105"
                     />
@@ -90,7 +80,7 @@ export default function GalleryPreview() {
                   <div className="relative">
                     <Image
                       src={example.coloring}
-                      alt={`${example.title} - Coloriage`}
+                      alt={`${t(`gallery.examples.${example.id}.title`)} - Coloriage`}
                       fill
                       className="object-cover transition-transform duration-300 group-hover:scale-105"
                     />
@@ -98,10 +88,10 @@ export default function GalleryPreview() {
                 </div>
                 <div className="absolute bottom-0 left-0 p-4 z-20">
                   <h3 className="text-xl font-semibold text-white mb-1">
-                    {example.title}
+                    {t(`gallery.examples.${example.id}.title`)}
                   </h3>
                   <p className="text-white/90 text-sm">
-                    {example.description}
+                    {t(`gallery.examples.${example.id}.description`)}
                   </p>
                 </div>
               </div>
@@ -110,7 +100,7 @@ export default function GalleryPreview() {
                   href="/editor"
                   className="w-full block text-center px-4 py-2 text-sm font-medium text-white bg-[var(--color-primary)] hover:bg-[var(--color-primary-dark)] rounded-md transition-colors"
                 >
-                  Essayer
+                  {t('gallery.cta.try')}
                 </Link>
               </div>
             </motion.div>
@@ -121,10 +111,10 @@ export default function GalleryPreview() {
         <div className="mt-20">
           <div className="text-center mb-12">
             <h2 className="text-3xl font-bold text-gray-900 mb-4">
-              Explorez nos thèmes
+              {t('gallery.showcase.title')}
             </h2>
             <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-              Des coloriages pour tous les passionnés, de la voiture à la nature
+              {t('gallery.showcase.description')}
             </p>
           </div>
 
@@ -141,7 +131,7 @@ export default function GalleryPreview() {
                 <div className="relative h-96">
                   <Image
                     src={example.image}
-                    alt={example.title}
+                    alt={t(`gallery.showcase.themes.${example.id}.title`)}
                     fill
                     className="object-cover transition-transform duration-300 group-hover:scale-105"
                   />
@@ -151,16 +141,16 @@ export default function GalleryPreview() {
                   </div>
                   <div className="absolute bottom-0 left-0 p-8 z-20">
                     <h3 className="text-2xl font-bold text-white mb-3">
-                      {example.title}
+                      {t(`gallery.showcase.themes.${example.id}.title`)}
                     </h3>
                     <p className="text-white/90 text-lg mb-4">
-                      {example.description}
+                      {t(`gallery.showcase.themes.${example.id}.description`)}
                     </p>
                     <Link
                       href="/editor"
                       className="inline-flex items-center px-4 py-2 text-sm font-medium text-white bg-white/20 hover:bg-white/30 backdrop-blur-sm rounded-lg transition-all duration-300 border border-white/30"
                     >
-                      Créer
+                      {t('gallery.cta.create')}
                       <svg
                         className="ml-2 w-4 h-4"
                         fill="none"
@@ -187,7 +177,7 @@ export default function GalleryPreview() {
             href="/editor"
             className="inline-flex items-center px-6 py-3 text-base font-medium text-white bg-[var(--color-primary)] hover:bg-[var(--color-primary-dark)] rounded-md transition-colors"
           >
-            Créer mon coloriage 
+            {t('gallery.cta.main')}
             <svg
               className="ml-2 -mr-1 w-5 h-5"
               fill="none"

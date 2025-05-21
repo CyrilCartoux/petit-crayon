@@ -1,0 +1,349 @@
+{
+  "common": {
+    "language": "Langue",
+    "french": "Français",
+    "english": "Anglais"
+  },
+  "header": {
+    "connection": "Connexion",
+    "disconnect": "Déconnexion"
+  },
+  "home": {
+    "hero": {
+      "title": "Transformez vos photos en coloriages magiques",
+      "photos": "photos",
+      "coloriages": "coloriages",
+      "description": "Découvrez la magie de transformer vos plus beaux souvenirs en coloriages uniques. Une expérience créative inoubliable pour toute la famille !",
+      "cta": "Créer mon coloriage"
+    },
+    "plans": {
+      "title": "Offrez des heures de créativité",
+      "subtitle": "Choisissez le forfait qui correspond à vos besoins"
+    }
+  },
+  "promo": {
+    "title": {
+      "single": "Offre spéciale du jour !",
+      "multiple": "Offres spéciales du jour !"
+    },
+    "validity": "Valable aujourd'hui uniquement",
+    "coloriages": "{count} coloriages",
+    "copy": "Copier",
+    "copied": "Copié !",
+    "footer": {
+      "single": "Utilisez ce code lors de votre paiement pour bénéficier de cette offre exclusive !",
+      "multiple": "Utilisez ces codes lors de votre paiement pour bénéficier de ces offres exclusives !"
+    }
+  },
+  "payment": {
+    "title": "Finalisez votre achat",
+    "unlock": "Vous êtes sur le point de débloquer {count} coloriages",
+    "choosePlan": "Choisissez votre plan",
+    "once": "une fois",
+    "promoCode": {
+      "title": "Code de réduction",
+      "placeholder": "Entrez votre code promo",
+      "apply": "Appliquer",
+      "applying": "Application...",
+      "applied": "Code promo appliqué : {code}",
+      "discount": {
+        "percent": "Réduction de {percent}%",
+        "amount": "Réduction de {amount} {currency}"
+      }
+    },
+    "security": {
+      "title": "Paiement 100% sécurisé",
+      "description": "Vos données sont protégées par le cryptage SSL et Stripe"
+    },
+    "pay": "Payer {amount}€",
+    "processing": "Traitement en cours...",
+    "success": {
+      "title": "Paiement réussi !",
+      "description": "Félicitations ! Vos crédits ont été ajoutés à votre compte. Vous pouvez maintenant commencer à transformer vos photos en coloriages.",
+      "button": "Commencer mes créations",
+      "redirect": "Vous serez redirigé vers l'éditeur de coloriages"
+    }
+  },
+  "plans": {
+    "popular": "POPULAIRE",
+    "once": "/ paiement unique",
+    "choose": "Choisir",
+    "mini": {
+      "title": "Mini",
+      "description": "🖍️ Parfait pour tester en douceur.",
+      "features": "2 coloriages"
+    },
+    "starter": {
+      "title": "Starter",
+      "description": "✨ Le début parfait pour découvrir la magie",
+      "features": "5 coloriages"
+    },
+    "famille": {
+      "title": "Famille",
+      "description": "👨‍👩‍👧‍👦 Pour revivre vos plus beaux souvenirs en famille.",
+      "features": "12 coloriages"
+    }
+  },
+  "reviews": {
+    "title": "(123 avis)",
+    "sophie": {
+      "name": "Sophie C.",
+      "text": "Un service incroyable ! Les coloriages sont magnifiques, mes enfants ont adoré. Je recommande à 100% !"
+    },
+    "lucas": {
+      "name": "Lucas L.",
+      "text": "Super expérience, rapide et facile. Le résultat est bluffant, parfait pour offrir !"
+    },
+    "emma": {
+      "name": "Emma P.",
+      "text": "Très satisfaite, le rendu est top et l'équipe est très réactive. Merci !"
+    }
+  },
+  "footer": {
+    "about": {
+      "title": "À propos",
+      "description": "Donnez vie à vos souvenirs, amusez vos enfants !",
+      "subdescription": "Transformez facilement vos photos en coloriages uniques. Parfait pour les petits artistes comme pour les grands rêveurs."
+    },
+    "contact": {
+      "title": "Contact",
+      "email": "petitcrayon.fr@gmail.com"
+    },
+    "copyright": "© 2025 Petit Crayon. Tous droits réservés.",
+    "links": {
+      "privacy": "Politique de confidentialité",
+      "terms": "Conditions d'utilisation"
+    }
+  },
+  "gallery": {
+    "title": "Transformez vos souvenirs en aventures à colorier.",
+    "description": "Transformez vos photos en coloriages uniques et personnalisés. Voici quelques exemples de ce que vous pouvez créer.",
+    "examples": {
+      "beach": {
+        "title": "Jeux en famille à la plage",
+        "description": "➔ De la photo au coloriage magique"
+      },
+      "zoo": {
+        "title": "Session photo au zoo",
+        "description": "➔ Vos explorations deviennent créatives"
+      },
+      "birthday": {
+        "title": "Anniversaire entre amis",
+        "description": "➔ Capturez ces moments tendres"
+      }
+    },
+    "showcase": {
+      "title": "Explorez nos thèmes",
+      "description": "Des coloriages pour tous les passionnés, de la voiture à la nature",
+      "themes": {
+        "cars": {
+          "title": "Voitures de sport",
+          "description": "Des coloriages détaillés pour les passionnés d'automobiles"
+        },
+        "food": {
+          "title": "Gastronomie",
+          "description": "Donnez vie à vos plats préférés avec des coloriages gourmands"
+        },
+        "nature": {
+          "title": "Faune & Flore",
+          "description": "Explorez la nature à travers des coloriages animaliers"
+        }
+      }
+    },
+    "cta": {
+      "try": "Essayer",
+      "create": "Créer",
+      "main": "Créer mon coloriage"
+    }
+  },
+  "loading": {
+    "default": "On prépare votre coloriage magique... ✨",
+    "long": "On y est presque ! Notre IA met la dernière touche à votre chef-d'œuvre 🎨",
+    "break": "Prenez une petite pause, on s'occupe de tout ! ☕️"
+  },
+  "auth": {
+    "error": {
+      "title": "Oups ! Une erreur est survenue",
+      "description": "Le lien de confirmation semble être invalide ou avoir expiré.",
+      "resend": {
+        "button": "Renvoyer l'email de confirmation",
+        "loading": "Envoi en cours...",
+        "success": "Email de confirmation envoyé avec succès !"
+      },
+      "back": "Retour à la page de connexion",
+      "generic": "Une erreur est survenue"
+    },
+    "login": {
+      "title": "Connexion",
+      "welcome": "Bienvenue !",
+      "description": "Connectez-vous pour accéder à vos coloriages",
+      "button": "Se connecter",
+      "loading": "Connexion en cours...",
+      "noAccount": "Pas encore de compte ?",
+      "createAccount": "Créer un compte"
+    },
+    "register": {
+      "title": "Inscription",
+      "welcome": "Créer un compte",
+      "description": "Rejoignez-nous pour créer vos coloriages",
+      "button": "Créer un compte",
+      "loading": "Création en cours...",
+      "hasAccount": "Déjà un compte ?",
+      "login": "Se connecter"
+    },
+    "common": {
+      "or": "Ou",
+      "email": "Email",
+      "password": "Mot de passe",
+      "continueWithGoogle": "Continuer avec Google",
+      "loading": "Chargement...",
+      "success": {
+        "title": "Inscription réussie !",
+        "description": "Un email de confirmation vous a été envoyé. Vérifiez votre boîte de réception (et les spams) pour finaliser votre inscription."
+      },
+      "error": {
+        "emailNotConfirmed": "Veuillez confirmer votre email avant de vous connecter. Vérifiez votre boîte de réception.",
+        "generic": "Une erreur est survenue"
+      }
+    }
+  },
+  "editor": {
+    "title": "🖍️ Prêt(e) pour une aventure colorée ?",
+    "credits": {
+      "remaining": "Crédits restants",
+      "loading": "Chargement des crédits...",
+      "needMore": "Besoin de plus de crédits ? 🎨",
+      "useCredit": "Transforme ta photo en coloriage (1 crédit) 🎨"
+    },
+    "dropzone": {
+      "active": "🎨 Super ! Lâche ta photo ici !",
+      "inactive": "Glisse-dépose ta photo ou clique pour commencer l'aventure !",
+      "formats": "Formats acceptés: PNG, JPG, JPEG ✨"
+    },
+    "guest": {
+      "title": "Transforme tes photos préférées en super coloriages",
+      "cta": "Première fois ? Crée ton compte !",
+      "button": "C'est parti ! 🚀",
+      "noAccount": "Pas encore de compte ?",
+      "join": "Rejoins la fête ! 🎉"
+    },
+    "processing": {
+      "loading": "Patience... La magie opère ! ✨",
+      "success": "🎨 Ta création est prête !",
+      "download": "Télécharger ✨",
+      "new": "Nouvelle création 🎨"
+    },
+    "error": {
+      "noCredits": {
+        "message": "Vous n'avez pas assez de crédits pour effectuer cette opération.",
+        "details": "Veuillez acheter des crédits supplémentaires pour continuer."
+      },
+      "processing": {
+        "message": "Une erreur est survenue lors du traitement de l'image.",
+        "details": "Veuillez réessayer plus tard ou contacter le support si le problème persiste."
+      },
+      "loading": {
+        "message": "Erreur lors du chargement de l'image générée.",
+        "details": "Veuillez réessayer plus tard ou contacter le support si le problème persiste."
+      },
+      "invalid": "Oups ! Une erreur est survenue avec l'image 😅"
+    }
+  },
+  "privacy": {
+    "title": "Politique de Confidentialité",
+    "lastUpdate": "Dernière mise à jour : {date}",
+    "sections": {
+      "introduction": {
+        "title": "1. Introduction",
+        "content": "Chez Petit Crayon, nous accordons une grande importance à la protection de vos données personnelles. Cette politique de confidentialité explique comment nous collectons, utilisons et protégeons vos informations."
+      },
+      "dataCollection": {
+        "title": "2. Collecte des Données",
+        "content": "Nous collectons les informations suivantes :",
+        "items": [
+          "Informations de compte (email, nom)",
+          "Photos téléchargées pour la transformation en coloriages",
+          "Données de paiement (gérées par Stripe)",
+          "Données d'utilisation du site"
+        ]
+      },
+      "dataUsage": {
+        "title": "3. Utilisation des Données",
+        "content": "Vos données sont utilisées pour :",
+        "items": [
+          "Fournir et améliorer nos services",
+          "Traiter vos commandes et paiements",
+          "Vous envoyer des communications importantes",
+          "Assurer la sécurité de nos services"
+        ]
+      },
+      "dataProtection": {
+        "title": "4. Protection des Données",
+        "content": "Nous mettons en œuvre des mesures de sécurité appropriées pour protéger vos données contre tout accès non autorisé, modification, divulgation ou destruction."
+      },
+      "dataSharing": {
+        "title": "5. Partage des Données",
+        "content": "Nous ne partageons vos données qu'avec :",
+        "items": [
+          "Stripe pour le traitement des paiements",
+          "Les services d'hébergement et d'infrastructure",
+          "Les autorités compétentes si requis par la loi"
+        ]
+      },
+      "rights": {
+        "title": "6. Vos Droits",
+        "content": "Conformément au RGPD, vous avez le droit de :",
+        "items": [
+          "Accéder à vos données",
+          "Les rectifier ou les supprimer",
+          "Vous opposer à leur traitement",
+          "Demander la portabilité de vos données"
+        ]
+      },
+      "contact": {
+        "title": "7. Contact",
+        "content": "Pour toute question concernant cette politique ou vos données, contactez-nous à :"
+      }
+    }
+  },
+  "terms": {
+    "title": "Conditions Générales d'Utilisation",
+    "lastUpdate": "Dernière mise à jour : {date}",
+    "sections": {
+      "acceptance": {
+        "title": "1. Acceptation des Conditions",
+        "content": "En accédant et en utilisant le site web Petit Crayon (ci-après dénommé \"le Site\"), vous acceptez d'être lié par les présentes Conditions Générales d'Utilisation. Si vous n'acceptez pas ces conditions, veuillez ne pas utiliser le Site."
+      },
+      "description": {
+        "title": "2. Description du Service",
+        "content": "Petit Crayon propose un service de transformation de photographies en dessins à colorier. Les utilisateurs peuvent télécharger des photos, qui sont ensuite converties en dessins à colorier via une technologie d'intelligence artificielle."
+      },
+      "usage": {
+        "title": "3. Utilisation du Service",
+        "content": "Vous acceptez de ne pas utiliser le Site pour :",
+        "items": [
+          "Violer les droits de propriété intellectuelle d'autrui",
+          "Transmettre du contenu illégal, diffamatoire ou offensant",
+          "Interférer avec le fonctionnement normal du Site",
+          "Tenter d'accéder à des zones du Site non autorisées"
+        ]
+      },
+      "intellectualProperty": {
+        "title": "4. Propriété Intellectuelle",
+        "content": "Tous les contenus présents sur le Site, y compris les textes, graphiques, logos, images et logiciels, sont la propriété de Petit Crayon ou de ses concédants de licence et sont protégés par les lois sur la propriété intellectuelle."
+      },
+      "liability": {
+        "title": "5. Limitation de Responsabilité",
+        "content": "Petit Crayon ne peut être tenu responsable des dommages directs ou indirects résultant de l'utilisation du Site ou de l'impossibilité d'y accéder."
+      },
+      "modifications": {
+        "title": "6. Modification des Conditions",
+        "content": "Petit Crayon se réserve le droit de modifier ces conditions à tout moment. Les modifications prendront effet dès leur publication sur le Site."
+      },
+      "contact": {
+        "title": "7. Contact",
+        "content": "Pour toute question concernant ces conditions, veuillez nous contacter à l'adresse suivante :"
+      }
+    }
+  }
+}

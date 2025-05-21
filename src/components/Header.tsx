@@ -6,12 +6,14 @@ import { useState } from 'react'
 import { useAuth } from '@/contexts/AuthContext'
 import { useCredits } from '@/contexts/CreditsContext'
 import { useRouter } from 'next/navigation'
-
+import LanguageSelector from './LanguageSelector'
+import { useLanguage } from '@/contexts/LanguageContext'
 export default function Header() {
   const [isUserMenuOpen, setIsUserMenuOpen] = useState(false)
   const { user, signOut } = useAuth()
   const { credits, loading } = useCredits()
   const router = useRouter()
+  const { t } = useLanguage()
 
   const getUserDisplayName = () => {
     if (user?.user_metadata?.full_name) {
@@ -38,20 +40,22 @@ export default function Header() {
         <div className="flex justify-between h-16">
           <div className="flex">
             <div className="flex-shrink-0 flex items-center">
-            <Link href="/">
+              <Link href="/">
                 <Image
                   src="/images/logo.png"
                   alt="Petit Crayon"
                   width={120}
                   height={120}
-                  className="cursor-pointer hover:opacity-80 transition-opacity"                />
+                  className="cursor-pointer hover:opacity-80 transition-opacity"
+                />
               </Link>
             </div>
           </div>
 
           <div className="flex items-center">
+            <LanguageSelector />
             {user && (
-              <div className="flex items-center space-x-4">
+              <div className="flex items-center space-x-4 ml-6">
                 <button
                   onClick={() => router.push('/paiement')}
                   className="cursor-pointer flex items-center space-x-2 bg-gray-50 px-4 py-2 rounded-full hover:bg-gray-100 transition-colors"
@@ -89,7 +93,7 @@ export default function Header() {
                           className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
                           role="menuitem"
                         >
-                          Déconnexion
+                          {t('header.disconnect')}
                         </button>
                       </div>
                     </div>
@@ -100,9 +104,9 @@ export default function Header() {
             {!user && (
               <Link
                 href="/auth"
-                className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-[var(--color-primary)] hover:bg-[var(--color-primary-dark)]"
+                className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-[var(--color-primary)] hover:bg-[var(--color-primary-dark)] ml-6"
               >
-                Connexion
+                {t('header.connection')}
               </Link>
             )}
           </div>

@@ -2,15 +2,17 @@
 
 import { motion, useAnimation } from 'framer-motion';
 import { useEffect, useState } from 'react';
+import { useLanguage } from '@/contexts/LanguageContext';
 
 interface LoadingModalProps {
   isOpen: boolean;
   message?: string;
 }
 
-export default function LoadingModal({ isOpen, message = 'On prépare votre coloriage magique... ✨' }: LoadingModalProps) {
+export default function LoadingModal({ isOpen, message }: LoadingModalProps) {
   const [showLongLoadingMessage, setShowLongLoadingMessage] = useState(false);
   const controls = useAnimation();
+  const { t } = useLanguage();
 
   useEffect(() => {
     if (isOpen) {
@@ -47,14 +49,16 @@ export default function LoadingModal({ isOpen, message = 'On prépare votre colo
               transition={{ duration: 20, ease: "linear" }}
             />
           </div>
-          <h3 className="text-lg font-medium text-gray-900">{message}</h3>
+          <h3 className="text-lg font-medium text-gray-900">
+            {message || t('loading.default')}
+          </h3>
           {showLongLoadingMessage && (
             <p className="mt-2 text-sm text-gray-500">
-              On y est presque ! Notre IA met la dernière touche à votre chef-d&apos;œuvre 🎨
+              {t('loading.long')}
             </p>
           )}
           <p className="mt-2 text-sm text-gray-500">
-            Prenez une petite pause, on s&apos;occupe de tout ! ☕️
+            {t('loading.break')}
           </p>
         </div>
       </motion.div>

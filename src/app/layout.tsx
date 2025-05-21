@@ -9,6 +9,7 @@ import { SpeedInsights } from "@vercel/speed-insights/next"
 import Script from 'next/script';
 import { Analytics } from "@vercel/analytics/react"
 import LogRocketProvider from '@/components/LogRocketProvider';
+import { LanguageProvider } from '@/contexts/LanguageContext'
 
 const fredoka = Fredoka({ subsets: ["latin"] });
 
@@ -94,20 +95,22 @@ export default function RootLayout({
           />
         </noscript>
         {/* End Google Tag Manager (noscript) */}
-        <AuthProvider>
-          <CreditsProvider>
-            <LogRocketProvider />
-            <Header />
-            
-            <main className="min-h-screen pt-16">
-              {children}
-            </main>
+        <LanguageProvider>
+          <AuthProvider>
+            <CreditsProvider>
+              <LogRocketProvider />
+              <Header />
+              
+              <main className="min-h-screen pt-16">
+                {children}
+              </main>
 
-            <Footer />
-            <SpeedInsights />
-            <Analytics />
-          </CreditsProvider>
-        </AuthProvider>
+              <Footer />
+              <SpeedInsights />
+              <Analytics />
+            </CreditsProvider>
+          </AuthProvider>
+        </LanguageProvider>
       </body>
     </html>
   );

@@ -8,8 +8,11 @@ import PromoOffers from "@/components/PromoOffers";
 import GalleryPreview from "@/components/GalleryPreview";
 import { PlanCard } from "@/components/PlanCard";
 import CustomerReviews from "@/components/CustomerReviews";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 export default function Home() {
+  const { t } = useLanguage();
+
   return (
     <>
       {/* Hero Section */}
@@ -54,9 +57,7 @@ export default function Home() {
               transition={{ duration: 0.6, delay: 0.2 }}
               className="text-3xl sm:text-4xl md:text-6xl font-bold text-gray-900 mb-4 sm:mb-6 leading-tight max-w-3xl mx-auto"
             >
-              Transformez vos{" "}
-              <span className="text-primary">photos</span> en{" "}
-              <span className="text-primary">coloriages magiques</span>
+              {t('home.hero.title')}
             </motion.h1>
 
             <motion.p
@@ -65,8 +66,7 @@ export default function Home() {
               transition={{ duration: 0.6, delay: 0.4 }}
               className="text-lg sm:text-xl md:text-2xl text-gray-600 mb-8 sm:mb-12 max-w-3xl mx-auto leading-relaxed px-4"
             >
-              Découvrez la magie de transformer vos plus beaux souvenirs en coloriages uniques. 
-              Une expérience créative inoubliable pour toute la famille !
+              {t('home.hero.description')}
             </motion.p>
 
             <motion.div
@@ -79,7 +79,7 @@ export default function Home() {
                 href="/editor"
                 className="inline-flex items-center px-6 py-3 sm:px-8 sm:py-4 text-lg sm:text-xl font-bold text-white bg-gradient-to-r from-[var(--color-primary)] to-[var(--color-primary-dark)] rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 mb-8"
               >
-                Créer mon coloriage
+                {t('home.hero.cta')}
                 <svg
                   className="ml-3 -mr-1 w-5 h-5 sm:w-6 sm:h-6"
                   fill="none"
@@ -108,10 +108,10 @@ export default function Home() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-8">
             <h2 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-4">
-              Offrez des heures de créativité
+              {t('home.plans.title')}
             </h2>
             <p className="text-base sm:text-lg text-gray-600">
-              Choisissez le forfait qui correspond à vos besoins
+              {t('home.plans.subtitle')}
             </p>
           </div>
           <PlanCard />

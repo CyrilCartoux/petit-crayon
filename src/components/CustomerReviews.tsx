@@ -6,25 +6,23 @@ import { Pagination, Navigation } from 'swiper/modules';
 import 'swiper/css';
 import 'swiper/css/pagination';
 import 'swiper/css/navigation';
+import { useLanguage } from '@/contexts/LanguageContext';
 
 const reviews = [
   {
-    name: 'Sophie C.',
+    id: 'sophie',
     profileColor: 'bg-[var(--color-primary)]',
     example: '/images/example1.png',
-    text: 'Un service incroyable ! Les coloriages sont magnifiques, mes enfants ont adoré. Je recommande à 100% !',
   },
   {
-    name: 'Lucas L.',
+    id: 'lucas',
     profileColor: 'bg-[var(--color-accent)]',
     example: '/images/example2.png',
-    text: 'Super expérience, rapide et facile. Le résultat est bluffant, parfait pour offrir !',
   },
   {
-    name: 'Emma P.',
+    id: 'emma',
     profileColor: 'bg-[var(--color-secondary)]',
     example: '/images/example3.png',
-    text: 'Très satisfaite, le rendu est top et l\'équipe est très réactive. Merci !',
   },
 ];
 
@@ -33,19 +31,25 @@ function getInitial(name: string) {
 }
 
 function ReviewCard({ review }: { review: typeof reviews[0] }) {
+  const { t } = useLanguage();
+  const reviewData = {
+    name: t(`reviews.${review.id}.name`),
+    text: t(`reviews.${review.id}.text`)
+  };
+
   return (
     <div className="flex flex-col items-center text-center bg-gray-50 rounded-xl p-4 shadow-sm h-full">
       {/* Avatar cercle avec initiale */}
       <div className={`w-14 h-14 mb-2 rounded-full flex items-center justify-center text-white text-2xl font-bold shadow ${review.profileColor}`}>
-        {getInitial(review.name)}
+        {getInitial(reviewData.name)}
       </div>
-      <p className="text-gray-700 text-sm mb-2">&quot;{review.text}&quot;</p>
-      <span className="text-xs text-gray-500 font-medium mb-2">{review.name}</span>
+      <p className="text-gray-700 text-sm mb-2">&quot;{reviewData.text}&quot;</p>
+      <span className="text-xs text-gray-500 font-medium mb-2">{reviewData.name}</span>
       {/* Image d'exemple */}
       <div className="w-full h-28 relative mt-2 rounded-lg overflow-hidden border border-gray-200 bg-white">
         <Image
           src={review.example}
-          alt={`Exemple de coloriage de ${review.name}`}
+          alt={`Exemple de coloriage de ${reviewData.name}`}
           fill
           className="object-contain"
           sizes="100vw"
@@ -56,6 +60,8 @@ function ReviewCard({ review }: { review: typeof reviews[0] }) {
 }
 
 export default function CustomerReviews() {
+  const { t } = useLanguage();
+
   return (
     <section className="max-w-4xl mx-auto my-12 bg-white rounded-2xl shadow-md px-6 py-8">
       <div className="flex items-center justify-center gap-4 mb-6">
@@ -67,7 +73,7 @@ export default function CustomerReviews() {
             </svg>
           ))}
         </div>
-        <span className="text-gray-500 text-sm">(123 avis)</span>
+        <span className="text-gray-500 text-sm">{t('reviews.title')}</span>
       </div>
 
       {/* Carousel pour mobile */}

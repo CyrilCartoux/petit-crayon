@@ -7,6 +7,7 @@ import { PhotoIcon, ArrowPathIcon } from '@heroicons/react/24/outline'
 import Image from 'next/image'
 import { useAuth } from '@/contexts/AuthContext'
 import { useCredits } from '@/contexts/CreditsContext'
+import { useLanguage } from '@/contexts/LanguageContext'
 import LoadingModal from '@/components/LoadingModal'
 import confetti from 'canvas-confetti'
 import { useRouter } from 'next/navigation'
@@ -19,6 +20,7 @@ export default function Editor() {
   const { user } = useAuth()
   const { credits, loading: creditsLoading, useCredits: checkCredits } = useCredits()
   const router = useRouter()
+  const { t } = useLanguage()
 
   useEffect(() => {
     if (result) {
@@ -38,8 +40,8 @@ export default function Editor() {
       const hasEnoughCredits = await checkCredits(1)
       if (!hasEnoughCredits) {
         setError({ 
-          message: 'Vous n\'avez pas assez de crédits pour effectuer cette opération.',
-          details: 'Veuillez acheter des crédits supplémentaires pour continuer.'
+          message: t('editor.error.noCredits.message'),
+          details: t('editor.error.noCredits.details')
         })
         return
       }
@@ -56,8 +58,8 @@ export default function Editor() {
 
       if (!response.ok) {
         setError({ 
-          message: data.error || 'Une erreur est survenue lors du traitement de l\'image.',
-          details: data.details
+          message: data.error || t('editor.error.processing.message'),
+          details: data.details || t('editor.error.processing.details')
         })
         return
       }
@@ -66,8 +68,8 @@ export default function Editor() {
     } catch (error) {
       console.error('Erreur lors du traitement:', error)
       setError({ 
-        message: 'Une erreur est survenue lors du traitement de l\'image.',
-        details: 'Veuillez réessayer plus tard ou contacter le support si le problème persiste.'
+        message: t('editor.error.processing.message'),
+        details: t('editor.error.processing.details')
       })
     } finally {
       setIsProcessing(false)
@@ -102,10 +104,10 @@ export default function Editor() {
     <div className="min-h-screen bg-gradient-to-b from-white to-[var(--color-primary)]/10 py-12">
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center mb-8">
-          <h1 className="text-3xl font-bold">🖍️ Prêt(e) pour une aventure colorée ?</h1>
+          <h1 className="text-3xl font-bold">{t('editor.title')}</h1>
           {user && (
             <div className="flex items-center space-x-2 px-3 py-1.5 bg-gray-50 rounded-full">
-              <span className="text-sm font-medium text-gray-700">Crédits restants</span>
+              <span className="text-sm font-medium text-gray-700">{t('editor.credits.remaining')}</span>
               {creditsLoading ? (
                 <div className="w-8 h-4 bg-gray-200 rounded animate-pulse" />
               ) : (
@@ -157,19 +159,19 @@ export default function Editor() {
               />
             </div>
             <p className="text-gray-600 mb-6">
-              Transforme tes photos préférées en super coloriages
+              {t('editor.guest.title')}
               <br />
-              <span className="font-semibold text-[var(--color-primary)]">Première fois ? Crée ton compte ! </span>
+              <span className="font-semibold text-[var(--color-primary)]">{t('editor.guest.cta')}</span>
             </p>
             <div className="space-y-4">
               <button
                 onClick={() => router.push('/auth?from=editor')}
                 className="btn-primary w-full max-w-xs mx-auto"
               >
-                C&apos;est parti ! 🚀
+                {t('editor.guest.button')}
               </button>
               <p className="text-sm text-gray-500">
-                Pas encore de compte ? <span className="text-[var(--color-primary)] cursor-pointer" onClick={() => router.push('/auth?from=editor')}>Rejoins la fête ! 🎉</span>
+                {t('editor.guest.noAccount')} <span className="text-[var(--color-primary)] cursor-pointer" onClick={() => router.push('/auth?from=editor')}>{t('editor.guest.join')}</span>
               </p>
             </div>
           </motion.div>
@@ -190,11 +192,11 @@ export default function Editor() {
               <PhotoIcon className="mx-auto h-12 w-12 text-gray-400" />
               <p className="mt-4 text-lg text-gray-600">
                 {isDragActive
-                  ? '🎨 Super ! Lâche ta photo ici !'
-                  : 'Glisse-dépose ta photo ou clique pour commencer l\'aventure !'}
+                  ? t('editor.dropzone.active')
+                  : t('editor.dropzone.inactive')}
               </p>
               <p className="mt-2 text-sm text-gray-500">
-                Formats acceptés: PNG, JPG, JPEG ✨
+                {t('editor.dropzone.formats')}
               </p>
             </div>
           </motion.div>
@@ -251,14 +253,14 @@ export default function Editor() {
                   {isProcessing ? (
                     <div className="flex items-center justify-center">
                       <ArrowPathIcon className="h-6 w-6 animate-spin mr-2" />
-                      Patience... La magie opère ! ✨
+                      {t('editor.processing.loading')}
                     </div>
                   ) : creditsLoading ? (
-                    'Chargement des crédits...'
+                    t('editor.credits.loading')
                   ) : credits <= 0 ? (
-                    'Besoin de plus de crédits ? 🎨'
+                    t('editor.credits.needMore')
                   ) : (
-                    'Transforme ta photo en coloriage (1 crédit) 🎨'
+                    t('editor.credits.useCredit')
                   )}
                 </motion.button>
               </motion.div>
@@ -270,7 +272,7 @@ export default function Editor() {
                 animate={{ opacity: 1, y: 0 }}
                 className="card bg-white/80 backdrop-blur-sm p-6"
               >
-                <h2 className="text-xl font-bold mb-4">🎨 Ta création est prête !</h2>
+                <h2 className="text-xl font-bold mb-4">{t('editor.processing.success')}</h2>
                 {isValidImageUrl(result) ? (
                   <div className="relative aspect-video mb-6">
                     <Image
@@ -281,10 +283,10 @@ export default function Editor() {
                       height={500}
                       priority
                       onError={(e) => {
-                        console.error('Erreur de chargement de l&apos;image:', e)
+                        console.error('Erreur de chargement de l\'image:', e)
                         setError({ 
-                          message: 'Erreur lors du chargement de l&apos;image générée.',
-                          details: 'Veuillez réessayer plus tard ou contacter le support si le problème persiste.'
+                          message: t('editor.error.loading.message'),
+                          details: t('editor.error.loading.details')
                         })
                         setResult(null)
                       }}
@@ -292,7 +294,7 @@ export default function Editor() {
                   </div>
                 ) : (
                   <div className="text-red-500 mb-6">
-                    Oups ! Une erreur est survenue avec l&apos;image 😅
+                    {t('editor.error.invalid')}
                   </div>
                 )}
                 <div className="mt-6 flex gap-4">
@@ -307,7 +309,7 @@ export default function Editor() {
                     }}
                     className="btn-primary flex-1"
                   >
-                    Télécharger ✨
+                    {t('editor.processing.download')}
                   </button>
                   <button 
                     onClick={() => {
@@ -316,7 +318,7 @@ export default function Editor() {
                     }}
                     className="btn-primary flex-1"
                   >
-                    Nouvelle création 🎨
+                    {t('editor.processing.new')}
                   </button>
                 </div>
               </motion.div>
@@ -327,7 +329,7 @@ export default function Editor() {
 
       <LoadingModal 
         isOpen={isProcessing} 
-        message="Génération de votre coloriage en cours..."
+        message={t('editor.processing.loading')}
       />
     </div>
   )
@@ -335,12 +337,12 @@ export default function Editor() {
 
 function isValidImageUrl(url: string): boolean {
   try {
-    // Vérifier si c&apos;est une URL de données
+    // Vérifier si c'est une URL de données
     if (url.startsWith('data:image/')) {
       return true
     }
 
-    // Vérifier si c&apos;est une URL HTTP/HTTPS
+    // Vérifier si c'est une URL HTTP/HTTPS
     const parsedUrl = new URL(url)
     return (
       (parsedUrl.protocol === 'http:' || parsedUrl.protocol === 'https:') &&

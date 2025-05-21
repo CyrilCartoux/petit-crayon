@@ -5,9 +5,11 @@ import { useRouter } from 'next/navigation'
 import { motion } from 'framer-motion'
 import confetti from 'canvas-confetti'
 import { CheckCircleIcon } from '@heroicons/react/24/outline'
+import { useLanguage } from '@/contexts/LanguageContext'
 
 export default function Success() {
   const router = useRouter()
+  const { t } = useLanguage()
 
   useEffect(() => {
     // Lancer les confettis
@@ -57,11 +59,11 @@ export default function Success() {
             </div>
 
             <h1 className="text-3xl font-bold text-gray-900 mb-4">
-              Paiement réussi !
+              {t('payment.success.title')}
             </h1>
 
             <p className="text-lg text-gray-600 mb-8">
-              Félicitations ! Vos crédits ont été ajoutés à votre compte. Vous pouvez maintenant commencer à transformer vos photos en coloriages.
+              {t('payment.success.description')}
             </p>
 
             <motion.button
@@ -70,11 +72,11 @@ export default function Success() {
               onClick={() => router.push('/editor')}
               className="inline-flex items-center px-6 py-3 border border-transparent text-base font-medium rounded-md shadow-sm text-white bg-gradient-to-r from-pink-500 to-purple-500 hover:from-pink-600 hover:to-purple-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary"
             >
-              Commencer mes créations
+              {t('payment.success.button')}
             </motion.button>
 
             <div className="mt-8 text-sm text-gray-500">
-              <p>Vous serez redirigé vers l&apos;éditeur de coloriages</p>
+              <p>{t('payment.success.redirect')}</p>
             </div>
           </div>
         </motion.div>

@@ -2,13 +2,21 @@
 
 import React from 'react'
 import { motion } from 'framer-motion'
+import { useLanguage } from '@/contexts/LanguageContext'
 
 export default function PrivacyPolicy() {
+  const { t } = useLanguage()
   const currentDate = new Date().toLocaleDateString('fr-FR', {
     year: 'numeric',
     month: 'long',
     day: 'numeric'
   })
+
+  const getTranslatedItems = (key: string): string[] => {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const items = t(key, { returnObjects: true } as any)
+    return Array.isArray(items) ? items : []
+  }
 
   return (
     <div className="min-h-screen bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
@@ -18,66 +26,51 @@ export default function PrivacyPolicy() {
           animate={{ opacity: 1, y: 0 }}
           className="bg-white rounded-xl shadow-sm p-8"
         >
-          <h1 className="text-3xl font-bold text-gray-900 mb-8">Politique de Confidentialité</h1>
-          <p className="text-gray-500 mb-8">Dernière mise à jour : {currentDate}</p>
+          <h1 className="text-3xl font-bold text-gray-900 mb-8">{t('privacy.title')}</h1>
+          <p className="text-gray-500 mb-8">{t('privacy.lastUpdate', { date: currentDate })}</p>
 
           <div className="prose prose-lg max-w-none">
-            <h2>1. Introduction</h2>
-            <p>
-              Chez Petit Crayon, nous accordons une grande importance à la protection de vos données personnelles. Cette politique de confidentialité explique comment nous collectons, utilisons et protégeons vos informations.
-            </p>
+            <h2>{t('privacy.sections.introduction.title')}</h2>
+            <p>{t('privacy.sections.introduction.content')}</p>
 
-            <h2>2. Collecte des Données</h2>
-            <p>
-              Nous collectons les informations suivantes :
-            </p>
+            <h2>{t('privacy.sections.dataCollection.title')}</h2>
+            <p>{t('privacy.sections.dataCollection.content')}</p>
             <ul>
-              <li>Informations de compte (email, nom)</li>
-              <li>Photos téléchargées pour la transformation en coloriages</li>
-              <li>Données de paiement (gérées par Stripe)</li>
-              <li>Données d&apos;utilisation du site</li>
+              {getTranslatedItems('privacy.sections.dataCollection.items').map((item: string, index: number) => (
+                <li key={index}>{item}</li>
+              ))}
             </ul>
 
-            <h2>3. Utilisation des Données</h2>
-            <p>
-              Vos données sont utilisées pour :
-            </p>
+            <h2>{t('privacy.sections.dataUsage.title')}</h2>
+            <p>{t('privacy.sections.dataUsage.content')}</p>
             <ul>
-              <li>Fournir et améliorer nos services</li>
-              <li>Traiter vos commandes et paiements</li>
-              <li>Vous envoyer des communications importantes</li>
-              <li>Assurer la sécurité de nos services</li>
+              {getTranslatedItems('privacy.sections.dataUsage.items').map((item: string, index: number) => (
+                <li key={index}>{item}</li>
+              ))}
             </ul>
 
-            <h2>4. Protection des Données</h2>
-            <p>
-              Nous mettons en œuvre des mesures de sécurité appropriées pour protéger vos données contre tout accès non autorisé, modification, divulgation ou destruction.
-            </p>
+            <h2>{t('privacy.sections.dataProtection.title')}</h2>
+            <p>{t('privacy.sections.dataProtection.content')}</p>
 
-            <h2>5. Partage des Données</h2>
-            <p>
-              Nous ne partageons vos données qu&apos;avec :
-            </p>
+            <h2>{t('privacy.sections.dataSharing.title')}</h2>
+            <p>{t('privacy.sections.dataSharing.content')}</p>
             <ul>
-              <li>Stripe pour le traitement des paiements</li>
-              <li>Les services d&apos;hébergement et d&apos;infrastructure</li>
-              <li>Les autorités compétentes si requis par la loi</li>
+              {getTranslatedItems('privacy.sections.dataSharing.items').map((item: string, index: number) => (
+                <li key={index}>{item}</li>
+              ))}
             </ul>
 
-            <h2>6. Vos Droits</h2>
-            <p>
-              Conformément au RGPD, vous avez le droit de :
-            </p>
+            <h2>{t('privacy.sections.rights.title')}</h2>
+            <p>{t('privacy.sections.rights.content')}</p>
             <ul>
-              <li>Accéder à vos données</li>
-              <li>Les rectifier ou les supprimer</li>
-              <li>Vous opposer à leur traitement</li>
-              <li>Demander la portabilité de vos données</li>
+              {getTranslatedItems('privacy.sections.rights.items').map((item: string, index: number) => (
+                <li key={index}>{item}</li>
+              ))}
             </ul>
 
-            <h2>7. Contact</h2>
+            <h2>{t('privacy.sections.contact.title')}</h2>
             <p>
-              Pour toute question concernant cette politique ou vos données, contactez-nous à :{' '}
+              {t('privacy.sections.contact.content')}{' '}
               <a href="mailto:petitcrayon.fr@gmail.com" className="text-blue-600 hover:text-blue-800">
                 petitcrayon.fr@gmail.com
               </a>

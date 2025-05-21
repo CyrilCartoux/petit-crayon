@@ -2,6 +2,7 @@
 
 import { motion } from 'framer-motion'
 import { useState } from 'react'
+import { useLanguage } from '@/contexts/LanguageContext'
 
 interface PromoOffer {
   code: string
@@ -45,6 +46,7 @@ interface PromoOffersProps {
 
 export default function PromoOffers({ selectedPlan }: PromoOffersProps) {
   const [copiedCode, setCopiedCode] = useState<string | null>(null)
+  const { t } = useLanguage()
 
   const copyToClipboard = (code: string) => {
     navigator.clipboard.writeText(code)
@@ -63,10 +65,10 @@ export default function PromoOffers({ selectedPlan }: PromoOffersProps) {
     <div className="mb-8">
       <div className="flex items-center justify-between mb-4">
         <h2 className="text-xl font-bold text-gray-900">
-          {selectedPlan ? 'Offre spéciale du jour !' : 'Offres spéciales du jour !'}
+          {t(offersToShow.length === 1 ? 'promo.title.single' : 'promo.title.multiple')}
         </h2>
         <span className="px-3 py-1 bg-red-100 text-red-600 rounded-full text-sm font-medium">
-          Valable aujourd&apos;hui uniquement
+          {t('promo.validity')}
         </span>
       </div>
 
@@ -93,7 +95,7 @@ export default function PromoOffers({ selectedPlan }: PromoOffersProps) {
                 </span>
               </div>
               <p className="text-sm text-gray-600 mt-1">
-                {offer.coloriages} coloriages
+                {t('promo.coloriages', { count: offer.coloriages })}
               </p>
             </div>
 
@@ -103,9 +105,9 @@ export default function PromoOffers({ selectedPlan }: PromoOffersProps) {
               </code>
               <button
                 onClick={() => copyToClipboard(offer.code)}
-                className="px-3 py-2 bg-[var(--color-primary)] text-white rounded hover:bg-[var(--color-primary-dark)] transition-colors"
+                className="px-3 py-2 bg-[var(--color-primary)] text-white rounded hover:bg-[var(--color-primary-dark)] transition-colors cursor-pointer"
               >
-                {copiedCode === offer.code ? 'Copié !' : 'Copier'}
+                {copiedCode === offer.code ? t('promo.copied') : t('promo.copy')}
               </button>
             </div>
           </motion.div>
@@ -114,7 +116,7 @@ export default function PromoOffers({ selectedPlan }: PromoOffersProps) {
 
       <div className="mt-4 text-center">
         <p className="text-sm text-gray-600">
-          Utilisez {selectedPlan ? 'ce code' : 'ces codes'} lors de votre paiement pour bénéficier de {selectedPlan ? 'cette offre' : 'ces offres'} exclusive{selectedPlan ? '' : 's'} !
+          {t(offersToShow.length === 1 ? 'promo.footer.single' : 'promo.footer.multiple')}
         </p>
       </div>
     </div>

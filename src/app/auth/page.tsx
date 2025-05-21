@@ -4,6 +4,7 @@ import { useState, useEffect, Suspense } from 'react'
 import Image from 'next/image'
 import { motion } from 'framer-motion'
 import { useSearchParams } from 'next/navigation'
+import { useLanguage } from '@/contexts/LanguageContext'
 
 function AuthForm() {
   const searchParams = useSearchParams()
@@ -14,6 +15,7 @@ function AuthForm() {
   const [registrationSuccess, setRegistrationSuccess] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
   const [isGoogleLoading, setIsGoogleLoading] = useState(false)
+  const { t } = useLanguage()
 
   useEffect(() => {
     // Si l'utilisateur vient de /editor, on affiche directement le mode inscription
@@ -46,9 +48,9 @@ function AuthForm() {
 
       if (!response.ok) {
         if (data.error === 'Email not confirmed') {
-          throw new Error('Veuillez confirmer votre email avant de vous connecter. Vérifiez votre boîte de réception.')
+          throw new Error(t('auth.common.error.emailNotConfirmed'))
         }
-        throw new Error(data.message || 'Une erreur est survenue')
+        throw new Error(data.message || t('auth.common.error.generic'))
       }
 
       if (!isLogin) {
@@ -59,7 +61,7 @@ function AuthForm() {
         window.location.href = data.redirectUrl || '/'
       }
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Une erreur est survenue')
+      setError(err instanceof Error ? err.message : t('auth.common.error.generic'))
     } finally {
       setIsLoading(false)
     }
@@ -75,12 +77,12 @@ function AuthForm() {
       const data = await response.json()
 
       if (!response.ok) {
-        throw new Error(data.message || 'Une erreur est survenue')
+        throw new Error(data.message || t('auth.common.error.generic'))
       }
 
       window.location.assign(data.url)
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Une erreur est survenue')
+      setError(err instanceof Error ? err.message : t('auth.common.error.generic'))
     } finally {
       setIsGoogleLoading(false)
     }
@@ -110,7 +112,7 @@ function AuthForm() {
                   : 'text-gray-600 hover:text-gray-900'
               }`}
             >
-              Connexion
+              {t('auth.login.title')}
             </button>
             <button
               onClick={() => setIsLogin(false)}
@@ -120,18 +122,15 @@ function AuthForm() {
                   : 'text-gray-600 hover:text-gray-900'
               }`}
             >
-              Inscription
+              {t('auth.register.title')}
             </button>
           </div>
         </div>
         <h1 className="text-3xl font-bold text-gray-900">
-          {isLogin ? 'Bienvenue !' : 'Créer un compte'}
+          {isLogin ? t('auth.login.welcome') : t('auth.register.welcome')}
         </h1>
         <p className="text-gray-600 mt-2">
-          {isLogin 
-            ? 'Connectez-vous pour accéder à vos coloriages'
-            : 'Rejoignez-nous pour créer vos coloriages'
-          }
+          {isLogin ? t('auth.login.description') : t('auth.register.description')}
         </p>
       </div>
 
@@ -143,8 +142,8 @@ function AuthForm() {
 
       {registrationSuccess && (
         <div className="mb-4 bg-green-50 border border-green-200 text-green-600 px-4 py-3 rounded">
-          <p className="font-medium">Inscription réussie !</p>
-          <p className="mt-1">Un email de confirmation vous a été envoyé. Vérifiez votre boîte de réception (et les spams) pour finaliser votre inscription.</p>
+          <p className="font-medium">{t('auth.common.success.title')}</p>
+          <p className="mt-1">{t('auth.common.success.description')}</p>
         </div>
       )}
 
@@ -160,7 +159,7 @@ function AuthForm() {
                 <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
                 <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
               </svg>
-              <span className="font-medium">Chargement...</span>
+              <span className="font-medium">{t('auth.common.loading')}</span>
             </div>
           ) : (
             <>
@@ -171,7 +170,7 @@ function AuthForm() {
                 height={20}
                 className="w-5 h-5"
               />
-              <span className="font-medium">Continuer avec Google</span>
+              <span className="font-medium">{t('auth.common.continueWithGoogle')}</span>
             </>
           )}
         </button>
@@ -182,14 +181,14 @@ function AuthForm() {
           <div className="w-full border-t border-gray-300" />
         </div>
         <div className="relative flex justify-center text-sm">
-          <span className="px-2 bg-white text-gray-500">Ou</span>
+          <span className="px-2 bg-white text-gray-500">{t('auth.common.or')}</span>
         </div>
       </div>
 
       <form className="space-y-6" onSubmit={handleSubmit}>
         <div>
           <label htmlFor="email" className="block text-sm font-medium text-gray-700">
-            Email
+            {t('auth.common.email')}
           </label>
           <input
             type="email"
@@ -203,7 +202,7 @@ function AuthForm() {
 
         <div>
           <label htmlFor="password" className="block text-sm font-medium text-gray-700">
-            Mot de passe
+            {t('auth.common.password')}
           </label>
           <input
             type="password"
@@ -230,10 +229,10 @@ function AuthForm() {
                 <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
                 <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
               </svg>
-              {isLogin ? 'Connexion en cours...' : 'Création en cours...'}
+              {isLogin ? t('auth.login.loading') : t('auth.register.loading')}
             </div>
           ) : (
-            isLogin ? 'Se connecter' : 'Créer un compte'
+            isLogin ? t('auth.login.button') : t('auth.register.button')
           )}
         </button>
       </form>
@@ -241,22 +240,22 @@ function AuthForm() {
       <div className="mt-6 text-center text-sm text-gray-600">
         {isLogin ? (
           <p>
-            Pas encore de compte ?{' '}
+            {t('auth.login.noAccount')}{' '}
             <button
               onClick={() => setIsLogin(false)}
               className="text-[var(--color-primary)] hover:text-[var(--color-primary-dark)] font-medium"
             >
-              Créer un compte
+              {t('auth.login.createAccount')}
             </button>
           </p>
         ) : (
           <p>
-            Déjà un compte ?{' '}
+            {t('auth.register.hasAccount')}{' '}
             <button
               onClick={() => setIsLogin(true)}
               className="text-[var(--color-primary)] hover:text-[var(--color-primary-dark)] font-medium"
             >
-              Se connecter
+              {t('auth.register.login')}
             </button>
           </p>
         )}
