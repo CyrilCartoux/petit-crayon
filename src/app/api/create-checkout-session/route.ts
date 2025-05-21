@@ -61,6 +61,7 @@ export async function POST(request: Request) {
         plan: plan,
         creditsAmount: creditsAmount.toString(),
       },
+      allow_promotion_codes: true,
       discounts: promoCode ? [{ promotion_code: promoCode }] : undefined,
     });
 

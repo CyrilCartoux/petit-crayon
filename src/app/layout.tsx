@@ -5,13 +5,10 @@ import Header from '@/components/Header'
 import Footer from '@/components/Footer'
 import { AuthProvider } from '@/contexts/AuthContext'
 import { CreditsProvider } from '@/contexts/CreditsContext'
-import GalleryPreview from "@/components/GalleryPreview";
 import { SpeedInsights } from "@vercel/speed-insights/next"
-import CustomerReviews from "@/components/CustomerReviews";
 import Script from 'next/script';
 import { Analytics } from "@vercel/analytics/react"
 import LogRocketProvider from '@/components/LogRocketProvider';
-import { PlanCard } from "@/components/PlanCard";
 
 const fredoka = Fredoka({ subsets: ["latin"] });
 
@@ -106,23 +103,6 @@ export default function RootLayout({
               {children}
             </main>
 
-            <GalleryPreview />
-            
-            <section className="py-12 bg-gray-50">
-              <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                <div className="text-center mb-8">
-                  <h2 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-4">
-                    Offrez des heures de créativité
-                  </h2>
-                  <p className="text-base sm:text-lg text-gray-600">
-                    Choisissez le forfait qui correspond à vos besoins
-                  </p>
-                </div>
-                <PlanCard />
-              </div>
-            </section>
-
-            <CustomerReviews />
             <Footer />
             <SpeedInsights />
             <Analytics />

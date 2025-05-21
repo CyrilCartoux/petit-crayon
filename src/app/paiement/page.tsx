@@ -41,15 +41,15 @@ const plans: Record<string, Plan> = {
     price: 3.49,
     coloriages: 5,
     description: '✨ Le pack idéal pour transformer vos plus belles photos.',
-    type: 'one-time',
-    popular: true
+    type: 'one-time'
   },
   famille: {
     name: 'Famille',
     price: 7.99,
     coloriages: 12,
     description: '👨‍👩‍👧‍👦 Pour revivre vos plus beaux souvenirs en famille.',
-    type: 'one-time'
+    type: 'one-time',
+    popular: true
   }
 }
 
