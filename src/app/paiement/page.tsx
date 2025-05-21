@@ -6,6 +6,7 @@ import { motion } from 'framer-motion'
 import Image from 'next/image'
 import getStripe from '@/utils/stripe-client'
 import { useAuth } from '@/contexts/AuthContext'
+import PromoOffers from '@/components/PromoOffers'
 
 interface Plan {
   name: string
@@ -14,6 +15,17 @@ interface Plan {
   description: string
   type: 'one-time'
   popular?: boolean
+}
+
+interface PromoCode {
+  code: string
+  id: string
+  coupon: {
+    id: string
+    percent_off: number | null
+    amount_off: number | null
+    currency: string
+  }
 }
 
 const plans: Record<string, Plan> = {
@@ -41,7 +53,6 @@ const plans: Record<string, Plan> = {
   }
 }
 
-
 function PaiementContent() {
   const searchParams = useSearchParams()
   const router = useRouter()
@@ -49,6 +60,9 @@ function PaiementContent() {
   const plan = searchParams.get('plan') as keyof typeof plans
   const [selectedPlan, setSelectedPlan] = useState<Plan>(plans.starter)
   const [isLoading, setIsLoading] = useState(false)
+  const [promoCode, setPromoCode] = useState('')
+  const [promoError, setPromoError] = useState<string | null>(null)
+  const [appliedPromo, setAppliedPromo] = useState<PromoCode | null>(null)
 
   useEffect(() => {
     if (plan && plans[plan]) {
@@ -57,7 +71,35 @@ function PaiementContent() {
   }, [plan])
 
   const handlePlanChange = (newPlan: keyof typeof plans) => {
+    setPromoCode('')
+    setAppliedPromo(null)
+    setPromoError(null)
     router.push(`/paiement?plan=${newPlan}`)
+  }
+
+  const handlePromoCodeSubmit = async (e: React.FormEvent) => {
+    e.preventDefault()
+    setPromoError(null)
+
+    try {
+      const response = await fetch('/api/promotions/validate', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ code: promoCode }),
+      })
+
+      const data = await response.json()
+
+      if (!response.ok) {
+        throw new Error(data.error || 'Une erreur est survenue')
+      }
+
+      setAppliedPromo(data)
+    } catch (err) {
+      setPromoError(err instanceof Error ? err.message : 'Une erreur est survenue')
+    }
   }
 
   const handlePayment = async (e: React.FormEvent) => {
@@ -75,7 +117,8 @@ function PaiementContent() {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({ 
-          plan: selectedPlan.name.toLowerCase()
+          plan: selectedPlan.name.toLowerCase(),
+          promoCode: appliedPromo?.id
         }),
       })
 
@@ -90,6 +133,20 @@ function PaiementContent() {
     } finally {
       setIsLoading(false)
     }
+  }
+
+  const getFinalPrice = (plan: Plan) => {
+    if (plan.name !== selectedPlan.name || !appliedPromo) return plan.price
+
+    if (appliedPromo.coupon.percent_off) {
+      return plan.price * (1 - appliedPromo.coupon.percent_off / 100)
+    }
+
+    if (appliedPromo.coupon.amount_off) {
+      return Math.max(0, plan.price - (appliedPromo.coupon.amount_off / 100))
+    }
+
+    return plan.price
   }
 
   return (
@@ -113,6 +170,9 @@ function PaiementContent() {
 
           {/* Contenu */}
           <div className="p-6 md:p-8">
+            {/* Offres promotionnelles */}
+            <PromoOffers selectedPlan={selectedPlan.name} />
+
             {/* Sélecteur de plan */}
             <div className="mb-8">
               <h2 className="text-xl font-bold text-gray-900 mb-4">Choisissez votre plan</h2>
@@ -136,7 +196,7 @@ function PaiementContent() {
                     )}
                     <h3 className="font-bold text-gray-900">{plan.name}</h3>
                     <p className="text-2xl font-bold text-gray-900 mt-2">
-                      {plan.price}€
+                      {getFinalPrice(plan).toFixed(2)}€
                       <span className="text-sm text-gray-500 ml-1">
                         / une fois
                       </span>
@@ -149,12 +209,56 @@ function PaiementContent() {
               </div>
             </div>
 
+            {/* Code promo */}
+            <div className="mb-8">
+              <form onSubmit={handlePromoCodeSubmit} className="flex gap-2">
+                <input
+                  type="text"
+                  value={promoCode}
+                  onChange={(e) => setPromoCode(e.target.value.toUpperCase())}
+                  placeholder="Entrez votre code promo"
+                  className="flex-1 rounded-md border-gray-300 shadow-sm focus:border-[var(--color-primary)] focus:ring-[var(--color-primary)]"
+                />
+                <button
+                  type="submit"
+                  className="px-4 py-2 bg-[var(--color-primary)] text-white rounded-md hover:bg-[var(--color-primary-dark)] transition-colors"
+                >
+                  Appliquer
+                </button>
+              </form>
+              {promoError && (
+                <p className="mt-2 text-sm text-red-600">{promoError}</p>
+              )}
+              {appliedPromo && (
+                <div className="mt-2 p-3 bg-green-50 border border-green-200 rounded-md">
+                  <p className="text-sm font-medium text-green-800">
+                    Code promo appliqué : {appliedPromo.code}
+                  </p>
+                  {appliedPromo.coupon.percent_off && (
+                    <p className="text-sm text-green-600">
+                      Réduction de {appliedPromo.coupon.percent_off}%
+                    </p>
+                  )}
+                  {appliedPromo.coupon.amount_off && (
+                    <p className="text-sm text-green-600">
+                      Réduction de {(appliedPromo.coupon.amount_off / 100).toFixed(2)} {appliedPromo.coupon.currency.toUpperCase()}
+                    </p>
+                  )}
+                </div>
+              )}
+            </div>
+
             {/* Récapitulatif du plan */}
             <div className="mb-8 p-6 bg-gray-50 rounded-xl">
               <h2 className="text-2xl font-bold text-gray-900 mb-2">{selectedPlan.name}</h2>
               <p className="text-gray-600 mb-4">{selectedPlan.description}</p>
               <div className="flex items-baseline">
-                <span className="text-4xl font-bold text-gray-900">{selectedPlan.price}€</span>
+                <span className="text-4xl font-bold text-gray-900">{getFinalPrice(selectedPlan).toFixed(2)}€</span>
+                {appliedPromo && (
+                  <span className="text-lg text-gray-500 line-through ml-2">
+                    {selectedPlan.price}€
+                  </span>
+                )}
                 <span className="text-gray-500 ml-2">
                   / une fois
                 </span>
@@ -178,7 +282,7 @@ function PaiementContent() {
                   Traitement en cours...
                 </div>
               ) : (
-                `Payer ${selectedPlan.price}€`
+                `Payer ${getFinalPrice(selectedPlan).toFixed(2)}€`
               )}
             </motion.button>
 

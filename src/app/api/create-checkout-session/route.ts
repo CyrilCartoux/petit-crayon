@@ -31,7 +31,8 @@ export async function POST(request: Request) {
       );
     }
 
-    const { plan } = await request.json();
+    
+    const { plan, promoCode } = await request.json();
     const priceId = PRICE_IDS[plan as keyof typeof PRICE_IDS];
     const creditsAmount = CREDITS_BY_PLAN[plan as keyof typeof CREDITS_BY_PLAN];
 
@@ -54,12 +55,13 @@ export async function POST(request: Request) {
       ],
       mode: 'payment',
       success_url: `${process.env.NEXT_PUBLIC_SITE_URL}/success?session_id={CHECKOUT_SESSION_ID}`,
-      cancel_url: `${process.env.NEXT_PUBLIC_SITE_URL}/paiement`,
+      cancel_url: `${process.env.NEXT_PUBLIC_SITE_URL}/paiement?plan=${plan}`,
       metadata: {
         userId: user.id,
         plan: plan,
         creditsAmount: creditsAmount.toString(),
       },
+      discounts: promoCode ? [{ promotion_code: promoCode }] : undefined,
     });
 
     logApiSuccess({ sessionId: session.id, plan, creditsAmount }, 'create-checkout-session');
@@ -67,7 +69,7 @@ export async function POST(request: Request) {
   } catch (error) {
     logApiError(error as ErrorWithMessage, 'create-checkout-session', request);
     return NextResponse.json(
-      { error: 'Erreur lors de la création de la session de paiement' },
+      { error: 'Une erreur est survenue lors de la création de la session de paiement' },
       { status: 500 }
     );
   }

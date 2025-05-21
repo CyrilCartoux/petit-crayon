@@ -4,7 +4,7 @@ import React from "react";
 import Link from "next/link";
 import { motion } from "framer-motion";
 import Image from "next/image";
-
+import PromoOffers from "@/components/PromoOffers";
 export default function Home() {
   return (
     <div className="relative min-h-screen">
@@ -72,7 +72,7 @@ export default function Home() {
           >
             <Link
               href="/editor"
-              className="inline-flex items-center px-6 py-3 sm:px-8 sm:py-4 text-lg sm:text-xl font-bold text-white bg-gradient-to-r from-[var(--color-primary)] to-[var(--color-primary-dark)] rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1"
+              className="inline-flex items-center px-6 py-3 sm:px-8 sm:py-4 text-lg sm:text-xl font-bold text-white bg-gradient-to-r from-[var(--color-primary)] to-[var(--color-primary-dark)] rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 mb-8"
             >
               Créer mon coloriage
               <svg
@@ -89,6 +89,7 @@ export default function Home() {
                 />
               </svg>
             </Link>
+            <PromoOffers />
           </motion.div>
         </div>
       </div>
