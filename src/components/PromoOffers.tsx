@@ -16,7 +16,7 @@ const promoOffers: PromoOffer[] = [
   {
     code: 'BONJOUR1',
     originalPrice: 1.49,
-    promoPrice: 0.99,
+    promoPrice: 1.00,
     coloriages: 2,
     discount: 33,
     plan: 'mini'

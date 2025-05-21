@@ -35,6 +35,7 @@ export async function POST(request: Request) {
     const { plan, promoCode } = await request.json();
     const priceId = PRICE_IDS[plan as keyof typeof PRICE_IDS];
     const creditsAmount = CREDITS_BY_PLAN[plan as keyof typeof CREDITS_BY_PLAN];
+    console.log(priceId, creditsAmount, plan);
 
     if (!priceId || !creditsAmount) {
       logApiError(new Error(`Invalid plan: ${plan}`), 'create-checkout-session', request);
@@ -61,7 +62,6 @@ export async function POST(request: Request) {
         plan: plan,
         creditsAmount: creditsAmount.toString(),
       },
-      allow_promotion_codes: true,
       discounts: promoCode ? [{ promotion_code: promoCode }] : undefined,
     });
 
