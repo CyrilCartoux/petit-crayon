@@ -116,6 +116,16 @@
     }
   },
   "gallery": {
+    "myGallery": {
+      "title": "Ma Galerie de Coloriages",
+      "description": "Retrouvez tous vos coloriages générés",
+      "empty": "Vous n'avez pas encore de coloriages dans votre galerie.",
+      "createButton": "Créer un coloriage",
+      "coloring": "Coloriage",
+      "createdAt": "Créé le {date}",
+      "download": "Télécharger",
+      "imageAlt": "Coloriage généré"
+    },
     "title": "Transformez vos souvenirs en aventures à colorier.",
     "description": "Transformez vos photos en coloriages uniques et personnalisés. Voici quelques exemples de ce que vous pouvez créer.",
     "examples": {

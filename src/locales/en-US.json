@@ -116,6 +116,16 @@
     }
   },
   "gallery": {
+    "myGallery": {
+      "title": "My Coloring Gallery",
+      "description": "Find all your generated coloring pages",
+      "empty": "You don't have any coloring pages in your gallery yet.",
+      "createButton": "Create a coloring page",
+      "coloring": "Coloring",
+      "createdAt": "Created on {date}",
+      "download": "Download",
+      "imageAlt": "Generated coloring"
+    },
     "title": "Transform your memories into coloring adventures.",
     "description": "Transform your photos into unique and personalized coloring pages. Here are some examples of what you can create.",
     "examples": {

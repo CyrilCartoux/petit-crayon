@@ -2,18 +2,33 @@
 
 import Link from 'next/link'
 import Image from 'next/image'
-import { useState } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { useAuth } from '@/contexts/AuthContext'
 import { useCredits } from '@/contexts/CreditsContext'
 import { useRouter } from 'next/navigation'
 import LanguageSelector from './LanguageSelector'
 import { useLanguage } from '@/contexts/LanguageContext'
+
 export default function Header() {
   const [isUserMenuOpen, setIsUserMenuOpen] = useState(false)
   const { user, signOut } = useAuth()
   const { credits, loading } = useCredits()
   const router = useRouter()
   const { t } = useLanguage()
+  const menuRef = useRef<HTMLDivElement>(null)
+
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (menuRef.current && !menuRef.current.contains(event.target as Node)) {
+        setIsUserMenuOpen(false)
+      }
+    }
+
+    document.addEventListener('mousedown', handleClickOutside)
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside)
+    }
+  }, [])
 
   const getUserDisplayName = () => {
     if (user?.user_metadata?.full_name) {
@@ -53,19 +68,26 @@ export default function Header() {
           </div>
 
           <div className="flex items-center">
-            <LanguageSelector />
             {user && (
-              <div className="flex items-center space-x-4 ml-6">
+              <div className="flex items-center space-x-4">
                 <button
-                  onClick={() => router.push('/paiement')}
-                  className="cursor-pointer flex items-center space-x-2 bg-gray-50 px-4 py-2 rounded-full hover:bg-gray-100 transition-colors"
+                  onClick={() => router.push('/gallery')}
+                  className="cursor-pointer flex items-center space-x-2 text-gray-700 hover:text-[var(--color-primary)] transition-colors"
                 >
-                  <span className="text-sm font-medium text-gray-900">Crédits :</span>
-                  {loading ? (
-                    <div className="w-8 h-4 bg-gray-200 rounded animate-pulse" />
-                  ) : (
-                    <span className="text-sm font-bold text-[var(--color-primary)]">{credits}</span>
-                  )}
+                  <svg
+                    className="w-6 h-6"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"
+                    />
+                  </svg>
+                  <span className="text-sm font-medium">Galerie</span>
                 </button>
                 <div className="relative">
                   <button
@@ -78,11 +100,48 @@ export default function Header() {
                   </button>
                   {/* Menu utilisateur */}
                   {isUserMenuOpen && (
-                    <div className="absolute top-full right-0 mt-2 w-56 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5">
+                    <div ref={menuRef} className="absolute top-full right-0 mt-2 w-56 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5">
                       <div className="py-1" role="menu" aria-orientation="vertical">
                         <div className="px-4 py-2">
                           <p className="font-medium text-gray-900 truncate">{getUserDisplayName()}</p>
                           <p className="text-sm text-gray-500 truncate" title={getUserEmail()}>{getUserEmail()}</p>
+                        </div>
+                        <div className="border-t border-gray-100"></div>
+                        <div className="px-4 py-2">
+                          <div className="flex items-center justify-between">
+                            <span className="text-sm font-medium text-gray-700">Crédits :</span>
+                            {loading ? (
+                              <div className="w-8 h-4 bg-gray-200 rounded animate-pulse" />
+                            ) : (
+                              <span className="text-sm font-bold text-[var(--color-primary)]">{credits}</span>
+                            )}
+                          </div>
+                          <button
+                            onClick={() => {
+                              router.push('/paiement');
+                              setIsUserMenuOpen(false);
+                            }}
+                            className="mt-2 w-full flex items-center justify-center px-4 py-2 text-sm font-medium text-white bg-[var(--color-primary)] rounded-lg hover:bg-[var(--color-primary-dark)] transition-colors"
+                          >
+                            <svg
+                              className="w-4 h-4 mr-2"
+                              fill="none"
+                              stroke="currentColor"
+                              viewBox="0 0 24 24"
+                            >
+                              <path
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                                strokeWidth={2}
+                                d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                              />
+                            </svg>
+                            Acheter des crédits
+                          </button>
+                        </div>
+                        <div className="border-t border-gray-100"></div>
+                        <div className="px-4 py-2">
+                          <LanguageSelector />
                         </div>
                         <div className="border-t border-gray-100"></div>
                         <button
@@ -102,12 +161,15 @@ export default function Header() {
               </div>
             )}
             {!user && (
-              <Link
-                href="/auth"
-                className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-[var(--color-primary)] hover:bg-[var(--color-primary-dark)] ml-6"
-              >
-                {t('header.connection')}
-              </Link>
+              <div className="flex items-center space-x-4">
+                <LanguageSelector />
+                <Link
+                  href="/auth"
+                  className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-[var(--color-primary)] hover:bg-[var(--color-primary-dark)]"
+                >
+                  {t('header.connection')}
+                </Link>
+              </div>
             )}
           </div>
         </div>
